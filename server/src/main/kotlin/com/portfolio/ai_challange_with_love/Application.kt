@@ -1,5 +1,6 @@
 package com.portfolio.ai_challange_with_love
 
+import com.portfolio.ai_challange_with_love.routes.modelRoutes
 import com.portfolio.ai_challange_with_love.routes.temperatureRoutes
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -43,5 +44,6 @@ fun Application.module() {
             call.respondText("Ktor: ${Greeting().greet()}")
         }
         temperatureRoutes(httpClient, apiKey)
+        modelRoutes(httpClient, apiKey)
     }
 }

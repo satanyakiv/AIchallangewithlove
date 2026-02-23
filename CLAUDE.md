@@ -49,6 +49,12 @@ Three Gradle modules defined in `settings.gradle.kts`:
 - Gradle 8.14.3 with configuration cache enabled
 - Material3 for UI components
 
+## API Keys
+
+- Use `DEEPSEEK_API_KEY` (from `~/.zshrc`) for **all** AI API calls in this project
+- Available models: `deepseek-chat` (V3.2), `deepseek-reasoner` (V3.2 thinking mode)
+- API base URL: `https://api.deepseek.com` (OpenAI-compatible)
+
 ## UI Language
 
 - All UI text (labels, titles, descriptions) must be in **English**

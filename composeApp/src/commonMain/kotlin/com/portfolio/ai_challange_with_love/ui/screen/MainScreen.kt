@@ -25,6 +25,13 @@ private val challengeDays = listOf(
         description = "Experimenting with temperature: 0, 0.7, 1.2 — comparing accuracy, creativity and diversity",
         emoji = "\uD83C\uDF21\uFE0F",
     ),
+    ChallengeDay(
+        id = 5,
+        dayNumber = 5,
+        title = "Model Versions",
+        description = "Comparing weak, medium and strong models — quality, speed and cost",
+        emoji = "\uD83E\uDD16",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

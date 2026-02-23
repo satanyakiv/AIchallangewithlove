@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -33,8 +36,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.portfolio.ai_challange_with_love.data.AnalyzeResponse
+import com.portfolio.ai_challange_with_love.ui.formatAiResponse
 import com.portfolio.ai_challange_with_love.data.Recommendation
 import com.portfolio.ai_challange_with_love.data.TemperatureApi
 import com.portfolio.ai_challange_with_love.data.TemperatureResponse
@@ -158,18 +163,30 @@ fun Day4Screen(onBack: () -> Unit) {
                     )
                 }
                 Phase.STREAMING, Phase.ANALYZING, Phase.COMPLETE -> {
-                    // Show all 3 cards (filled or in-progress)
-                    TEMPERATURES.forEachIndexed { index, temp ->
-                        val text = streamingTexts[index]
-                        val isActive = phase == Phase.STREAMING && index == activeTemperatureIndex
-                        val isWaiting = phase == Phase.STREAMING && index > activeTemperatureIndex
-
-                        StreamingResultCard(
-                            temperature = temp,
-                            text = text,
-                            isStreaming = isActive,
-                            isWaiting = isWaiting,
+                    // Show all 3 cards in a horizontal row
+                    Row(
+                        modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        val cardColors = listOf(
+                            Color(0xFFE3F2FD), // light blue
+                            Color(0xFFFFF3E0), // light orange
+                            Color(0xFFE8F5E9), // light green
                         )
+                        TEMPERATURES.forEachIndexed { index, temp ->
+                            val text = streamingTexts[index]
+                            val isActive = phase == Phase.STREAMING && index == activeTemperatureIndex
+                            val isWaiting = phase == Phase.STREAMING && index > activeTemperatureIndex
+
+                            StreamingResultCard(
+                                modifier = Modifier.weight(1f).fillMaxHeight(),
+                                temperature = temp,
+                                text = text,
+                                isStreaming = isActive,
+                                isWaiting = isWaiting,
+                                containerColor = cardColors[index],
+                            )
+                        }
                     }
 
                     if (phase == Phase.ANALYZING) {
@@ -191,11 +208,31 @@ fun Day4Screen(onBack: () -> Unit) {
                     }
                 }
                 Phase.ERROR -> {
-                    // Show any partial results
-                    TEMPERATURES.forEachIndexed { index, temp ->
-                        val text = streamingTexts[index]
-                        if (text.isNotEmpty()) {
-                            StreamingResultCard(temp, text, isStreaming = false, isWaiting = false)
+                    // Show any partial results in a row
+                    val hasPartial = streamingTexts.any { it.isNotEmpty() }
+                    if (hasPartial) {
+                        val errorCardColors = listOf(
+                            Color(0xFFE3F2FD),
+                            Color(0xFFFFF3E0),
+                            Color(0xFFE8F5E9),
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            TEMPERATURES.forEachIndexed { index, temp ->
+                                val text = streamingTexts[index]
+                                if (text.isNotEmpty()) {
+                                    StreamingResultCard(
+                                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                                        temperature = temp,
+                                        text = text,
+                                        isStreaming = false,
+                                        isWaiting = false,
+                                        containerColor = errorCardColors[index],
+                                    )
+                                }
+                            }
                         }
                     }
                     ElevatedCard(
@@ -218,12 +255,17 @@ fun Day4Screen(onBack: () -> Unit) {
 
 @Composable
 private fun StreamingResultCard(
+    modifier: Modifier = Modifier,
     temperature: Double,
     text: String,
     isStreaming: Boolean,
     isWaiting: Boolean,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
 ) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+    ElevatedCard(
+        modifier = modifier,
+        colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
+    ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -258,7 +300,7 @@ private fun StreamingResultCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                else -> Text(text, style = MaterialTheme.typography.bodyMedium)
+                else -> Text(formatAiResponse(text), style = MaterialTheme.typography.bodyMedium, color = Color.Black)
             }
         }
     }
