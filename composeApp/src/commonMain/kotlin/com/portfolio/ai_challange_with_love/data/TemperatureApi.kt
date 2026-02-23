@@ -1,0 +1,95 @@
+package com.portfolio.ai_challange_with_love.data
+
+import com.portfolio.ai_challange_with_love.SERVER_PORT
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.utils.io.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+
+@Serializable
+data class TemperatureRequest(val prompt: String, val temperature: Double)
+
+@Serializable
+data class TemperatureResponse(val temperature: Double, val content: String, val error: String? = null)
+
+@Serializable
+data class AnalyzeRequest(val results: List<TemperatureResult>)
+
+@Serializable
+data class TemperatureResult(val temperature: Double, val content: String)
+
+@Serializable
+data class AnalyzeResponse(val comparison: String, val recommendations: List<Recommendation>)
+
+@Serializable
+data class Recommendation(val temperature: Double, val bestFor: String)
+
+@Serializable
+private data class StreamChunk(val content: String? = null, val error: String? = null)
+
+private val streamJson = Json { ignoreUnknownKeys = true }
+
+class TemperatureApi {
+    private val client = HttpClient {
+        install(ContentNegotiation) {
+            json(Json { ignoreUnknownKeys = true })
+        }
+        install(HttpTimeout) {
+            requestTimeoutMillis = 120_000
+            connectTimeoutMillis = 10_000
+            socketTimeoutMillis = 120_000
+        }
+    }
+
+    private val baseUrl = "http://${getServerHost()}:$SERVER_PORT"
+
+    suspend fun streamTemperatureResult(
+        prompt: String,
+        temperature: Double,
+        onToken: (String) -> Unit,
+    ): String {
+        val fullContent = StringBuilder()
+
+        client.preparePost("$baseUrl/api/temperature/stream") {
+            contentType(ContentType.Application.Json)
+            setBody(TemperatureRequest(prompt, temperature))
+            timeout { requestTimeoutMillis = 120_000 }
+        }.execute { response ->
+            val channel = response.bodyAsChannel()
+            while (!channel.isClosedForRead) {
+                val line = channel.readUTF8Line() ?: break
+                if (!line.startsWith("data: ")) continue
+                val data = line.removePrefix("data: ").trim()
+                if (data == "[DONE]") break
+
+                val chunk = try {
+                    streamJson.decodeFromString<StreamChunk>(data)
+                } catch (_: Exception) { continue }
+
+                if (chunk.error != null) {
+                    throw RuntimeException(chunk.error)
+                }
+                if (chunk.content != null) {
+                    fullContent.append(chunk.content)
+                    onToken(chunk.content)
+                }
+            }
+        }
+
+        return fullContent.toString()
+    }
+
+    suspend fun analyzeResults(results: List<TemperatureResponse>): AnalyzeResponse {
+        return client.post("$baseUrl/api/temperature/analyze") {
+            contentType(ContentType.Application.Json)
+            setBody(AnalyzeRequest(results.map { TemperatureResult(it.temperature, it.content) }))
+        }.body()
+    }
+}

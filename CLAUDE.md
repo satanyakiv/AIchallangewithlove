@@ -48,3 +48,9 @@ Three Gradle modules defined in `settings.gradle.kts`:
 - Android: compileSdk 36, minSdk 31, AGP 8.11.2
 - Gradle 8.14.3 with configuration cache enabled
 - Material3 for UI components
+
+## UI Language
+
+- All UI text (labels, titles, descriptions) must be in **English**
+- Challenge task content (from `Challange-tasks/`) stays in its original language (Ukrainian)
+- Code comments and documentation in English
