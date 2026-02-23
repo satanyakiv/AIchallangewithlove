@@ -323,15 +323,15 @@ private fun MetricsCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = Color.Black)
                 if (isActive) {
                     CircularProgressIndicator(modifier = Modifier.size(12.dp), strokeWidth = 2.dp)
                 }
             }
             if (metrics != null) {
-                Text("${metrics.responseTimeMs / 1000.0}s", style = MaterialTheme.typography.bodySmall)
-                Text("${metrics.totalTokens} tokens", style = MaterialTheme.typography.bodySmall)
-                Text("$${String.format("%.6f", metrics.estimatedCost)}", style = MaterialTheme.typography.bodySmall)
+                Text("${metrics.responseTimeMs / 1000.0}s", style = MaterialTheme.typography.bodySmall, color = Color.Black)
+                Text("${metrics.totalTokens} tokens", style = MaterialTheme.typography.bodySmall, color = Color.Black)
+                Text("$${String.format("%.6f", metrics.estimatedCost)}", style = MaterialTheme.typography.bodySmall, color = Color.Black)
             } else {
                 Text("Waiting...", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }

@@ -293,12 +293,12 @@ private fun StreamingResultCard(
                 isWaiting -> Text(
                     "Waiting...",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = Color.Black,
                 )
                 text.isEmpty() && isStreaming -> Text(
                     "Generating...",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = Color.Black,
                 )
                 else -> Text(formatAiResponse(text), style = MaterialTheme.typography.bodyMedium, color = Color.Black)
             }
