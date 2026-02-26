@@ -55,6 +55,11 @@ Three Gradle modules defined in `settings.gradle.kts`:
 - Available models: `deepseek-chat` (V3.2), `deepseek-reasoner` (V3.2 thinking mode)
 - API base URL: `https://api.deepseek.com` (OpenAI-compatible)
 
+## DI Framework
+
+- Use **Koin** for dependency injection, NOT Kodein
+- All Compose feature generation must use Koin modules and `koinInject()` / `koinViewModel()`
+
 ## UI Language
 
 - All UI text (labels, titles, descriptions) must be in **English**
