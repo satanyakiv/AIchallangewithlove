@@ -25,7 +25,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.portfolio.ai_challange_with_love.shared"
+    namespace = "com.portfolio.ai_challenge.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
