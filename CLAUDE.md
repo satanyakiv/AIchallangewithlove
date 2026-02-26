@@ -60,6 +60,17 @@ Three Gradle modules defined in `settings.gradle.kts`:
 - Use **Koin** for dependency injection, NOT Kodein
 - All Compose feature generation must use Koin modules and `koinInject()` / `koinViewModel()`
 
+## Koog (AI Agents Framework)
+
+- When working with Koog (AI agents, LLM integration, tools), read `.claude/koog-reference.md` first
+- Contains: setup, DeepSeek config, tool definitions, prompts, strategies, structured output, history compression
+- Use `ksrc` skill to inspect Koog source code for API details not covered in the reference
+
+## Workflow
+
+- After completing a task, always run `./gradlew :server:run` (background) and `./gradlew :composeApp:run` (background) so the user can test immediately
+- Kill existing processes on port 8080 before restarting the server
+
 ## UI Language
 
 - All UI text (labels, titles, descriptions) must be in **English**

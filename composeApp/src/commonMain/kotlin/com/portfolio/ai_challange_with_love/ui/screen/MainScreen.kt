@@ -32,6 +32,13 @@ private val challengeDays = listOf(
         description = "Comparing weak, medium and strong models — quality, speed and cost",
         emoji = "\uD83E\uDD16",
     ),
+    ChallengeDay(
+        id = 6,
+        dayNumber = 6,
+        title = "Agent Smith",
+        description = "AI agent with Agent Smith persona — powered by Koog framework",
+        emoji = "\uD83D\uDD76\uFE0F",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

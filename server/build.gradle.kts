@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.contentNegotiation.jvm)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.koog.agents)
     testImplementation(libs.ktor.serverTestHost)
     testImplementation(libs.kotlin.testJunit)
 }

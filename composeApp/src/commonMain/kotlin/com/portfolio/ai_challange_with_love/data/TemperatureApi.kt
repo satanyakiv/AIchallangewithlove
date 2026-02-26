@@ -1,15 +1,16 @@
 package com.portfolio.ai_challange_with_love.data
 
 import com.portfolio.ai_challange_with_love.SERVER_PORT
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.utils.io.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.plugins.timeout
+import io.ktor.client.request.post
+import io.ktor.client.request.preparePost
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.utils.io.readUTF8Line
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -36,18 +37,7 @@ private data class StreamChunk(val content: String? = null, val error: String? =
 
 private val streamJson = Json { ignoreUnknownKeys = true }
 
-class TemperatureApi {
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
-        }
-        install(HttpTimeout) {
-            requestTimeoutMillis = 120_000
-            connectTimeoutMillis = 10_000
-            socketTimeoutMillis = 120_000
-        }
-    }
-
+class TemperatureApi(private val client: HttpClient) {
     private val baseUrl = "http://${getServerHost()}:$SERVER_PORT"
 
     suspend fun streamTemperatureResult(

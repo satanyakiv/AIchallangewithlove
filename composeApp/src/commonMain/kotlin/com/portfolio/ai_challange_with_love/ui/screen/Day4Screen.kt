@@ -3,9 +3,9 @@ package com.portfolio.ai_challange_with_love.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,64 +27,52 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.portfolio.ai_challange_with_love.data.AnalyzeResponse
-import com.portfolio.ai_challange_with_love.ui.formatAiResponse
 import com.portfolio.ai_challange_with_love.data.Recommendation
-import com.portfolio.ai_challange_with_love.data.TemperatureApi
-import com.portfolio.ai_challange_with_love.data.TemperatureResponse
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.portfolio.ai_challange_with_love.ui.formatAiResponse
+import org.koin.compose.viewmodel.koinViewModel
 
-private val TEMPERATURES = listOf(0.0, 0.7, 1.2)
-private const val EXPERIMENT_PROMPT = "How many meters of cable are needed to run internet to each apartment in a 16-story building?"
+private val CARD_COLORS = listOf(
+    Color(0xFFE3F2FD),
+    Color(0xFFFFF3E0),
+    Color(0xFFE8F5E9),
+)
 
-private enum class Phase {
-    IDLE, STREAMING, ANALYZING, COMPLETE, ERROR
+@Composable
+fun Day4Screen(onBack: () -> Unit) {
+    val viewModel: Day4ViewModel = koinViewModel()
+    val state by viewModel.state.collectAsState()
+
+    Day4View(
+        state = state,
+        onBack = {
+            viewModel.cancelExperiment()
+            onBack()
+        },
+        onRunExperiment = viewModel::runExperiment,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Day4Screen(onBack: () -> Unit) {
-    val api = remember { TemperatureApi() }
-    val scope = rememberCoroutineScope()
-
-    var phase by remember { mutableStateOf(Phase.IDLE) }
-    var errorMessage by remember { mutableStateOf("") }
-    var activeTemperatureIndex by remember { mutableStateOf(-1) }
-    val streamingTexts = remember { mutableStateListOf("", "", "") }
-    var analysis by remember { mutableStateOf<AnalyzeResponse?>(null) }
-    var experimentJob by remember { mutableStateOf<Job?>(null) }
-
-    fun resetState() {
-        phase = Phase.IDLE
-        errorMessage = ""
-        activeTemperatureIndex = -1
-        streamingTexts[0] = ""
-        streamingTexts[1] = ""
-        streamingTexts[2] = ""
-        analysis = null
-    }
-
+private fun Day4View(
+    state: Day4ViewState,
+    onBack: () -> Unit,
+    onRunExperiment: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Day 4: Temperature") },
                 navigationIcon = {
-                    TextButton(onClick = {
-                        experimentJob?.cancel()
-                        onBack()
-                    }) {
+                    TextButton(onClick = onBack) {
                         Text("\u2190 Back")
                     }
                 },
@@ -103,153 +91,142 @@ fun Day4Screen(onBack: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // Prompt card
-            ElevatedCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Prompt:", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
-                    Text(EXPERIMENT_PROMPT, style = MaterialTheme.typography.bodyLarge)
-                }
-            }
+            PromptCard(DAY4_PROMPT)
 
-            // Run button
-            Button(
-                onClick = {
-                    resetState()
-                    phase = Phase.STREAMING
-                    experimentJob = scope.launch {
-                        try {
-                            // Stream each temperature sequentially
-                            for ((index, temp) in TEMPERATURES.withIndex()) {
-                                activeTemperatureIndex = index
-                                api.streamTemperatureResult(EXPERIMENT_PROMPT, temp) { token ->
-                                    streamingTexts[index] = streamingTexts[index] + token
-                                }
-                            }
-                            activeTemperatureIndex = -1
+            RunExperimentButton(
+                phase = state.phase,
+                onClick = onRunExperiment,
+            )
 
-                            // Analyze
-                            phase = Phase.ANALYZING
-                            val results = TEMPERATURES.mapIndexed { i, temp ->
-                                TemperatureResponse(temp, streamingTexts[i])
-                            }
-                            analysis = api.analyzeResults(results)
-                            phase = Phase.COMPLETE
-                        } catch (e: Exception) {
-                            if (e is kotlinx.coroutines.CancellationException) throw e
-                            errorMessage = e.message ?: "Unknown error"
-                            phase = Phase.ERROR
-                        }
-                    }
-                },
-                enabled = phase == Phase.IDLE || phase == Phase.COMPLETE || phase == Phase.ERROR,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    when (phase) {
-                        Phase.STREAMING -> "Generating responses..."
-                        Phase.ANALYZING -> "Analyzing results..."
-                        else -> "Run Experiment"
-                    }
-                )
-            }
+            Day4Content(state)
+        }
+    }
+}
 
-            // Content
+@Composable
+private fun PromptCard(prompt: String) {
+    ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                "Prompt:",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Text(prompt, style = MaterialTheme.typography.bodyLarge)
+        }
+    }
+}
+
+@Composable
+private fun RunExperimentButton(phase: ExperimentPhase, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        enabled = phase == ExperimentPhase.IDLE || phase == ExperimentPhase.COMPLETE || phase == ExperimentPhase.ERROR,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
             when (phase) {
-                Phase.IDLE -> {
-                    Text(
-                        "Tap 'Run Experiment' to send the prompt with temperatures 0, 0.7, and 1.2.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ExperimentPhase.STREAMING -> "Generating responses..."
+                ExperimentPhase.ANALYZING -> "Analyzing results..."
+                else -> "Run Experiment"
+            }
+        )
+    }
+}
+
+@Composable
+private fun Day4Content(state: Day4ViewState) {
+    when (state.phase) {
+        ExperimentPhase.IDLE -> {
+            Text(
+                "Tap 'Run Experiment' to send the prompt with temperatures 0, 0.7, and 1.2.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        ExperimentPhase.STREAMING, ExperimentPhase.ANALYZING, ExperimentPhase.COMPLETE -> {
+            TemperatureResultsRow(state)
+
+            if (state.phase == ExperimentPhase.ANALYZING) {
+                HorizontalDivider()
+                AnalyzingIndicator()
+            }
+
+            if (state.phase == ExperimentPhase.COMPLETE && state.analysis != null) {
+                HorizontalDivider()
+                ComparisonSection(state.analysis.comparison)
+                RecommendationsSection(state.analysis.recommendations)
+            }
+        }
+        ExperimentPhase.ERROR -> {
+            Day4ErrorContent(state)
+        }
+    }
+}
+
+@Composable
+private fun TemperatureResultsRow(state: Day4ViewState) {
+    Row(
+        modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        TEMPERATURES.forEachIndexed { index, temp ->
+            StreamingResultCard(
+                modifier = Modifier.weight(1f).fillMaxHeight(),
+                temperature = temp,
+                text = state.streamingTexts[index],
+                isStreaming = state.phase == ExperimentPhase.STREAMING && index == state.activeTemperatureIndex,
+                isWaiting = state.phase == ExperimentPhase.STREAMING && index > state.activeTemperatureIndex,
+                containerColor = CARD_COLORS[index],
+            )
+        }
+    }
+}
+
+@Composable
+private fun AnalyzingIndicator() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        CircularProgressIndicator(modifier = Modifier.padding(end = 12.dp).size(20.dp))
+        Text("Analyzing responses...", style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+private fun Day4ErrorContent(state: Day4ViewState) {
+    val hasPartial = state.streamingTexts.any { it.isNotEmpty() }
+    if (hasPartial) {
+        Row(
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            TEMPERATURES.forEachIndexed { index, temp ->
+                val text = state.streamingTexts[index]
+                if (text.isNotEmpty()) {
+                    StreamingResultCard(
+                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                        temperature = temp,
+                        text = text,
+                        isStreaming = false,
+                        isWaiting = false,
+                        containerColor = CARD_COLORS[index],
                     )
-                }
-                Phase.STREAMING, Phase.ANALYZING, Phase.COMPLETE -> {
-                    // Show all 3 cards in a horizontal row
-                    Row(
-                        modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        val cardColors = listOf(
-                            Color(0xFFE3F2FD), // light blue
-                            Color(0xFFFFF3E0), // light orange
-                            Color(0xFFE8F5E9), // light green
-                        )
-                        TEMPERATURES.forEachIndexed { index, temp ->
-                            val text = streamingTexts[index]
-                            val isActive = phase == Phase.STREAMING && index == activeTemperatureIndex
-                            val isWaiting = phase == Phase.STREAMING && index > activeTemperatureIndex
-
-                            StreamingResultCard(
-                                modifier = Modifier.weight(1f).fillMaxHeight(),
-                                temperature = temp,
-                                text = text,
-                                isStreaming = isActive,
-                                isWaiting = isWaiting,
-                                containerColor = cardColors[index],
-                            )
-                        }
-                    }
-
-                    if (phase == Phase.ANALYZING) {
-                        HorizontalDivider()
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            CircularProgressIndicator(modifier = Modifier.padding(end = 12.dp).size(20.dp))
-                            Text("Analyzing responses...", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
-
-                    if (phase == Phase.COMPLETE && analysis != null) {
-                        HorizontalDivider()
-                        ComparisonSection(analysis!!.comparison)
-                        RecommendationsSection(analysis!!.recommendations)
-                    }
-                }
-                Phase.ERROR -> {
-                    // Show any partial results in a row
-                    val hasPartial = streamingTexts.any { it.isNotEmpty() }
-                    if (hasPartial) {
-                        val errorCardColors = listOf(
-                            Color(0xFFE3F2FD),
-                            Color(0xFFFFF3E0),
-                            Color(0xFFE8F5E9),
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        ) {
-                            TEMPERATURES.forEachIndexed { index, temp ->
-                                val text = streamingTexts[index]
-                                if (text.isNotEmpty()) {
-                                    StreamingResultCard(
-                                        modifier = Modifier.weight(1f).fillMaxHeight(),
-                                        temperature = temp,
-                                        text = text,
-                                        isStreaming = false,
-                                        isWaiting = false,
-                                        containerColor = errorCardColors[index],
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    ElevatedCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.errorContainer,
-                        ),
-                    ) {
-                        Text(
-                            text = "Error: $errorMessage",
-                            modifier = Modifier.padding(16.dp),
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                        )
-                    }
                 }
             }
         }
+    }
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+    ) {
+        Text(
+            text = "Error: ${state.errorMessage}",
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colorScheme.onErrorContainer,
+        )
     }
 }
 
@@ -300,7 +277,11 @@ private fun StreamingResultCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black,
                 )
-                else -> Text(formatAiResponse(text), style = MaterialTheme.typography.bodyMedium, color = Color.Black)
+                else -> Text(
+                    formatAiResponse(text),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black,
+                )
             }
         }
     }

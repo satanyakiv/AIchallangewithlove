@@ -1,5 +1,6 @@
 [versions]
 agp = "8.11.2"
+koin = "4.0.4"
 android-compileSdk = "36"
 android-minSdk = "31"
 android-targetSdk = "36"
@@ -15,6 +16,7 @@ junit = "4.13.2"
 kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
 ktor = "3.3.3"
+koog = "0.6.3"
 kotlinx-serialization = "1.8.1"
 logback = "1.5.24"
 material3 = "1.10.0-alpha05"
@@ -54,6 +56,11 @@ ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", 
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+koog-agents = { module = "ai.koog:koog-agents", version.ref = "koog" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

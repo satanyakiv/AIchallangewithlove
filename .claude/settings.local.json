@@ -16,7 +16,12 @@
       "Bash(python3:*)",
       "Bash(echo Port 8080 cleared:*)",
       "Bash(claude update:)",
-      "Bash(claude:*)"
+      "Bash(claude:*)",
+      "WebFetch(domain:docs.koog.ai)",
+      "WebFetch(domain:mvnrepository.com)",
+      "WebFetch(domain:api.koog.ai)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:central.sonatype.com)"
     ]
   },
   "enabledPlugins": {

@@ -1,5 +1,7 @@
 package com.portfolio.ai_challange_with_love
 
+import com.portfolio.ai_challange_with_love.agent.Day6Agent
+import com.portfolio.ai_challange_with_love.routes.agentRoutes
 import com.portfolio.ai_challange_with_love.routes.modelRoutes
 import com.portfolio.ai_challange_with_love.routes.temperatureRoutes
 import io.ktor.client.*
@@ -30,6 +32,8 @@ fun Application.module() {
         }
     }
 
+    val day6Agent = Day6Agent(apiKey)
+
     install(ServerContentNegotiation) {
         json(Json { ignoreUnknownKeys = true })
     }
@@ -45,5 +49,6 @@ fun Application.module() {
         }
         temperatureRoutes(httpClient, apiKey)
         modelRoutes(httpClient, apiKey)
+        agentRoutes(day6Agent)
     }
 }
