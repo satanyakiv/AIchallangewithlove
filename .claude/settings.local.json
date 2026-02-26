@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(java:*)",
+      "Bash(tail:*)",
+      "Bash(echo:*)",
+      "WebSearch",
+      "WebFetch(domain:api-docs.deepseek.com)",
+      "Bash(sleep 1:*)",
+      "Skill(statusline)",
+      "Bash(head:*)",
+      "Bash(curl:*)",
+      "Bash(lsof -ti:8080 | xargs kill -9 2>/dev/null; sleep 1 && ./gradlew :server:run 2>&1)",
+      "Bash(gh repo:*)",
+      "Bash(python3:*)",
+      "Bash(echo Port 8080 cleared:*)",
+      "Bash(claude update:)",
+      "Bash(claude:*)"
+    ]
+  },
+  "enabledPlugins": {
+    "kotlin-agents@kotlin-agents-marketplace": true
+  }
+}
