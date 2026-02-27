@@ -77,3 +77,6 @@ Three Gradle modules defined in `settings.gradle.kts`:
 - All UI text (labels, titles, descriptions) must be in **English**
 - Challenge task content (from `Challange-tasks/`) stays in its original language (Ukrainian)
 - Code comments and documentation in English
+
+## Plans
+After creating a plan, always copy it to .claude/plans/ in the project root with date prefix (e.g. 2026-02-27-day8-experiment.md). Never delete old plans.
