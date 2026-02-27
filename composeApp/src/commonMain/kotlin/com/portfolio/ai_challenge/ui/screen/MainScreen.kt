@@ -46,6 +46,13 @@ private val challengeDays = listOf(
         description = "Persistent context — Agent Smith remembers all conversations across restarts via SQLite + Room",
         emoji = "\uD83E\uDDE0",
     ),
+    ChallengeDay(
+        id = 8,
+        dayNumber = 8,
+        title = "Context Stress Test",
+        description = "DeepSeek V3 at 126K tokens — 25 studies, 10 repetition rounds, 7 failure modes. Zero failures.",
+        emoji = "\uD83E\uDDEA",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
