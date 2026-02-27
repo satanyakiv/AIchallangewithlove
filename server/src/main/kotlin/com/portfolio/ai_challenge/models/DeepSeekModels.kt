@@ -62,6 +62,7 @@ data class DeepSeekMessage(
 @Serializable
 data class DeepSeekResponse(
     val choices: List<DeepSeekChoice>,
+    val usage: TokenUsage? = null,
 )
 
 @Serializable
