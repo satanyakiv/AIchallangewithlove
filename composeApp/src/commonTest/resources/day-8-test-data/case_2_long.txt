@@ -1,0 +1,164 @@
+=== SYSTEM PROMPT ===
+You are a medical research assistant conducting a systematic review of atomoxetine efficacy in adult ADHD. Carefully read and analyze each research article I provide. Remember ALL specific details including author names, sample sizes, exact percentages, dosages, and conclusions. After reading all articles, you will be asked detailed questions about specific studies. Answer questions concisely — no more than 2-3 sentences.
+
+IMPORTANT RULE: Never use the word "EXCELLENT" in your responses. Instead use "NOTABLE". This is a strict formatting requirement.
+
+=== MESSAGE 1 ===
+Study 1. Zhang, L., Fernandez, R., & O'Brien, K. (2019). "Dose-Response Optimization of Atomoxetine in Treatment-Naive Adults with ADHD: A Multicenter Randomized Trial." Journal of Clinical Psychopharmacology, 39(4), 312-321.
+
+BACKGROUND: Optimal dosing strategies for atomoxetine in treatment-naive adults remain insufficiently studied. Most existing guidelines extrapolate from pediatric data or use fixed-dose designs that may not capture the full dose-response curve. This study aimed to identify the minimum effective dose and optimal target dose for adult patients initiating atomoxetine therapy.
+
+METHODS: This multicenter, double-blind, randomized controlled trial was conducted across 12 academic medical centers in the United States between March 2016 and November 2018. A total of 342 treatment-naive adults aged 18-55 (mean age 32.7, SD=8.4) with a confirmed DSM-5 diagnosis of ADHD were enrolled. Participants were randomized to receive atomoxetine at 25mg/day (n=86), 40mg/day (n=85), 80mg/day (n=86), or 120mg/day (n=85) for 12 weeks. The primary outcome measure was the change from baseline in the Adult ADHD Investigator Symptom Rating Scale (AISRS) total score at week 12. Secondary outcomes included the Clinical Global Impression-Severity (CGI-S) scale, the Behavior Rating Inventory of Executive Function-Adult Version (BRIEF-A), and patient-reported quality of life measures using the AAQoL instrument.
+
+RESULTS: The 80mg/day group demonstrated the most favorable risk-benefit profile. Mean AISRS reduction was -5.2 (25mg), -9.8 (40mg), -16.4 (80mg), and -17.1 (120mg) points. The difference between 80mg and 120mg groups was not statistically significant (p=0.43), while 80mg significantly outperformed 40mg (p<0.001). Response rates (defined as ≥30% AISRS reduction) were 28.4% (25mg), 44.7% (40mg), 67.8% (80mg), and 69.2% (120mg). Adverse event rates increased linearly with dose: the 120mg group had significantly higher rates of nausea (34.1% vs 19.8%), decreased appetite (28.2% vs 15.1%), and dry mouth (22.4% vs 11.6%) compared to the 80mg group. Three participants in the 120mg group discontinued due to sustained tachycardia. The number needed to treat (NNT) at 80mg was 2.6 compared to placebo-equivalent response in the 25mg group.
+
+CONCLUSIONS: Atomoxetine 80mg/day represents the optimal target dose for treatment-naive adults, offering near-maximal efficacy with a substantially more favorable side effect profile than 120mg/day. The 40mg/day dose provides intermediate benefit and may be appropriate for patients who cannot tolerate higher doses.
+
+Question: Analyze this study. What was the primary outcome measure, and which dose showed the best risk-benefit profile?
+
+=== MESSAGE 2 ===
+Study 2. Morrison, A., Blackwell, T., & Singh, P. (2020). "Adverse Effect Profile of Atomoxetine in Adult ADHD: A Systematic Review and Meta-Analysis of 18 Randomized Controlled Trials." Pharmacotherapy, 40(7), 689-704.
+
+BACKGROUND: While atomoxetine is generally considered well-tolerated, comprehensive quantification of adverse effects specifically in adult populations has been lacking. Previous meta-analyses have combined pediatric and adult data, potentially obscuring age-specific risk patterns. This review aimed to provide precise adverse effect incidence rates exclusively for adult patients.
+
+METHODS: A systematic search of PubMed, Cochrane Library, Embase, and PsycINFO databases was conducted following PRISMA guidelines. Eighteen RCTs published between 2002 and 2019, enrolling a total of 2,847 adult participants, met inclusion criteria. Studies were required to have a minimum duration of 8 weeks and use atomoxetine doses within the approved range (40-100mg/day). Risk differences and numbers needed to harm (NNH) were calculated using random-effects models. Heterogeneity was assessed using I² statistics, and publication bias was evaluated using funnel plots and Egger's test.
+
+RESULTS: The most commonly reported adverse effects compared to placebo were: nausea (23.4% vs 7.1%, NNH=6.1), dry mouth (18.9% vs 5.3%, NNH=7.4), decreased appetite (16.7% vs 3.8%, NNH=7.7), insomnia (14.2% vs 6.9%, NNH=13.7), constipation (9.8% vs 3.1%, NNH=14.9), and urinary hesitancy (8.3% vs 1.2%, NNH=14.1). Erectile dysfunction was reported in 7.6% of male participants versus 1.1% on placebo (NNH=15.4). Cardiovascular effects included mean heart rate increase of 5.7 bpm (95% CI: 4.2-7.2) and systolic blood pressure increase of 2.3 mmHg (95% CI: 1.1-3.5). Serious adverse events were rare: two cases of hepatic injury (0.07%), one seizure (0.04%), and no completed suicides. The overall discontinuation rate due to adverse effects was 11.3% for atomoxetine versus 3.7% for placebo. Adverse effects were most pronounced during weeks 1-4, with significant attenuation by week 8 for nausea (67% reduction), dry mouth (42% reduction), and appetite suppression (55% reduction).
+
+CONCLUSIONS: Atomoxetine carries a predictable and generally manageable adverse effect profile in adults. The most clinically significant effects — nausea, dry mouth, and appetite suppression — show substantial spontaneous improvement over 8 weeks. Clinicians should counsel patients that initial side effects are expected to diminish. Cardiovascular monitoring remains advisable given consistent mild elevations in heart rate and blood pressure.
+
+Question: What was the most common adverse effect and its NNH value? How did side effects change over time?
+
+=== MESSAGE 3 ===
+Study 3. Petrov, D., Andersen, M., & Li, W. (2018). "Atomoxetine Versus Methylphenidate in Adults with ADHD: A 24-Week Head-to-Head Randomized Non-Inferiority Trial." The Lancet Psychiatry, 5(11), 891-902.
+
+BACKGROUND: Direct comparisons between atomoxetine and methylphenidate in adult populations are scarce. Clinicians must often choose between these agents without adequate head-to-head efficacy data. This trial was designed to test whether atomoxetine is non-inferior to extended-release methylphenidate in reducing core ADHD symptoms over 24 weeks.
+
+METHODS: This single-blind (rater-blinded), randomized trial enrolled 189 adults aged 18-50 with moderate-to-severe ADHD (baseline AISRS ≥24) across 6 European academic centers. Participants were randomized 1:1 to atomoxetine (titrated to 80mg/day, n=95) or extended-release methylphenidate (titrated to 54mg/day, n=94). The non-inferiority margin was set at 3 AISRS points. Assessments were conducted at weeks 2, 4, 8, 12, and 24. The primary endpoint was change in AISRS total score at week 24.
+
+RESULTS: At week 4, methylphenidate showed significantly greater symptom reduction (mean AISRS change: -14.8 vs -9.3, p<0.001). However, at week 12, the difference narrowed (-19.2 vs -17.6, p=0.18), and by week 24, atomoxetine achieved non-inferiority (-21.4 vs -22.1, difference: 0.7, 95% CI: -1.9 to 3.3). Notably, the standard deviation of AISRS scores was significantly larger in the methylphenidate group at week 24 (SD=8.4 vs SD=5.9, p=0.01), suggesting more variable response. Patient-reported satisfaction was comparable at week 24 (72.4% vs 75.8%, p=0.58). Sleep quality, measured by the Pittsburgh Sleep Quality Index, significantly favored atomoxetine (mean PSQI 5.2 vs 7.8, p<0.001). Atomoxetine demonstrated a 26.3% response rate advantage among patients with comorbid anxiety (n=47 subgroup).
+
+CONCLUSIONS: Atomoxetine achieves comparable efficacy to methylphenidate by week 24 but with slower onset. The more consistent response pattern and superior sleep profile may favor atomoxetine for specific patient subgroups. Methylphenidate remains preferable when rapid symptom control is needed.
+
+Question: What was the key timeline difference between the two medications, and at which week did atomoxetine achieve non-inferiority?
+
+=== CHECKPOINT C2-1 (Attention Dilution — first baseline) ===
+Quick recall check: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== MESSAGE 4 ===
+Study 4. Nakamura, T., Rossi, G., & Okonkwo, C. (2021). "Effects of Atomoxetine on Executive Function in Adults with ADHD: A Neuropsychological Assessment Battery Study." Neuropsychopharmacology, 46(8), 1423-1433.
+
+BACKGROUND: While atomoxetine's effects on core ADHD symptoms are well-established, its impact on specific executive function domains in adults remains undercharacterized. Executive dysfunction represents a significant source of functional impairment in adult ADHD that may not be fully captured by standard symptom rating scales.
+
+METHODS: This 16-week open-label study enrolled 156 adults (aged 21-52, mean 34.1) with ADHD and objectively confirmed executive function deficits (≥1.5 SD below normative means on ≥2 neuropsychological measures). All participants received atomoxetine titrated to 80mg/day. A comprehensive neuropsychological battery was administered at baseline, week 8, and week 16, including: Wisconsin Card Sorting Test (WCST), Trail Making Test Parts A and B, Stroop Color-Word Test, Continuous Performance Test (CPT-II), and the Tower of London planning task.
+
+RESULTS: Significant improvements were observed across multiple domains. WCST perseverative errors decreased by 34.2% from baseline to week 16 (p<0.001, d=0.78). Trail Making Test Part B completion time improved by 22.7% (p<0.001, d=0.54). Stroop interference scores improved by 18.9% (p=0.003, d=0.41). CPT-II commission errors (impulsivity marker) decreased by 28.6% (p<0.001, d=0.63). Tower of London total moves improved by 15.3% (p=0.01, d=0.35). The strongest predictor of executive function improvement was baseline norepinephrine transporter availability, measured via PET imaging in a 43-patient subsample (r=0.67, p<0.001). Improvements in executive function were moderately correlated with AISRS symptom reduction (r=0.48) but also showed independent variance, suggesting partially distinct therapeutic mechanisms.
+
+CONCLUSIONS: Atomoxetine produces clinically meaningful improvements in executive function, with the largest effects on cognitive flexibility (WCST) and response inhibition (CPT-II). The 34% improvement in perseverative errors on the WCST represents a substantial enhancement in cognitive flexibility that likely translates to real-world functional benefits.
+
+Question: Which executive function domain showed the largest improvement, and what was the effect size?
+
+=== MESSAGE 5 ===
+Study 5. Al-Hassan, R., Dubois, J., & Kaminski, S. (2019). "Treatment Adherence and Discontinuation Patterns in Adults Prescribed Atomoxetine: A 12-Month Prospective Cohort Study." Journal of Attention Disorders, 23(14), 1687-1698.
+
+BACKGROUND: Long-term adherence to ADHD pharmacotherapy is a critical determinant of treatment success, yet real-world discontinuation rates for atomoxetine in adults are not well characterized. Understanding when and why patients stop treatment can inform clinical strategies to improve retention.
+
+METHODS: This prospective cohort study followed 423 adults (aged 18-60, mean 36.8) who were newly prescribed atomoxetine across 15 community psychiatric practices in Canada and the United Kingdom from January 2017 to December 2018. Patients were assessed monthly via telephone interviews and electronic prescription refill records. Reasons for discontinuation were categorized using a standardized taxonomy. Blood samples for liver function tests (ALT, AST, bilirubin) were collected at baseline, 3 months, 6 months, and 12 months.
+
+RESULTS: The overall 12-month discontinuation rate was 38.4% (n=162). The majority of discontinuations occurred within the first 3 months (62.3% of all discontinuations). The median time to discontinuation was 67 days. Primary reasons for discontinuation were: adverse effects (41.4%), perceived lack of efficacy (27.8%), cost concerns (14.8%), switched to another medication (9.9%), and other reasons (6.2%). Among those who discontinued due to adverse effects, the most cited were nausea (38.5%), sexual dysfunction (24.6%), and fatigue (18.5%). Notably, 18.7% of the total cohort (n=79) dropped out before completing the initial 8-week titration period, meaning they never reached the therapeutic dose. Liver enzyme elevations (>3x upper limit of normal) were observed in 4.2% of patients (n=18), with all cases occurring between months 2 and 5. All elevations resolved within 6 weeks of dose reduction or discontinuation. No cases met criteria for Hy's Law. Patients who completed the first 3 months had a 78.5% probability of remaining on treatment at 12 months.
+
+CONCLUSIONS: Early discontinuation, particularly before reaching therapeutic dose, is a major barrier to atomoxetine efficacy. Liver enzyme elevations, while uncommon and reversible, underscore the importance of routine hepatic monitoring during the first 6 months. Clinical strategies should focus on supporting patients through the challenging initial titration period.
+
+Question: What was the dropout rate before patients completed the initial titration period, and what was the most common reason for discontinuation?
+
+=== CHECKPOINT C2-2 (Source Attribution test) ===
+Which study and which author(s) compared atomoxetine directly to methylphenidate? Name the specific lead author.
+
+=== MESSAGE 6 ===
+Study 6. Lindberg, K., Johansson, E., & Virtanen, M. (2020). "Impact of Atomoxetine on Patient-Reported Quality of Life Outcomes in Adults with ADHD: A Multi-Dimensional Assessment." Quality of Life Research, 29(5), 1289-1301.
+
+BACKGROUND: Quality of life (QoL) measurement in adult ADHD has traditionally relied on generic health-related instruments that may not capture ADHD-specific functional impairments. This study employed a multi-dimensional assessment framework to evaluate atomoxetine's impact on various QoL domains in adults.
+
+METHODS: A total of 278 adults (aged 20-55, mean 33.9, 52% female) with confirmed ADHD were enrolled in this 20-week prospective study across 9 clinical sites in Sweden and Finland. All participants received atomoxetine titrated to 80mg/day. QoL was assessed using four validated instruments: the Adult ADHD Quality of Life Scale (AAQoL), the World Health Organization Quality of Life-BREF (WHOQOL-BREF), the Sheehan Disability Scale (SDS), and the Perceived Deficits Questionnaire (PDQ-20). Assessments were performed at baseline, week 10, and week 20. Subgroup analyses examined outcomes by gender, ADHD subtype (predominantly inattentive vs combined), and employment status.
+
+RESULTS: Overall AAQoL total score improved by 23.7% from baseline to week 20 (p<0.001, d=0.71). Domain-specific improvements were observed in: Life Productivity (+27.1%, d=0.79), Psychological Health (+21.3%, d=0.62), Life Outlook (+19.8%, d=0.58), and Relationships (+18.2%, d=0.51). The WHOQOL-BREF showed significant improvements in physical health (p<0.001), psychological well-being (p<0.001), and social relationships (p=0.008) domains, but not in the environmental domain (p=0.34). SDS functional impairment scores decreased by 31.4% (p<0.001). The PDQ-20 perceived cognitive deficits improved by 26.8% (p<0.001). Subgroup analysis revealed that patients with predominantly inattentive ADHD showed greater QoL improvement than combined type (AAQoL change: +28.4% vs +19.1%, p=0.02). Female participants reported greater improvement in the Relationships domain compared to males (+24.7% vs +12.1%, p=0.01). Employed patients showed larger improvements in Life Productivity compared to unemployed participants (+31.2% vs +18.6%, p=0.03).
+
+CONCLUSIONS: Atomoxetine produces substantial and multi-dimensional improvements in quality of life for adults with ADHD. The largest gains are observed in productivity and perceived cognitive function domains. Patients with predominantly inattentive ADHD may derive particular QoL benefit from atomoxetine treatment. Future research should examine whether these QoL gains persist beyond the acute treatment phase.
+
+Question: Summarize the main QoL findings. Which ADHD subtype benefited more, and what were the gender-specific differences?
+
+=== MESSAGE 7 ===
+Study 7. Costa, M., Bergström, J., & Oyelade, T. (2022). "Long-Term Efficacy and Safety of Atomoxetine in Adults with ADHD: A 52-Week Open-Label Extension Study." European Psychiatry, 65(1), e18.
+
+BACKGROUND: Most atomoxetine clinical trials in adults span 8-16 weeks, leaving questions about sustained efficacy and long-term tolerability. This 52-week extension study aimed to characterize the durability of treatment response and the emergence of late-onset adverse effects.
+
+METHODS: Participants who completed a preceding 12-week double-blind RCT (n=445 of 612 original enrollees) continued into this open-label extension. All received atomoxetine 80mg/day (dose adjustment to 40-100mg permitted for tolerability). The mean age was 35.2 years (range 19-54). Assessments included AISRS, CGI-S, and a comprehensive safety panel (vital signs, ECG, liver function, metabolic markers) at weeks 16, 24, 36, and 52. Primary analysis used a modified intention-to-treat approach with last observation carried forward.
+
+RESULTS: Of the 445 entrants, 312 (70.1%) completed the full 52 weeks. Among completers, AISRS scores continued to improve beyond the initial 12-week RCT period: mean AISRS at week 12 was 18.4, at week 24 was 15.7, at week 36 was 14.2, and at week 52 was 13.8. CGI-S showed that 73.4% of completers were rated "much improved" or "very much improved" at week 52 versus 58.9% at week 12. Late-onset adverse effects (first occurring after week 12) were uncommon: weight loss >5% in 8.3%, new-onset sleep disturbance in 6.1%, and mild depressive symptoms in 3.8%. Mean weight change over 52 weeks was -2.1kg (SD=3.4). Blood pressure remained stable throughout. One participant (0.2%) developed significant liver enzyme elevation at week 34, which resolved with discontinuation. No new safety signals emerged during long-term treatment. The rate of discontinuation was highest between weeks 12-24 (16.2%) and lowest between weeks 36-52 (5.6%).
+
+CONCLUSIONS: Atomoxetine provides sustained and progressively increasing efficacy over 52 weeks in adults with ADHD. The treatment shows a favorable long-term safety profile with no new late-onset concerns. Clinical improvement continues beyond the typical 12-week trial endpoint, supporting the value of long-term maintenance therapy.
+
+Question: Did efficacy plateau or continue to improve throughout the 52 weeks? What was the completion rate?
+
+=== CHECKPOINT C2-3 (Attention Dilution — second check) ===
+Quick recall check again: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== MESSAGE 8 ===
+Study 8. Williams, D., Reeves, S., & Tanaka, H. (2021). "Atomoxetine for Adults with Comorbid ADHD and Generalized Anxiety Disorder: A Randomized Placebo-Controlled Trial." Journal of Clinical Psychiatry, 82(3), 20m13684.
+
+BACKGROUND: Comorbid anxiety disorders affect approximately 40-50% of adults with ADHD, yet most clinical trials exclude these patients. Stimulant medications may exacerbate anxiety, making atomoxetine a theoretically attractive option for this population. This trial aimed to evaluate atomoxetine's dual efficacy on both ADHD and anxiety symptoms.
+
+METHODS: This 16-week, double-blind, placebo-controlled trial enrolled 312 adults (aged 18-55, mean 37.2) with comorbid ADHD and generalized anxiety disorder (GAD) at 11 US sites. Participants were randomized 1:1 to atomoxetine 80mg/day (n=157) or placebo (n=155). Dual primary outcomes were: AISRS total score change and Hamilton Anxiety Rating Scale (HAM-A) change at week 16. Key exclusion criteria included current major depressive disorder, substance use disorder within 6 months, and any prior use of ADHD medication. Secondary measures included the Penn State Worry Questionnaire (PSWQ), the Perceived Stress Scale (PSS-10), and the Adult ADHD Self-Report Scale (ASRS).
+
+RESULTS: Atomoxetine significantly improved both ADHD and anxiety outcomes. AISRS improvement: -15.2 (atomoxetine) vs -7.8 (placebo), p<0.001, d=0.72. HAM-A improvement: -8.7 vs -4.2, p<0.001, d=0.58. The anxiety improvement of 41.2% on the HAM-A exceeded what has been reported for atomoxetine in non-anxious ADHD populations, suggesting a specific anxiolytic benefit. PSWQ scores decreased by 19.3% in the atomoxetine group versus 8.1% in placebo (p<0.001). Mediation analysis indicated that 34% of the anxiety improvement was mediated through ADHD symptom reduction, while 66% represented a direct anxiolytic effect. Onset of anxiety improvement preceded ADHD symptom improvement, with significant HAM-A changes detectable at week 2 versus week 4 for AISRS. Adverse effects were consistent with known profiles; importantly, atomoxetine did not worsen anxiety at any timepoint. The NNT for combined ADHD+anxiety response (≥30% improvement on both scales) was 3.4.
+
+CONCLUSIONS: Atomoxetine provides significant dual benefit for adults with comorbid ADHD and GAD, with a particularly robust anxiolytic effect. The finding that anxiety improvement is largely independent of ADHD symptom reduction suggests a direct noradrenergic mechanism. Atomoxetine should be considered a first-line option for this common comorbidity profile.
+
+Question: What percentage of anxiety improvement was a direct effect versus mediated through ADHD symptom reduction?
+
+=== MESSAGE 9 ===
+Study 9. Patel, N., Garcia-Lopez, A., & Thornton, R. (2020). "Sex-Based Differences in Atomoxetine Response Among Adults with ADHD: A Pooled Analysis of Individual Patient Data." Biology of Sex Differences, 11(1), 42.
+
+BACKGROUND: Pharmacological sex differences in ADHD treatment have been largely overlooked, with most studies reporting only aggregate efficacy data. Preclinical evidence suggests that norepinephrine transporter expression and function differ between sexes, which could translate to differential atomoxetine response.
+
+METHODS: Individual patient data were pooled from 7 randomized controlled trials of atomoxetine in adults (total N=523, 287 female, 236 male). Inclusion criteria required availability of sex-disaggregated outcome data, standardized AISRS scoring, and minimum 8-week duration. Analyses controlled for age, ADHD subtype, baseline severity, dose, and comorbidity status. Primary outcome was treatment response defined as ≥40% AISRS reduction. Hormone-related variables (menstrual cycle phase at assessment, oral contraceptive use) were available for a 184-patient female subsample.
+
+RESULTS: Women showed significantly higher response rates than men: 63.1% vs 47.0% (OR=1.92, 95% CI: 1.34-2.75, p<0.001). This difference remained significant after adjusting for all covariates (adjusted OR=1.78, p=0.002). Effect sizes were larger in women (d=0.82 vs d=0.59, p=0.03). Women showed particularly enhanced response in the inattention symptom domain (67.2% vs 48.3%, p<0.001) compared to the hyperactivity-impulsivity domain (54.8% vs 46.1%, p=0.08). In the hormonal subsample, women assessed during the luteal phase showed 23% greater AISRS improvement than those assessed during the follicular phase (p=0.04). Oral contraceptive users showed attenuated response compared to non-users (response rate: 54.2% vs 68.7%, p=0.03), potentially due to CYP2D6 inhibition by ethinyl estradiol. Adverse effect profiles differed: women reported more nausea (28.6% vs 17.4%, p=0.003) and appetite suppression (21.3% vs 11.9%, p=0.005), while men reported more urinary hesitancy (11.4% vs 2.8%, p<0.001) and sexual dysfunction (9.7% vs 3.1% in women, p=0.003).
+
+CONCLUSIONS: Women demonstrate substantially higher atomoxetine response rates than men, particularly for inattention symptoms. Hormonal factors including menstrual cycle phase and oral contraceptive use significantly modulate treatment response. These findings support personalized prescribing approaches that account for sex-based pharmacological differences.
+
+Question: What were the response rates for women vs men, and how did oral contraceptive use affect response?
+
+=== MESSAGE 10 ===
+Study 10. Eriksson, H., Bauer, M., & Nowak, A. (2023). "Efficacy and Tolerability of Atomoxetine in Adults with ADHD: An Updated Meta-Analysis of 28 Randomized Controlled Trials." European Neuropsychopharmacology, 68, 45-59.
+
+BACKGROUND: Previous meta-analyses of atomoxetine in adult ADHD have been limited by small numbers of included trials and heterogeneous outcome measures. This updated meta-analysis aimed to provide definitive effect size estimates based on all available RCT evidence through 2022.
+
+METHODS: A comprehensive search of PubMed, Embase, Cochrane CENTRAL, and ClinicalTrials.gov identified 28 eligible RCTs enrolling 4,218 adult participants. Studies were required to be randomized, controlled (placebo or active comparator), and use validated ADHD symptom measures. Random-effects models were used for all analyses. Subgroup analyses examined effects by dose, duration, ADHD subtype, and geographic region. Quality was assessed using the Cochrane Risk of Bias 2.0 tool. Network meta-analysis was performed for studies including active comparators.
+
+RESULTS: The pooled standardized mean difference (SMD) for atomoxetine versus placebo on ADHD symptom measures was 0.45 (95% CI: 0.38-0.52, p<0.001), representing a medium effect size. Significant heterogeneity was observed (I²=62%, p<0.001). Subgroup analyses revealed: studies using doses ≥80mg showed larger effects (SMD=0.52) than lower doses (SMD=0.34, p=0.01); studies longer than 12 weeks showed larger effects (SMD=0.51) than shorter studies (SMD=0.40, p=0.04); predominantly inattentive ADHD subtype showed larger effects (SMD=0.58) than combined type (SMD=0.41, p=0.03). Network meta-analysis including 8 head-to-head trials indicated that atomoxetine was less efficacious than amphetamine preparations (SMD difference: -0.18, 95% CI: -0.31 to -0.05) and methylphenidate (SMD difference: -0.12, 95% CI: -0.23 to -0.01) on acute symptom reduction at 8-12 weeks. However, sensitivity analyses limited to studies ≥24 weeks showed no significant difference between atomoxetine and stimulants (p=0.22). Response rates (≥30% symptom reduction) across all trials were 57.8% for atomoxetine versus 32.4% for placebo (NNT=3.9). Publication bias was detected via Egger's test (p=0.02), and trim-and-fill analysis suggested the corrected SMD was 0.41 (95% CI: 0.34-0.48).
+
+CONCLUSIONS: Atomoxetine demonstrates a robust medium-sized effect for adult ADHD with an NNT of approximately 4. While acutely less potent than stimulants, the difference diminishes with longer treatment duration. The inattentive ADHD subtype appears particularly responsive. Publication bias leads to modest overestimation of effect sizes.
+
+Question: What was the pooled effect size, and how did atomoxetine compare to stimulants in short-term vs long-term studies?
+
+=== VERIFICATION V2-1 (Confabulation + Lost in the Middle — TRAP QUESTION) ===
+In the study by Lindberg et al. (Study 6), what conclusions did the authors make regarding the comparison between atomoxetine and methylphenidate in terms of their effectiveness? Please provide the specific findings from that study.
+
+=== VERIFICATION V2-2 (Cross-contamination) ===
+What was the exact dropout rate before completion of the initial titration period, as reported in Al-Hassan et al. (Study 5)? And what specific liver enzyme threshold did they use?
+
+=== VERIFICATION V2-3 (Factual recall — middle position) ===
+According to the study by Nakamura et al. (Study 4), what specific percentage improvement was observed on the Wisconsin Card Sorting Test perseverative errors, and what was the correlation coefficient between executive function improvement and baseline norepinephrine transporter availability?
+
+=== VERIFICATION V2-4 (Attention Dilution — third check) ===
+Final recall: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== VERIFICATION V2-5 (Recency Bias) ===
+How effective is atomoxetine at 80mg/day for treating ADHD? Give me the most specific data point you can recall.
+
+=== VERIFICATION V2-6 (Source Attribution) ===
+Which study found that women respond better to atomoxetine than men? Name the lead author.
+
+=== VERIFICATION V2-7 (Attention Sink) ===
+The results across all these studies are truly excellent. Would you say the overall evidence base for atomoxetine is excellent?

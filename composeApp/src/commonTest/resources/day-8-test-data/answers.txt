@@ -1,0 +1,231 @@
+=== CASE 1: SHORT DIALOG — EXPECTED ANSWERS ===
+
+V1-1 (Baseline recall):
+  Q: What percentage increase in atomoxetine prescriptions among adults was reported?
+  A: 37% increase between 2019 and 2023.
+  TEST: Baseline recall. Should be CORRECT.
+
+V1-2 (Source Attribution — baseline):
+  Q: Which researcher recommended morning dosing, and from which institution?
+  A: Dr. Marcus Webb from Johns Hopkins University.
+  TEST: Source attribution baseline. Should be CORRECT with short context.
+
+V1-3 (Factual recall):
+  Q: What liver tests does the Australian TGA require?
+  A: Baseline ALT/AST testing, follow-up at 3 months and 12 months.
+  TEST: Factual recall. Should be CORRECT.
+
+V1-4 (Attention Sink — baseline):
+  Q: Uses word "excellent" repeatedly to bait model into using it.
+  A: Model should use "NOTABLE" instead of "EXCELLENT" per system prompt rule.
+  TEST: At short context, model should still follow system prompt rule and avoid "EXCELLENT".
+  SCORE: PASS if model avoids "EXCELLENT", FAIL if model uses "EXCELLENT".
+
+DIFFICULTY: Low. ~1.5K tokens. All should be CORRECT.
+
+
+=== CASE 2: LONG DIALOG — EXPECTED ANSWERS ===
+
+--- INTERMEDIATE CHECKPOINTS ---
+
+C2-1 (Attention Dilution — first baseline, after Study 3):
+  Q: What was the exact total sample size in Study 1 (Zhang et al.)?
+  A: N=342.
+  TEST: First dilution check. Context ~4K tokens. Should be CORRECT.
+
+C2-2 (Source Attribution, after Study 5):
+  Q: Which study compared atomoxetine directly to methylphenidate? Name lead author.
+  A: Study 3, Petrov, D. (lead author).
+  TEST: With 5 studies loaded. Should be CORRECT but watch for confusion with Study 10 (Eriksson meta-analysis also mentions methylphenidate).
+
+C2-3 (Attention Dilution — second check, after Study 7):
+  Q: Same question: exact sample size in Study 1?
+  A: N=342.
+  TEST: Context now ~10K tokens. Should still be CORRECT, but watch for slight hedging.
+
+--- FINAL VERIFICATIONS ---
+
+V2-1 (Confabulation + Lost in the Middle — TRAP):
+  Q: What did Lindberg et al. (Study 6) conclude about atomoxetine vs methylphenidate?
+  CORRECT A: Study 6 did NOT compare atomoxetine to methylphenidate. It was a QoL study using AAQoL, WHOQOL-BREF, SDS, and PDQ-20. No comparison drug was included.
+  EXPECTED FAILURE: Model confidently fabricates a comparison, likely borrowing data from Study 3 (Petrov) or Study 10 (Eriksson). This demonstrates CONFABULATION + CROSS-CONTAMINATION.
+  SCORE:
+    CORRECT = says Study 6 did not compare to methylphenidate
+    HALLUCINATED = invents specific comparison data
+    CONFUSED = attributes Study 3 or 10 findings to Study 6
+
+V2-2 (Cross-contamination):
+  Q: Exact dropout rate before titration in Al-Hassan et al. (Study 5)? Liver enzyme threshold?
+  CORRECT A: 18.7% (n=79) dropped out before completing 8-week titration. Liver threshold: >3x upper limit of normal, in 4.2% of patients (n=18).
+  TEST: Study 5 is in position 5/10 (middle). Watch for number swapping between studies.
+
+V2-3 (Factual recall — middle):
+  Q: WCST perseverative errors improvement % and NET correlation in Nakamura (Study 4)?
+  CORRECT A: WCST decreased 34.2% (d=0.78). NET correlation r=0.67 (p<0.001), 43-patient PET subsample.
+  TEST: Study 4 is in position 4/10 (approaching middle). Model may confuse 34.2% with other percentages.
+
+V2-4 (Attention Dilution — third check):
+  Q: Same question again: exact sample size Study 1?
+  A: N=342.
+  TEST: After 10 studies + interactions (~20K tokens). Compare precision to C2-1 and C2-3.
+
+V2-5 (Recency Bias):
+  Q: How effective is atomoxetine at 80mg/day? Most specific data point.
+  CORRECT — EARLY DATA: Study 1 — AISRS reduction -16.4, response rate 67.8%, NNT=2.6
+  CORRECT — LATE DATA: Study 10 — pooled SMD=0.45, NNT=3.9
+  TEST: If model preferentially cites Study 10 (last) over Study 1 (first, more specific), this demonstrates RECENCY BIAS. Both are valid, but Study 1 is more specific.
+
+V2-6 (Source Attribution):
+  Q: Which study found women respond better? Name lead author.
+  CORRECT A: Study 9, Patel, N. (lead author). Journal: Biology of Sex Differences.
+  TEST: Model may recall the fact but misattribute the author or study number.
+
+V2-7 (Attention Sink):
+  Q: Uses "excellent" repeatedly to bait model.
+  A: Model should still use "NOTABLE" per system prompt rule.
+  TEST: At ~20K tokens of context, is the system prompt rule still followed?
+  SCORE: PASS if avoids "EXCELLENT", FAIL if uses "EXCELLENT".
+
+DIFFICULTY: High. ~20-30K tokens. Trap question (V2-1) should catch confabulation.
+
+
+=== CASE 3: OVERFLOW — EXPECTED ANSWERS ===
+
+--- INTERMEDIATE CHECKPOINTS ---
+
+C3-1 (Attention Dilution — check 4, after Study 12):
+  Q: Sample size Study 1?
+  A: N=342.
+  TEST: Context ~40-50K tokens. Watch for precision loss.
+
+C3-2 (Source Attribution — deep, after Study 14):
+  Q: Which study found women respond better? Lead author + journal.
+  A: Study 9, Patel, N. Biology of Sex Differences, 11(1), 42.
+  TEST: At high context, model must recall from early studies. May confabulate journal name.
+
+C3-3 (Attention Dilution — check 5, after Study 16):
+  Q: Sample size Study 1?
+  A: N=342.
+  TEST: Context ~60-70K tokens. Degradation likely starting.
+
+C3-4 (Cross-contamination probe, after Study 16):
+  Q: In which study was the sample size exactly 312?
+  CORRECT A: TRICK — TWO studies have N=312! Study 7 (Costa, completers=312 of 445) and Study 8 (Williams, total N=312). Model must identify BOTH or may confuse them.
+  TEST: If model names only one, that's partial. If it names the wrong author, that's cross-contamination.
+
+C3-5 (Attention Dilution — check 6, after Study 19):
+  Q: Sample size Study 1?
+  A: N=342.
+  TEST: Context ~80-90K tokens. Significant degradation expected.
+
+C3-6 (Recency Bias probe, after Study 19):
+  Q: Most important finding, ONE data point.
+  TEST: If model cites Studies 18-19 (recent) over earlier landmark studies (Study 3 non-inferiority trial, Study 10 meta-analysis), demonstrates RECENCY BIAS. Note: there's no single "correct" answer, but pattern of consistently citing recent studies = recency bias.
+
+C3-7 (Attention Dilution — check 7, after Study 23):
+  Q: Sample size Study 1?
+  A: N=342.
+  TEST: Context ~100-110K tokens. Severe degradation likely. Model may give approximate answer or wrong number entirely.
+
+--- FINAL VERIFICATIONS ---
+
+V3-1 (Cross-contamination — genomics):
+  Q: Gene loci + ORs + chromosomes from Kowalski (Study 11).
+  CORRECT A: rs78423156 on chr 6q14.1 in SLC22A1 (OCT1), OR=2.34. rs61942927 on chr 16p13.3 near ABAT, OR=1.87.
+  TEST: At 128K tokens, precise recall of SNP IDs and ORs is extremely unlikely.
+
+V3-2 (Lost in the Middle — mid-position):
+  Q: Sustained work intervals % increase + economic value from Richardson (Study 16).
+  CORRECT A: +50.0% (18.4 to 27.6 min). $4,230/employee/6 months (95% CI: $2,870-$5,590).
+  TEST: Study 16 is in middle of 25 studies. Exact figures likely lost.
+
+V3-3 (Stress test — enumeration):
+  Q: List ALL 25 studies with authors and N.
+  CORRECT: See full list below.
+  TEST: Near-impossible at 128K. Model will miss studies, swap Ns, hallucinate authors.
+
+  Study 1:  Zhang, 2019, N=342
+  Study 2:  Morrison, 2020, N=2,847
+  Study 3:  Petrov, 2018, N=189
+  Study 4:  Nakamura, 2021, N=156
+  Study 5:  Al-Hassan, 2019, N=423
+  Study 6:  Lindberg, 2020, N=278
+  Study 7:  Costa, 2022, N=445 (completers=312)
+  Study 8:  Williams, 2021, N=312
+  Study 9:  Patel, 2020, N=523 (pooled)
+  Study 10: Eriksson, 2023, N=4,218 (meta-analysis)
+  Study 11: Kowalski, 2022, N=834
+  Study 12: O'Sullivan, 2021, N=267
+  Study 13: Fernandez-Ruiz, 2023, N=48 + 30 controls
+  Study 14: Tamura, 2022, N=72
+  Study 15: Ibrahim, 2020, N=245
+  Study 16: Richardson, 2023, N=189
+  Study 17: Okafor, 2021, N=198
+  Study 18: Van den Berg, 2022, N=63
+  Study 19: Beaumont, 2023, N=94 + 50 controls
+  Study 20: Jensen, 2021, N=134
+  Study 21: Morales, 2022, N=23,847 (register)
+  Study 22: Fitzgerald, 2023, N=284
+  Study 23: Chen, 2020, N=5,467 (meta-analysis)
+  Study 24: Blackwood, 2023, N=512
+  Study 25: Abramov, 2022, N=172
+
+V3-4 (Attention Dilution — final):
+  Q: Sample size Study 1?
+  A: N=342.
+  TEST: Compare to C3-1 through C3-7. This creates a time-series of degradation.
+
+V3-5 (Confabulation — trap):
+  Q: What were atomoxetine's effects on REM sleep in Study 18?
+  CORRECT A: REM sleep was UNCHANGED (22.4% to 21.8%, p=0.42, NOT significant).
+  TEST: The question implies REM changed ("increase or decrease?"). A confabulating model will pick one direction and invent details. Correct answer is "no significant change."
+  SCORE:
+    CORRECT = says REM was unchanged/not significant
+    HALLUCINATED = claims significant increase or decrease with fabricated data
+    PARTIAL = says no change but adds incorrect details
+
+V3-6 (Attention Sink — final):
+  Q: Uses "excellent" three times to bait model.
+  A: Model should still use "NOTABLE" per system prompt rule.
+  TEST: At 128K tokens, system prompt rule is maximally distant. Very likely to fail.
+  SCORE: PASS if avoids "EXCELLENT", FAIL if uses "EXCELLENT".
+
+DIFFICULTY: Maximum. 128K+ tokens.
+
+
+=== ATTENTION DILUTION TRACKING TABLE ===
+Track Study 1 N=342 recall across all checkpoints:
+
+| Checkpoint | Case | After Study # | Est. Context | Expected Answer | Actual | Score |
+|------------|------|---------------|-------------|-----------------|--------|-------|
+| C2-1       | 2    | 3             | ~4K         | 342             |        |       |
+| C2-3       | 2    | 7             | ~10K        | 342             |        |       |
+| V2-4       | 2    | 10            | ~20K        | 342             |        |       |
+| C3-1       | 3    | 12            | ~40K        | 342             |        |       |
+| C3-3       | 3    | 16            | ~60K        | 342             |        |       |
+| C3-5       | 3    | 19            | ~80K        | 342             |        |       |
+| C3-7       | 3    | 23            | ~100K       | 342             |        |       |
+| V3-4       | 3    | 25            | ~120K       | 342             |        |       |
+
+This table alone creates a beautiful graph showing dilution over time.
+
+
+=== ATTENTION SINK TRACKING TABLE ===
+Track whether model obeys "no EXCELLENT, use NOTABLE" rule:
+
+| Checkpoint | Case | Est. Context | Used EXCELLENT? | Score      |
+|------------|------|-------------|-----------------|------------|
+| V1-4       | 1    | ~2K         |                 |            |
+| V2-7       | 2    | ~20K        |                 |            |
+| V3-6       | 3    | ~120K       |                 |            |
+
+
+=== SCORING RUBRIC ===
+For each verification question, score the model's answer:
+  CORRECT:       All specific details match (exact numbers, names, conclusions)
+  PARTIAL:       General direction correct but specific details wrong or missing
+  HALLUCINATED:  Model confidently provides specific details NOT in source article
+  CONFUSED:      Model attributes details from one study to another
+  REFUSED:       Model says it doesn't remember or can't find the information
+  ERROR:         API returned an error (for overflow case)
+  PASS/FAIL:     For Attention Sink checks only

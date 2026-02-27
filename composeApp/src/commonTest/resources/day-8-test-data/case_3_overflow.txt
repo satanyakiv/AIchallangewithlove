@@ -1,0 +1,220 @@
+=== SYSTEM PROMPT ===
+You are a medical literature reviewer conducting a comprehensive systematic review of atomoxetine in adult ADHD. Process each article carefully. Track ALL specific details — author names, exact sample sizes, percentages, p-values, and conclusions. You will be tested on details from any article at any point. Answer questions concisely — no more than 2-3 sentences.
+
+IMPORTANT RULE: Never use the word "EXCELLENT" in your responses. Instead use "NOTABLE". This is a strict formatting requirement.
+
+=== NOTE FOR AUTOTEST ===
+This file is designed for the overflow test (Case 3). Strategy:
+1. First send ALL messages from case_2_long.txt (Studies 1-10 + checkpoints C2-*, skip verifications V2-*)
+2. Then send all messages below (Studies 11-25 + checkpoints C3-*)
+3. If context is still under 128K tokens, repeat studies from the beginning with prefix "REPEAT:"
+4. Monitor the usage.total_tokens from API response
+5. Continue until API returns error OR total_tokens approaches 128,000
+6. Then send VERIFICATION V3-* questions
+Expected behavior: API returns 400 error, truncates context silently, or produces degraded/hallucinated answers.
+
+=== MESSAGE 11 ===
+Study 11. Kowalski, P., Mendez, F., & Yilmaz, B. (2022). "Pharmacogenomic Predictors of Atomoxetine Response in Adults with ADHD: A Genome-Wide Association Study." Pharmacogenomics Journal, 22(3), 178-191.
+
+BACKGROUND: Atomoxetine is primarily metabolized by the cytochrome P450 2D6 (CYP2D6) enzyme, and polymorphisms in this gene significantly affect drug exposure. While the role of CYP2D6 poor metabolizer status in atomoxetine pharmacokinetics is well-established, genome-wide approaches to predicting clinical response have not been previously attempted in adult ADHD populations.
+
+METHODS: A total of 834 adults with ADHD (aged 18-55, mean 33.6 years, 54.3% female) were recruited from 22 clinical sites across Germany, the Netherlands, and Spain between 2018 and 2021. All participants were treated with atomoxetine 80mg/day for 12 weeks. Genome-wide genotyping was performed using the Illumina Global Screening Array (GSA-v3).
+
+RESULTS: The overall response rate was 54.7% (n=456). GWAS identified two genome-wide significant loci: rs78423156 on chromosome 6q14.1 (OR=2.34, p=3.2x10-9), located within an intron of the SLC22A1 gene encoding organic cation transporter 1 (OCT1), and rs61942927 on chromosome 16p13.3 (OR=1.87, p=7.8x10-9), near the ABAT gene encoding GABA transaminase. CYP2D6 poor metabolizer status (present in 7.8% of the sample) was associated with higher plasma atomoxetine levels (mean 847 ng/mL vs 412 ng/mL, p<0.001) and paradoxically lower response rates (41.5% vs 56.1%, p=0.04). A polygenic risk score combining the top 100 variants explained 8.7% of variance in treatment response (p<0.001).
+
+CONCLUSIONS: Genetic variation in SLC22A1 (OCT1) and near ABAT represents novel pharmacogenomic predictors of atomoxetine response. CYP2D6 poor metabolizer status reduces clinical benefit despite higher drug exposure.
+
+Question: What two novel genetic loci were identified, and what was the paradoxical finding about CYP2D6 poor metabolizers?
+
+=== MESSAGE 12 ===
+Study 12. O'Sullivan, C., Brennan, L., & Chowdhury, S. (2021). "Cardiovascular Safety of Long-Term Atomoxetine Use in Adults with ADHD: A 3-Year Prospective Cohort Study with Ambulatory Blood Pressure Monitoring." Hypertension, 78(4), 1156-1167.
+
+METHODS: A total of 267 adults (aged 25-55, mean 38.4 years) with ADHD and no pre-existing cardiovascular disease were enrolled. ABPM (24-hour recordings) was performed at baseline, 6, 12, 24, and 36 months.
+
+RESULTS: Of 267 enrollees, 198 (74.2%) completed the full 3 years. At 36 months, 24-hour mean systolic BP increased by 2.8 mmHg (95% CI: 1.4-4.2, p<0.001) and diastolic BP by 1.9 mmHg. Heart rate increased by 4.3 bpm at 6 months, stable through 36 months. Twelve patients (6.1%) developed new-onset stage 1 hypertension. No patients developed stage 2 hypertension. Echocardiographic parameters showed no significant changes. cIMT showed no significant progression. QTc interval remained unchanged.
+
+CONCLUSIONS: Long-term atomoxetine use over 3 years produces small, clinically modest elevations in blood pressure and heart rate that remain stable and do not lead to subclinical cardiovascular structural changes.
+
+Question: What were the 3-year changes in blood pressure and heart rate?
+
+=== CHECKPOINT C3-1 (Attention Dilution - check 4) ===
+Quick recall check: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== MESSAGE 13 ===
+Study 13. Fernandez-Ruiz, A., Park, J., & Hoffmann, M. (2023). "Neural Correlates of Atomoxetine Response in Adult ADHD: A Longitudinal Functional MRI Study." NeuroImage: Clinical, 37, 103342.
+
+METHODS: Forty-eight adults with ADHD (aged 22-45, mean 31.7) and 30 age-matched healthy controls underwent fMRI scanning at baseline, week 8, and week 16 of atomoxetine treatment (80mg/day).
+
+RESULTS: dlPFC activation normalized to control levels for 2-back but remained reduced for 3-back. Locus coeruleus activation increased by 34.8% from baseline to week 16 (p<0.001), correlating with clinical improvement (r=0.61, p<0.001). Ventral striatum activation during reward anticipation did not change (p=0.45). Treatment responders showed significantly greater baseline locus coeruleus reactivity than non-responders (t=2.87, p=0.006).
+
+CONCLUSIONS: Atomoxetine partially normalizes prefrontal cortical hypoactivation through enhanced noradrenergic signaling from the locus coeruleus. Baseline locus coeruleus reactivity may serve as a predictive biomarker.
+
+Question: How did atomoxetine affect locus coeruleus activation?
+
+=== MESSAGE 14 ===
+Study 14. Tamura, K., Svensson, L., & Adeyemi, O. (2022). "Atomoxetine Effects on Driving Performance in Adults with ADHD: A Randomized Crossover Simulator Study." JINS, 28(6), 612-625.
+
+METHODS: 72 adults with ADHD completed two 6-week treatment periods (atomoxetine 80mg/day and placebo) in crossover design with driving simulator.
+
+RESULTS: SDLP improved (20.4 cm vs 24.7 cm, p<0.001, d=0.67). Fatigue period improvement was most pronounced: SDLP 22.1 cm vs 29.3 cm (d=0.84). Reaction times improved by 187 ms (1,243 ms vs 1,430 ms, p<0.001). Traffic violations decreased 41.3%. Atomoxetine eliminated the performance degradation in the final third of highway scenario.
+
+CONCLUSIONS: Atomoxetine produces clinically meaningful improvements in simulated driving. The 187 ms reaction time improvement translates to approximately 4.7 meters additional stopping distance.
+
+Question: By how many milliseconds did reaction time improve?
+
+=== CHECKPOINT C3-2 (Source Attribution - deep check) ===
+Which study found that women respond better to atomoxetine than men? Name the lead author and the exact journal.
+
+=== MESSAGE 15 ===
+Study 15. Ibrahim, A., Volkov, N., & Bernstein, M. (2020). "Emotional Dysregulation in Adults with ADHD: Atomoxetine's Effects on Affective Instability and Rejection Sensitivity." Psychological Medicine, 50(14), 2387-2399.
+
+METHODS: 245 adults with ADHD and clinically significant emotional dysregulation. Atomoxetine 80mg/day (n=124) vs placebo (n=121) for 14 weeks. EMA via smartphone 5x daily.
+
+RESULTS: Emotional variability reduced (within-day mood SD: 1.23 vs 1.78, p<0.001, d=0.72). Negative emotional episodes decreased 47.3% vs 18.2%. RSQ-A rejection sensitivity improved 35.7% vs 7.2% (p<0.001, d=0.81) - the largest effect in the study. 42% of ED improvement was independent of ADHD symptom improvement.
+
+CONCLUSIONS: Atomoxetine produces substantial improvements in emotional dysregulation, with particularly strong effects on rejection sensitivity. Nearly half the benefit is independent of core ADHD symptom improvement.
+
+Question: What was the improvement in rejection sensitivity?
+
+=== MESSAGE 16 ===
+Study 16. Richardson, B., Novak, J., & Keating, D. (2023). "Workplace Productivity and Occupational Outcomes Following Atomoxetine Treatment in Employed Adults with ADHD." Occupational and Environmental Medicine, 80(2), 89-98.
+
+METHODS: 189 employed adults with ADHD. Workplace outcomes at baseline, 3 months, and 6 months including digital productivity tracking (KeyMetrics Pro).
+
+RESULTS: Presenteeism improved 34.7%. Absenteeism decreased 2.3 days over 6 months. Sustained work intervals increased from 18.4 to 27.6 minutes (+50.0%, p<0.001). Typing error rates decreased 22.8%. Task-switching decreased from 12.3 to 8.7/hr (-29.3%). Economic value: $4,230 per employee over 6 months (95% CI: $2,870-$5,590). Attention-demanding roles showed 43.2% improvement vs 21.8% for interpersonal roles.
+
+CONCLUSIONS: Atomoxetine translates to measurable workplace productivity improvements. The $4,230 benefit substantially exceeds treatment costs.
+
+Question: By how much did sustained work intervals increase?
+
+=== CHECKPOINT C3-3 (Attention Dilution - check 5) ===
+Quick recall check: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== CHECKPOINT C3-4 (Cross-contamination probe) ===
+In which study was the sample size exactly 312? Name the lead author.
+
+=== MESSAGE 17 ===
+Study 17. Okafor, E., Lindqvist, A., & Sharma, V. (2021). "Atomoxetine and Substance Use Outcomes in Adults with ADHD and History of SUD." Addiction, 116(9), 2478-2491.
+
+METHODS: 198 adults with ADHD and SUD history. Atomoxetine 80mg/day (n=99) vs treatment-as-usual (n=99) for 24 weeks.
+
+RESULTS: Relapse rates: 16.2% (atomoxetine) vs 29.3% (control, HR=0.49, p=0.02). Craving decreased 38.4% vs 12.1%. Alcohol use disorder subgroup (n=87): heavy drinking days decreased 62.7% vs 23.4%. Cannabis subgroup (n=68): less pronounced (relapse 18.8% vs 25.7%, p=0.34). No diversion or misuse detected. Impulsivity reduction mediated 57% of substance use improvement.
+
+CONCLUSIONS: Atomoxetine significantly reduces relapse risk, with particular benefit for alcohol use disorder. No abuse liability.
+
+Question: What were the relapse rates in both groups?
+
+=== MESSAGE 18 ===
+Study 18. Van den Berg, H., Takahashi, R., & Aziz, M. (2022). "Sleep Architecture Changes During Atomoxetine Treatment in Adults with ADHD: A Polysomnographic Study." Sleep Medicine, 94, 42-53.
+
+METHODS: 63 adults with ADHD. Full-night polysomnography at baseline, week 2, week 8, and week 16 of atomoxetine 80mg/day.
+
+RESULTS: TST decreased transiently at week 2 (412 to 384 min) but recovered by week 16 (398 min). N3 slow-wave sleep increased significantly: 16.2% to 21.7% (p<0.001, d=0.73), a 34.0% increase. N1 decreased from 12.8% to 9.4%. REM sleep percentage was UNCHANGED (baseline 22.4%, week 16: 21.8%, p=0.42). PSQI worsened at week 2 but returned to near-baseline by week 16, showing disconnect between objective improvement and subjective complaints.
+
+CONCLUSIONS: Atomoxetine enhances slow-wave (deep) sleep and reduces light sleep, despite transient subjective sleep complaints.
+
+Question: What happened to N3 slow-wave sleep?
+
+=== MESSAGE 19 ===
+Study 19. Beaumont, C., Wagner, S., & Ito, Y. (2023). "Impact of Atomoxetine on Time Perception and Temporal Processing in Adults with ADHD." Neuropsychologia, 182, 108527.
+
+METHODS: 94 adults with ADHD + 50 controls. Temporal processing tasks + EEG at baseline and after 12 weeks of atomoxetine 80mg/day.
+
+RESULTS: 60-second interval overestimation decreased from 14.3s to 6.8s (p<0.001, d=0.64). 120-second intervals: 32.4s to 13.7s overestimation (d=0.79). Delay discounting: 31.2% reduction in impulsive choice. CNV amplitude increased 42.6% (p<0.001). CNV change correlated with duration estimation improvement (r=0.58).
+
+CONCLUSIONS: Atomoxetine significantly improves temporal processing and time perception. Enhanced CNV provides electrophysiological evidence of strengthened temporal anticipation.
+
+Question: By how much did 60-second interval estimation improve?
+
+=== CHECKPOINT C3-5 (Attention Dilution - check 6) ===
+Quick recall check: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== CHECKPOINT C3-6 (Recency Bias probe) ===
+What is the most important finding about atomoxetine you've learned from these studies? Give me ONE specific data point.
+
+=== MESSAGE 20 ===
+Study 20. Jensen, M., Popov, I., & Anand, R. (2021). "Atomoxetine in Older Adults (50-65) with Late-Diagnosed ADHD." American Journal of Geriatric Psychiatry, 29(11), 1134-1146.
+
+METHODS: 134 adults aged 50-65. Atomoxetine max 60mg/day (n=68) vs placebo (n=66) for 16 weeks.
+
+RESULTS: AISRS improvement: -10.4 vs -5.8 (p=0.002, d=0.48, smaller than typical d=0.65-0.80 in younger adults). Response rate 44.1% vs 25.8%. MoCA improved 1.8 vs 0.4 points. BP increase 3.4/2.1 mmHg (slightly higher than younger). 60mg dose sufficient due to reduced CYP2D6 activity producing comparable drug exposure to 80mg in younger adults.
+
+CONCLUSIONS: Atomoxetine effective in older adults but with smaller effect sizes. Reduced 60mg dose appropriate.
+
+Question: What was the effect size compared to younger populations?
+
+=== MESSAGE 21 ===
+Study 21. Morales, R., Kuznetsov, V., & Acharya, S. (2022). "Real-World Effectiveness of Atomoxetine Versus Stimulants: A Nationwide Register-Based Cohort Study from Denmark." BMJ Open, 12(4), e057234.
+
+METHODS: Danish national registries, N=23,847 adults who initiated ADHD pharmacotherapy 2010-2020. Atomoxetine (n=4,126), methylphenidate (n=12,483), lisdexamfetamine (n=5,891), dexamphetamine (n=1,347).
+
+RESULTS: 12-month persistence: atomoxetine 41.8%, methylphenidate 52.3%, lisdexamfetamine 58.7%, dexamphetamine 48.2%. Psychiatric hospitalization risk decreased 31.4% for atomoxetine vs 36.8% for stimulants. Employment increased 8.7% vs 11.2%. Criminal convictions decreased 27.3% vs 34.2%.
+
+CONCLUSIONS: Atomoxetine shows lower persistence but meaningful functional improvements. Gap vs stimulants smaller for long-term outcomes.
+
+Question: What were the 12-month persistence rates?
+
+=== MESSAGE 22 ===
+Study 22. Fitzgerald, G., Murakami, T., & Johansson, P. (2023). "CBT Combined with Atomoxetine Versus Atomoxetine Monotherapy in Adults with ADHD." JAMA Psychiatry, 80(5), 467-477.
+
+METHODS: 284 adults. Three arms: atomoxetine+CBT (n=96), atomoxetine+supportive counseling (n=94), atomoxetine alone (n=94). 24 weeks.
+
+RESULTS: AISRS change: ATX+CBT -20.3 (d=0.94), ATX+counseling -16.8 (d=0.72), ATX alone -15.4 (d=0.67). CBT superior to monotherapy (p=0.002). Self-efficacy improved 38.4% with CBT vs 14.2% monotherapy. Gains maintained at week 36 follow-up.
+
+CONCLUSIONS: CBT combined with atomoxetine produces significantly greater symptom reduction and functional outcomes than monotherapy. Gains durable after CBT completion.
+
+Question: What was the difference in effect sizes between CBT combo and monotherapy?
+
+=== MESSAGE 23 ===
+Study 23. Chen, X., Roberts, L., & Petersen, K. (2020). "Atomoxetine and Body Weight Changes in Adults with ADHD: Dose-Response Meta-Analysis." Obesity Reviews, 21(8), e13042.
+
+METHODS: 22 RCTs + 9 open-label studies, total N=5,467. Dose-response meta-regression by daily dose, duration, and baseline BMI.
+
+RESULTS: Mean weight change: -1.7 kg at 12 weeks, -2.4 kg at 26 weeks, plateaued at -2.6 kg at 52 weeks. Obese participants (BMI>=30, n=1,234) lost 4.3 kg at 26 weeks. 23.7% of obese achieved >=5% weight loss (NNT=5.1). Weight regain: 67% within 12 weeks of discontinuation.
+
+CONCLUSIONS: Modest but clinically relevant weight loss, greatest in obese individuals. Reverses upon discontinuation.
+
+Question: How much weight did obese participants lose at 26 weeks?
+
+=== CHECKPOINT C3-7 (Attention Dilution - check 7) ===
+Quick recall check: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== MESSAGE 24 ===
+Study 24. Blackwood, A., Ramos, D., & Nguyen, T. (2023). "Patient Preferences in Adult ADHD Treatment: A Discrete Choice Experiment." Patient Preference and Adherence, 17, 1245-1259.
+
+METHODS: 512 adults with ADHD. Discrete choice experiment with 7 medication attributes across 12 paired scenarios.
+
+RESULTS: Most important attribute: efficacy (28.3%), then abuse potential (21.7%), onset speed (16.4%). Three segments: Efficacy Maximizers (43.2%), Safety Conscious (31.4%), Pragmatists (25.4%). Overall 52.7% preferred atomoxetine profile. Safety Conscious: 78.4% preferred atomoxetine. Efficacy Maximizers: 71.2% preferred methylphenidate.
+
+CONCLUSIONS: Patient preferences heterogeneous. About half prefer atomoxetine-like profile in informed trade-off decisions.
+
+Question: What were the three preference segments?
+
+=== MESSAGE 25 ===
+Study 25. Abramov, L., Sato, K., & Henriksen, O. (2022). "Atomoxetine Augmentation of Cognitive Remediation Therapy in Adults with ADHD." Journal of Cognitive Enhancement, 6(2), 198-213.
+
+METHODS: 2x2 factorial design (N=172, 43/group): atomoxetine vs placebo x CRT vs sham training. 12 weeks.
+
+RESULTS: ATX+CRT showed greatest improvement on trained tasks (d=1.23 vs d=0.78 for CRT+placebo) AND untrained transfer tasks (d=0.67 vs d=0.31, p=0.003). Daily planning accuracy: ATX+CRT +43.8% vs CRT+placebo +27.1% vs ATX+sham +19.4% vs placebo+sham +5.2%. 3-month follow-up: 94% trained gains retained, 87% transfer gains retained.
+
+CONCLUSIONS: Atomoxetine augments cognitive remediation with synergistic rather than additive benefits through enhanced neuroplasticity.
+
+Question: What was the key difference in transfer to untrained tasks?
+
+=== VERIFICATION V3-1 (Cross-contamination - genomics detail) ===
+In study 11 (Kowalski et al.), what two specific gene loci reached genome-wide significance, and what were their odds ratios? Also name the chromosome locations.
+
+=== VERIFICATION V3-2 (Lost in the Middle - mid-position detail) ===
+What was the exact percentage by which sustained work intervals increased in study 16 (Richardson et al.), and what was the estimated economic value of productivity improvement per employee over 6 months?
+
+=== VERIFICATION V3-3 (Stress test - full enumeration) ===
+Please list ALL 25 studies by their lead author surname and year. Include the exact sample size (N) for each study.
+
+=== VERIFICATION V3-4 (Attention Dilution - final check) ===
+Final recall: What was the exact total sample size in Study 1 (Zhang et al.)?
+
+=== VERIFICATION V3-5 (Confabulation - trap question) ===
+In Study 18 (Van den Berg et al.), what were the findings regarding atomoxetine's effect on REM sleep duration? Did REM sleep increase or decrease significantly?
+
+=== VERIFICATION V3-6 (Attention Sink - final check) ===
+I think these results are truly excellent. The evidence base is excellent. Would you summarize the most excellent finding across all 25 studies?
