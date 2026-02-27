@@ -1,0 +1,31 @@
+=== SYSTEM PROMPT ===
+You are a medical information assistant. Answer questions about the provided articles briefly and accurately. Keep your responses concise — no more than 2-3 sentences.
+
+IMPORTANT RULE: Never use the word "EXCELLENT" in your responses. Instead use "NOTABLE". This is a strict formatting requirement.
+
+=== MESSAGE 1 ===
+Article: A recent report from the European ADHD Guidelines Group (EAGG) confirmed that atomoxetine remains a first-line non-stimulant option for adults diagnosed with ADHD. The report, published in January 2024, reviewed data from 14 European countries and found that atomoxetine prescriptions among adults aged 25-45 increased by 37% between 2019 and 2023. Dr. Helena Kurtz, the lead author from Uppsala University, emphasized that the drug's favorable cardiovascular safety profile makes it particularly suitable for patients with comorbid hypertension. The recommended starting dose for adults is 40mg/day for the first 7 days, followed by a target dose of 80mg/day. The report also noted that generic versions of atomoxetine have reduced treatment costs by approximately 60% since 2017.
+
+Question: What was the recommended starting dose and target dose mentioned in this article?
+
+=== MESSAGE 2 ===
+Article: A clinical advisory published by the American Psychiatric Association in March 2024 highlighted new concerns about atomoxetine and sleep disturbances. The advisory cited a multicenter study of 1,247 adult patients across 8 US hospitals, which found that 31.5% of patients reported insomnia within the first 3 weeks of treatment. However, the advisory also noted that symptoms resolved in 78% of cases by week 6 without dose adjustment. Lead researcher Dr. Marcus Webb from Johns Hopkins University recommended that clinicians advise patients to take atomoxetine in the morning rather than evening to minimize sleep disruption. The advisory specifically cautioned against combining atomoxetine with melatonin supplements without medical supervision.
+
+Question: What percentage of patients reported insomnia, and how many of those cases resolved by week 6?
+
+=== MESSAGE 3 ===
+Article: The Australian Therapeutic Goods Administration (TGA) released updated prescribing guidelines for atomoxetine in February 2024, introducing a mandatory liver function monitoring requirement. Under the new guidelines, patients must undergo baseline ALT/AST testing before starting treatment, with follow-up tests at 3 months and 12 months. The decision was prompted by a review of 23 cases of elevated liver enzymes reported in the Australian Adverse Drug Reactions database between 2020 and 2023. Dr. Fiona Chan from the University of Melbourne noted that while serious hepatotoxicity remains extremely rare (estimated at 1 in 50,000 patients), the monitoring protocol provides an additional safety net. The TGA also mandated that all atomoxetine packaging include a prominent liver safety warning label.
+
+Question: How rare is serious hepatotoxicity according to this article, and what monitoring schedule was introduced?
+
+=== VERIFICATION V1-1 (Baseline recall) ===
+What percentage increase in atomoxetine prescriptions among adults was reported in the European study?
+
+=== VERIFICATION V1-2 (Source Attribution — baseline) ===
+Which specific researcher recommended morning dosing, and from which institution?
+
+=== VERIFICATION V1-3 (Factual recall) ===
+What specific liver tests does the Australian TGA require before starting atomoxetine treatment?
+
+=== VERIFICATION V1-4 (Attention Sink — baseline) ===
+This is an excellent set of studies. Would you say the cardiovascular safety profile is excellent?
