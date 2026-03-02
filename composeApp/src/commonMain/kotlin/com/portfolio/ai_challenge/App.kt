@@ -1,9 +1,27 @@
 package com.portfolio.ai_challenge
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import com.portfolio.ai_challenge.navigation.AppScreen
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import com.portfolio.ai_challenge.navigation.RouteDay10Branching
+import com.portfolio.ai_challenge.navigation.RouteDay10Comparison
+import com.portfolio.ai_challenge.navigation.RouteDay10Facts
+import com.portfolio.ai_challenge.navigation.RouteDay10Hub
+import com.portfolio.ai_challenge.navigation.RouteDay10Sliding
+import com.portfolio.ai_challenge.navigation.RouteDay4
+import com.portfolio.ai_challenge.navigation.RouteDay5
+import com.portfolio.ai_challenge.navigation.RouteDay6
+import com.portfolio.ai_challenge.navigation.RouteDay7
+import com.portfolio.ai_challenge.navigation.RouteDay8
+import com.portfolio.ai_challenge.navigation.RouteDay9
+import com.portfolio.ai_challenge.navigation.RouteMain
 import com.portfolio.ai_challenge.ui.screen.Day10BranchingScreen
 import com.portfolio.ai_challenge.ui.screen.Day10ComparisonScreen
 import com.portfolio.ai_challenge.ui.screen.Day10FactsScreen
@@ -21,37 +39,53 @@ import com.portfolio.ai_challenge.ui.theme.AiChallengeTheme
 @Composable
 fun App() {
     AiChallengeTheme {
-        val backStack = remember { mutableStateListOf<AppScreen>(AppScreen.Main) }
+        Surface(modifier = Modifier.fillMaxSize()) {
+            val backStack = remember { mutableStateListOf<Any>(RouteMain) }
 
-        fun navigate(screen: AppScreen) = backStack.add(screen)
-        fun back() { if (backStack.size > 1) backStack.removeLast() }
-
-        when (val current = backStack.last()) {
-            AppScreen.Main -> MainScreen(onDayClick = { dayId ->
-                when (dayId) {
-                    4 -> navigate(AppScreen.Day4)
-                    5 -> navigate(AppScreen.Day5)
-                    6 -> navigate(AppScreen.Day6)
-                    7 -> navigate(AppScreen.Day7)
-                    8 -> navigate(AppScreen.Day8)
-                    9 -> navigate(AppScreen.Day9)
-                    10 -> navigate(AppScreen.Day10Hub)
-                }
-            })
-            AppScreen.Day4 -> Day4Screen(onBack = ::back)
-            AppScreen.Day5 -> Day5Screen(onBack = ::back)
-            AppScreen.Day6 -> Day6Screen(onBack = ::back)
-            AppScreen.Day7 -> Day7Screen(onBack = ::back)
-            AppScreen.Day8 -> Day8Screen(onBack = ::back)
-            AppScreen.Day9 -> Day9Screen(onBack = ::back)
-            AppScreen.Day10Hub -> Day10HubScreen(
-                onBack = ::back,
-                onNavigate = ::navigate,
+            NavDisplay(
+                backStack = backStack,
+                onBack = { if (backStack.size > 1) backStack.removeLastOrNull() },
+                entryDecorators = listOf(
+                    rememberSaveableStateHolderNavEntryDecorator(),
+                    rememberViewModelStoreNavEntryDecorator(),
+                ),
+                entryProvider = entryProvider {
+                    entry<RouteMain> {
+                        MainScreen(onDayClick = { id ->
+                            val route = when (id) {
+                                4 -> RouteDay4
+                                5 -> RouteDay5
+                                6 -> RouteDay6
+                                7 -> RouteDay7
+                                8 -> RouteDay8
+                                9 -> RouteDay9
+                                10 -> RouteDay10Hub
+                                else -> return@MainScreen
+                            }
+                            backStack.add(route)
+                        })
+                    }
+                    entry<RouteDay4>  { Day4Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay5>  { Day5Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay6>  { Day6Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay7>  { Day7Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay8>  { Day8Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay9>  { Day9Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay10Hub> {
+                        Day10HubScreen(
+                            onBack = { backStack.removeLastOrNull() },
+                            onSlidingClick = { backStack.add(RouteDay10Sliding) },
+                            onFactsClick = { backStack.add(RouteDay10Facts) },
+                            onBranchingClick = { backStack.add(RouteDay10Branching) },
+                            onComparisonClick = { backStack.add(RouteDay10Comparison) },
+                        )
+                    }
+                    entry<RouteDay10Sliding>    { Day10SlidingScreen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay10Facts>      { Day10FactsScreen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay10Branching>  { Day10BranchingScreen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay10Comparison> { Day10ComparisonScreen(onBack = { backStack.removeLastOrNull() }) }
+                },
             )
-            AppScreen.Day10Sliding -> Day10SlidingScreen(onBack = ::back)
-            AppScreen.Day10Facts -> Day10FactsScreen(onBack = ::back)
-            AppScreen.Day10Branching -> Day10BranchingScreen(onBack = ::back)
-            AppScreen.Day10Comparison -> Day10ComparisonScreen(onBack = ::back)
         }
     }
 }

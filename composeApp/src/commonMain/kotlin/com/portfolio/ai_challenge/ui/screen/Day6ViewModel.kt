@@ -9,11 +9,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class ChatMessage(
-    val text: String,
-    val isUser: Boolean,
-)
-
 data class Day6ViewState(
     val messages: List<ChatMessage> = emptyList(),
     val isLoading: Boolean = false,
