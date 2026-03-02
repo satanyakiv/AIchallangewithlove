@@ -23,6 +23,23 @@ data class ApiMessage(val role: String, val content: String)
 @Serializable
 data class AgentChatV7Request(val messages: List<ApiMessage>)
 
+@Serializable
+data class AgentChatV9Request(
+    val recentMessages: List<ApiMessage>,
+    val oldMessages: List<ApiMessage>,
+    val existingSummary: String?,
+    val compressionEnabled: Boolean,
+)
+
+@Serializable
+data class AgentChatV9Response(
+    val response: String,
+    val newSummary: String?,
+    val promptTokens: Int,
+    val completionTokens: Int,
+    val totalTokens: Int,
+)
+
 class AgentApi(private val client: HttpClient) {
     private val baseUrl = "http://${getServerHost()}:$SERVER_PORT"
 
@@ -44,5 +61,17 @@ class AgentApi(private val client: HttpClient) {
             throw Exception("Agent error (${httpResponse.status.value}): $errorBody")
         }
         return httpResponse.body<AgentChatResponse>().response
+    }
+
+    suspend fun chatV9(request: AgentChatV9Request): AgentChatV9Response {
+        val httpResponse = client.post("$baseUrl/api/agent/chat-v9") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+        if (!httpResponse.status.isSuccess()) {
+            val errorBody = httpResponse.bodyAsText()
+            throw Exception("Agent error (${httpResponse.status.value}): $errorBody")
+        }
+        return httpResponse.body<AgentChatV9Response>()
     }
 }

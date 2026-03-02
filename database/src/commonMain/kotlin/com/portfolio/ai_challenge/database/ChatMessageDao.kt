@@ -18,4 +18,16 @@ interface ChatMessageDao {
 
     @Query("DELETE FROM chat_messages")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM chat_messages WHERE role = 'context_summary' ORDER BY id DESC LIMIT 1")
+    suspend fun getLatestSummary(): ChatMessageEntity?
+
+    @Query("DELETE FROM chat_messages WHERE role = 'context_summary'")
+    suspend fun clearSummaries()
+
+    @Query("SELECT * FROM chat_messages WHERE role != 'context_summary' ORDER BY id ASC")
+    suspend fun getAllExcludingSummary(): List<ChatMessageEntity>
+
+    @Query("SELECT * FROM chat_messages WHERE role != 'context_summary' ORDER BY id ASC")
+    fun observeAllExcludingSummary(): Flow<List<ChatMessageEntity>>
 }

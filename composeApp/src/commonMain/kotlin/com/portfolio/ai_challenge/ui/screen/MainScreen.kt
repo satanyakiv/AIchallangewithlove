@@ -53,6 +53,13 @@ private val challengeDays = listOf(
         description = "DeepSeek V3 at 126K tokens — 25 studies, 10 repetition rounds, 7 failure modes. Zero failures.",
         emoji = "\uD83E\uDDEA",
     ),
+    ChallengeDay(
+        id = 9,
+        dayNumber = 9,
+        title = "Context Compression",
+        description = "History compression: last N messages kept as-is, older messages replaced by AI-generated summary. Compare token usage with/without compression.",
+        emoji = "\uD83E\uDDE0",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

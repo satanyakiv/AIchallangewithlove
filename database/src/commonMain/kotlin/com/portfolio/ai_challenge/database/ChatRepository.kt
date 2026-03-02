@@ -25,4 +25,23 @@ class ChatRepository(private val dao: ChatMessageDao) {
     )
 
     suspend fun clearHistory() = dao.deleteAll()
+
+    suspend fun getLatestSummary(): ChatMessageEntity? = dao.getLatestSummary()
+
+    suspend fun saveSummary(content: String) {
+        dao.clearSummaries()
+        dao.insert(
+            ChatMessageEntity(
+                role = "context_summary",
+                content = content,
+                timestamp = System.currentTimeMillis(),
+            )
+        )
+    }
+
+    suspend fun clearSummaries() = dao.clearSummaries()
+
+    suspend fun getAllExcludingSummary(): List<ChatMessageEntity> = dao.getAllExcludingSummary()
+
+    fun observeAllExcludingSummary(): Flow<List<ChatMessageEntity>> = dao.observeAllExcludingSummary()
 }

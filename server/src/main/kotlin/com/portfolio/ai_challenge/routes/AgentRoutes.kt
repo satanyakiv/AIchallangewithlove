@@ -3,6 +3,8 @@ package com.portfolio.ai_challenge.routes
 import com.portfolio.ai_challenge.agent.ApiMessageDto
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
+import com.portfolio.ai_challenge.agent.Day9Agent
+import com.portfolio.ai_challenge.agent.Day9ChatRequest
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -33,6 +35,27 @@ fun Route.agentV7Routes(agent: Day7Agent) {
                 call.respond(
                     HttpStatusCode.InternalServerError,
                     mapOf("error" to (e.message ?: "Agent error"))
+                )
+            }
+        }
+    }
+}
+
+fun Route.agentV9Routes(agent: Day9Agent) {
+    route("/api/agent") {
+        post("/chat-v9") {
+            val request = call.receive<Day9ChatRequest>()
+            if (request.recentMessages.isEmpty() && request.oldMessages.isEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Messages cannot be empty"))
+                return@post
+            }
+            try {
+                val result = agent.chat(request)
+                call.respond(result)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to (e.message ?: "Agent error")),
                 )
             }
         }
