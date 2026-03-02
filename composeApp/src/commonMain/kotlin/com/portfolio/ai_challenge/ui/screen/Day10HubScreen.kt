@@ -19,42 +19,39 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.portfolio.ai_challenge.navigation.AppScreen
 
 private data class HubCard(
     val title: String,
     val subtitle: String,
     val description: String,
-    val destination: Day10Destination,
+    val destination: AppScreen,
 )
-
-enum class Day10Destination {
-    Sliding, Facts, Branching, Comparison
-}
 
 private val hubCards = listOf(
     HubCard(
         title = "Sliding Window",
         subtitle = "Strategy A",
         description = "Keep only the last N messages. Older messages are dropped before each API call. Zero overhead, bounded context.",
-        destination = Day10Destination.Sliding,
+        destination = AppScreen.Day10Sliding,
     ),
     HubCard(
         title = "Sticky Facts",
         subtitle = "Strategy B",
         description = "Extract key-value facts from every exchange using DeepSeek. Each request sends facts dict + last messages. 2 API calls per message.",
-        destination = Day10Destination.Facts,
+        destination = AppScreen.Day10Facts,
     ),
     HubCard(
         title = "Branching",
         subtitle = "Strategy C",
         description = "Fork the conversation at any checkpoint. Each branch remembers shared history up to the fork, then its own messages.",
-        destination = Day10Destination.Branching,
+        destination = AppScreen.Day10Branching,
     ),
     HubCard(
         title = "Strategy Comparison",
         subtitle = "Metrics",
         description = "Compare all 3 strategies side by side: avg tokens/message, context retention %, and memory overhead score.",
-        destination = Day10Destination.Comparison,
+        destination = AppScreen.Day10Comparison,
     ),
 )
 
@@ -62,7 +59,7 @@ private val hubCards = listOf(
 @Composable
 fun Day10HubScreen(
     onBack: () -> Unit,
-    onNavigate: (Day10Destination) -> Unit,
+    onNavigate: (AppScreen) -> Unit,
 ) {
     Scaffold(
         topBar = {
