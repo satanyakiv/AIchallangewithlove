@@ -60,6 +60,13 @@ private val challengeDays = listOf(
         description = "History compression: last N messages kept as-is, older messages replaced by AI-generated summary. Compare token usage with/without compression.",
         emoji = "\uD83E\uDDE0",
     ),
+    ChallengeDay(
+        id = 10,
+        dayNumber = 10,
+        title = "Context Strategies",
+        description = "3 context management approaches: Sliding Window, Sticky Facts (KV memory), and Branching (fork conversations). Compare metrics on a real scenario.",
+        emoji = "\uD83D\uDD00",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -40,6 +40,52 @@ data class AgentChatV9Response(
     val totalTokens: Int,
 )
 
+// Day10 DTOs
+
+@Serializable
+data class AgentChatV10SlidingRequest(
+    val messages: List<ApiMessage>,
+    val windowSize: Int = 10,
+)
+
+@Serializable
+data class AgentChatV10SlidingResponse(
+    val response: String,
+    val promptTokens: Int,
+    val completionTokens: Int,
+    val totalTokens: Int,
+    val windowedCount: Int,
+    val droppedCount: Int,
+)
+
+@Serializable
+data class AgentChatV10FactsRequest(
+    val messages: List<ApiMessage>,
+    val existingFacts: Map<String, String> = emptyMap(),
+)
+
+@Serializable
+data class AgentChatV10FactsResponse(
+    val response: String,
+    val updatedFacts: Map<String, String>,
+    val promptTokens: Int,
+    val completionTokens: Int,
+    val totalTokens: Int,
+)
+
+@Serializable
+data class AgentChatV10BranchingRequest(
+    val messages: List<ApiMessage>,
+)
+
+@Serializable
+data class AgentChatV10BranchingResponse(
+    val response: String,
+    val promptTokens: Int,
+    val completionTokens: Int,
+    val totalTokens: Int,
+)
+
 class AgentApi(private val client: HttpClient) {
     private val baseUrl = "http://${getServerHost()}:$SERVER_PORT"
 
@@ -73,5 +119,41 @@ class AgentApi(private val client: HttpClient) {
             throw Exception("Agent error (${httpResponse.status.value}): $errorBody")
         }
         return httpResponse.body<AgentChatV9Response>()
+    }
+
+    suspend fun chatV10Sliding(request: AgentChatV10SlidingRequest): AgentChatV10SlidingResponse {
+        val httpResponse = client.post("$baseUrl/api/agent/chat-v10/sliding") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+        if (!httpResponse.status.isSuccess()) {
+            val errorBody = httpResponse.bodyAsText()
+            throw Exception("Agent error (${httpResponse.status.value}): $errorBody")
+        }
+        return httpResponse.body<AgentChatV10SlidingResponse>()
+    }
+
+    suspend fun chatV10Facts(request: AgentChatV10FactsRequest): AgentChatV10FactsResponse {
+        val httpResponse = client.post("$baseUrl/api/agent/chat-v10/facts") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+        if (!httpResponse.status.isSuccess()) {
+            val errorBody = httpResponse.bodyAsText()
+            throw Exception("Agent error (${httpResponse.status.value}): $errorBody")
+        }
+        return httpResponse.body<AgentChatV10FactsResponse>()
+    }
+
+    suspend fun chatV10Branching(request: AgentChatV10BranchingRequest): AgentChatV10BranchingResponse {
+        val httpResponse = client.post("$baseUrl/api/agent/chat-v10/branching") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+        if (!httpResponse.status.isSuccess()) {
+            val errorBody = httpResponse.bodyAsText()
+            throw Exception("Agent error (${httpResponse.status.value}): $errorBody")
+        }
+        return httpResponse.body<AgentChatV10BranchingResponse>()
     }
 }

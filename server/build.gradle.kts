@@ -14,6 +14,13 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+tasks.test {
+    if (project.hasProperty("day10.integration")) {
+        systemProperty("day10.integration", project.property("day10.integration").toString())
+    }
+    environment("DEEPSEEK_API_KEY", System.getenv("DEEPSEEK_API_KEY") ?: "")
+}
+
 dependencies {
     implementation(projects.shared)
     implementation(libs.logback)

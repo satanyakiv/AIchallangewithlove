@@ -1,9 +1,13 @@
 package com.portfolio.ai_challenge
 
+import com.portfolio.ai_challenge.agent.Day10BranchingAgent
+import com.portfolio.ai_challenge.agent.Day10FactsAgent
+import com.portfolio.ai_challenge.agent.Day10SlidingAgent
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
 import com.portfolio.ai_challenge.routes.agentRoutes
+import com.portfolio.ai_challenge.routes.agentV10Routes
 import com.portfolio.ai_challenge.routes.agentV7Routes
 import com.portfolio.ai_challenge.routes.agentV9Routes
 import com.portfolio.ai_challenge.routes.modelRoutes
@@ -39,6 +43,9 @@ fun Application.module() {
     val day6Agent = Day6Agent(apiKey)
     val day7Agent = Day7Agent(httpClient, apiKey)
     val day9Agent = Day9Agent(httpClient, apiKey)
+    val day10SlidingAgent = Day10SlidingAgent(httpClient, apiKey)
+    val day10FactsAgent = Day10FactsAgent(httpClient, apiKey)
+    val day10BranchingAgent = Day10BranchingAgent(httpClient, apiKey)
 
     install(ServerContentNegotiation) {
         json(Json { ignoreUnknownKeys = true })
@@ -58,5 +65,6 @@ fun Application.module() {
         agentRoutes(day6Agent)
         agentV7Routes(day7Agent)
         agentV9Routes(day9Agent)
+        agentV10Routes(day10SlidingAgent, day10FactsAgent, day10BranchingAgent)
     }
 }

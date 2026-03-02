@@ -1,6 +1,12 @@
 package com.portfolio.ai_challenge.routes
 
 import com.portfolio.ai_challenge.agent.ApiMessageDto
+import com.portfolio.ai_challenge.agent.Day10BranchingAgent
+import com.portfolio.ai_challenge.agent.Day10BranchingRequest
+import com.portfolio.ai_challenge.agent.Day10FactsAgent
+import com.portfolio.ai_challenge.agent.Day10FactsRequest
+import com.portfolio.ai_challenge.agent.Day10SlidingAgent
+import com.portfolio.ai_challenge.agent.Day10SlidingRequest
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
@@ -51,6 +57,65 @@ fun Route.agentV9Routes(agent: Day9Agent) {
             }
             try {
                 val result = agent.chat(request)
+                call.respond(result)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to (e.message ?: "Agent error")),
+                )
+            }
+        }
+    }
+}
+
+fun Route.agentV10Routes(
+    slidingAgent: Day10SlidingAgent,
+    factsAgent: Day10FactsAgent,
+    branchingAgent: Day10BranchingAgent,
+) {
+    route("/api/agent") {
+        post("/chat-v10/sliding") {
+            val request = call.receive<Day10SlidingRequest>()
+            if (request.messages.isEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Messages cannot be empty"))
+                return@post
+            }
+            try {
+                val result = slidingAgent.chat(request)
+                call.respond(result)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to (e.message ?: "Agent error")),
+                )
+            }
+        }
+
+        post("/chat-v10/facts") {
+            val request = call.receive<Day10FactsRequest>()
+            if (request.messages.isEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Messages cannot be empty"))
+                return@post
+            }
+            try {
+                val result = factsAgent.chat(request)
+                call.respond(result)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to (e.message ?: "Agent error")),
+                )
+            }
+        }
+
+        post("/chat-v10/branching") {
+            val request = call.receive<Day10BranchingRequest>()
+            if (request.messages.isEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Messages cannot be empty"))
+                return@post
+            }
+            try {
+                val result = branchingAgent.chat(request)
                 call.respond(result)
             } catch (e: Exception) {
                 call.respond(
