@@ -9,6 +9,7 @@ import com.portfolio.ai_challenge.ui.screen.Day5ViewModel
 import com.portfolio.ai_challenge.database.ChatRepository
 import com.portfolio.ai_challenge.ui.screen.Day6ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day7ViewModel
+import com.portfolio.ai_challenge.ui.screen.Day9ViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -23,4 +24,5 @@ val appModule = module {
     viewModel { Day5ViewModel(get()) }
     viewModel { Day6ViewModel(get()) }
     viewModel { Day7ViewModel(get<AgentApi>(), get<ChatRepository>()) }
+    viewModel { Day9ViewModel(get<AgentApi>(), get<ChatRepository>()) }
 }
