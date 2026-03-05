@@ -22,7 +22,7 @@ class Day10BranchingAgent(private val llmClient: LlmClient) {
 
     suspend fun chat(request: Day10BranchingRequest): Day10BranchingResponse {
         val messages = buildList {
-            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Day10Prompts.SYSTEM))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day10.BRANCHING))
             addAll(request.messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
 

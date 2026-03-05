@@ -12,7 +12,7 @@ class Day7Agent(private val llmClient: LlmClient) {
 
     suspend fun chat(messages: List<ApiMessageDto>): String {
         val allMessages = buildList {
-            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Day7Prompts.SYSTEM))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day7.SYSTEM))
             addAll(messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
         return llmClient.complete(allMessages)

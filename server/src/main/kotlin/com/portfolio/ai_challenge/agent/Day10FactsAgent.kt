@@ -36,7 +36,7 @@ class Day10FactsAgent(private val llmClient: LlmClient) {
         } else null
 
         val chatMessages = buildList {
-            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Day10Prompts.SYSTEM))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day10.FACTS))
             if (factsContext != null) {
                 add(DeepSeekMessage(role = MessageRole.SYSTEM, content = factsContext))
             }
@@ -67,7 +67,7 @@ class Day10FactsAgent(private val llmClient: LlmClient) {
         val recentExchange = messages.takeLast(2).joinToString("\n") { "${it.role.name}: ${it.content}" }
 
         val extractionMessages = listOf(
-            DeepSeekMessage(role = MessageRole.SYSTEM, content = Day10Prompts.FACTS_EXTRACTION),
+            DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day10.FACTS_EXTRACTION),
             DeepSeekMessage(role = MessageRole.USER, content = "$existingJson\n\nLatest exchange:\n$recentExchange"),
         )
 

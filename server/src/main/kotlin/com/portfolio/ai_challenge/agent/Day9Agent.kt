@@ -34,7 +34,7 @@ class Day9Agent(private val llmClient: LlmClient) {
 
     private suspend fun chatNormal(allMessages: List<ApiMessageDto>): Day9ChatResponse {
         val messages = buildList {
-            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Day9Prompts.SYSTEM))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day9.SYSTEM))
             addAll(allMessages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
         val deepSeekResponse = llmClient.completeWithResponse(messages, temperature = 0.7)
@@ -66,14 +66,14 @@ class Day9Agent(private val llmClient: LlmClient) {
         }
 
         val summaryMessages = listOf(
-            DeepSeekMessage(role = MessageRole.SYSTEM, content = Day9Prompts.SUMMARY_SYSTEM),
+            DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day9.SUMMARY_SYSTEM),
             DeepSeekMessage(role = MessageRole.USER, content = summaryUserContent),
         )
         val summaryResponse = llmClient.completeWithResponse(summaryMessages, temperature = 0.3)
         val newSummary = summaryResponse.choices.first().message.content
 
         val compressedMessages = buildList {
-            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Day9Prompts.SYSTEM))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day9.SYSTEM))
             add(DeepSeekMessage(
                 role = MessageRole.SYSTEM,
                 content = "Previous conversation summary (for context): $newSummary",

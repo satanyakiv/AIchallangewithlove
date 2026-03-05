@@ -29,7 +29,7 @@ class Day10SlidingAgent(private val llmClient: LlmClient) {
         val droppedCount = (allMessages.size - windowed.size).coerceAtLeast(0)
 
         val messages = buildList {
-            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Day10Prompts.SYSTEM))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day10.SLIDING))
             addAll(windowed.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
 
