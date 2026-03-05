@@ -11,8 +11,8 @@ Package: `com.portfolio.ai_challenge`
 ./gradlew :composeApp:run          # Desktop app
 ./gradlew :composeApp:assembleDebug # Android APK
 ./gradlew :server:run              # Ktor server (port 8080)
-./gradlew test                     # All tests
-./gradlew :server:test             # Server tests only
+./gradlew :server:test --tests "*.ClassName"  # Server tests (ALWAYS with --tests filter)
+./gradlew :server:dokkaGeneratePublicationHtml  # Server API docs → server/build/dokka/html/index.html
 ```
 
 ## Modules
@@ -69,3 +69,4 @@ Read `documentation/day-11-to-15/` diagrams before any psy-agent work.
 - Kill port 8080 before server restart
 - After task: run server + desktop app for user testing
 - Save plans to `.claude/plans/` with date prefix
+- After adding/changing public server API (agents, routes, use cases, interfaces): run `./gradlew :server:dokkaGeneratePublicationHtml`

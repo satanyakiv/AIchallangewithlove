@@ -7,6 +7,18 @@ import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.TurnContext
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
 
+/**
+ * Day 11 — baseline Psy-Agent with 3-layer memory (Turn / Session / Profile).
+ *
+ * Route prefix: `/api/agent/psy11/`
+ *
+ * Pipeline per [chat] call:
+ * 1. Load session → extract turn metadata
+ * 2. Extract profile updates from user message ([UpdateProfileUseCase])
+ * 3. Assemble prompt with [PsyPromptBuilder]
+ * 4. Call LLM → persist assistant reply
+ * 5. Return [PsyChatResult] with debug memory layers
+ */
 class PsyAgent(
     private val contextStore: ContextStore,
     private val promptBuilder: PsyPromptBuilder,

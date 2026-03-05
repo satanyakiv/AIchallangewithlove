@@ -30,11 +30,16 @@ data class MemoryLayersDebug(
 )
 
 @Serializable
+data class TransitionDebugDto(val from: String, val to: String, val event: String)
+
+@Serializable
 data class PsyChatResponse(
     val response: String,
     val state: String,
     val memoryLayers: MemoryLayersDebug,
     val profileUpdates: List<String> = emptyList(),
+    val intent: String = "",
+    val transitions: List<TransitionDebugDto> = emptyList(),
 )
 
 @Serializable
@@ -63,11 +68,11 @@ data class PsyPreferencesRequest(
     val avoidTopics: List<String> = emptyList(),
 )
 
-class PsyAgentApi(private val client: HttpClient) {
-    private val baseUrl = "http://${getServerHost()}:$SERVER_PORT"
+class PsyAgentApi(private val client: HttpClient, private val basePath: String) {
+    private val baseUrl = "http://${getServerHost()}:$SERVER_PORT/api/agent/$basePath"
 
     suspend fun startSession(userId: String): PsyStartResponse {
-        val httpResponse = client.post("$baseUrl/api/agent/psy/start") {
+        val httpResponse = client.post("$baseUrl/start") {
             contentType(ContentType.Application.Json)
             setBody(PsyStartRequest(userId))
         }
@@ -78,7 +83,7 @@ class PsyAgentApi(private val client: HttpClient) {
     }
 
     suspend fun chat(sessionId: String, message: String): PsyChatResponse {
-        val httpResponse = client.post("$baseUrl/api/agent/psy/chat") {
+        val httpResponse = client.post("$baseUrl/chat") {
             contentType(ContentType.Application.Json)
             setBody(PsyChatRequest(sessionId, message))
         }
@@ -89,7 +94,7 @@ class PsyAgentApi(private val client: HttpClient) {
     }
 
     suspend fun getProfile(userId: String): PsyUserProfileDto {
-        val httpResponse = client.get("$baseUrl/api/agent/psy/profile") {
+        val httpResponse = client.get("$baseUrl/profile") {
             parameter("userId", userId)
         }
         if (!httpResponse.status.isSuccess()) {
@@ -99,7 +104,7 @@ class PsyAgentApi(private val client: HttpClient) {
     }
 
     suspend fun updatePreferences(userId: String, preferences: CommunicationPreferences): PsyUserProfileDto {
-        val httpResponse = client.post("$baseUrl/api/agent/psy/profile/preferences") {
+        val httpResponse = client.post("$baseUrl/profile/preferences") {
             contentType(ContentType.Application.Json)
             setBody(PsyPreferencesRequest(
                 userId = userId,

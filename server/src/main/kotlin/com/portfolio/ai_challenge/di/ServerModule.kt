@@ -7,6 +7,9 @@ import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day12PsyAgent
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day13PsyAgent
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.DetectCrisisUseCase
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.DetermineIntentUseCase
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.PersonalizeResponseUseCase
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.ProfileExtractor
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
@@ -53,6 +56,9 @@ val serverModule = module {
     single { ProfileExtractor() }
     single { UpdateProfileUseCase(get(), get()) }
     single { UpdatePreferencesUseCase(get()) }
+    single { DetectCrisisUseCase() }
+    single { DetermineIntentUseCase() }
     single { PsyAgent(get(), get(), get(), get()) }
     single { Day12PsyAgent(get(), get(), get(), get()) }
+    single { Day13PsyAgent(get(), get(), get(), get(), get(), get()) }
 }

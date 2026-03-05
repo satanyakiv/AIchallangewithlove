@@ -51,7 +51,7 @@ fun Route.temperatureRoutes(httpClient: HttpClient, apiKey: String) {
 
                     while (!channel.isClosedForRead) {
                         val line = try {
-                            channel.readUTF8Line()
+                            channel.readLine()
                         } catch (e: Exception) {
                             null
                         } ?: break

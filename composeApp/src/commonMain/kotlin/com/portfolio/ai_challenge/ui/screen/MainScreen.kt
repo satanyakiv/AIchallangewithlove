@@ -81,6 +81,13 @@ private val challengeDays = listOf(
         description = "Profile preferences: formality, language, response length, avoid topics. Agent adapts communication style to each user.",
         emoji = "\uD83C\uDFA8",
     ),
+    ChallengeDay(
+        id = 13,
+        dayNumber = 13,
+        title = "State Machine",
+        description = "Session lifecycle: Greeting → Active Listening → Intervention → Closing → Finished. Crisis detection and de-escalation.",
+        emoji = "\uD83D\uDD04",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

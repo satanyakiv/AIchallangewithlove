@@ -25,6 +25,11 @@ object Prompts {
         val PERSONALIZATION_SHORT by lazy { load("prompts/psy/personalization-short.txt") }
         val PERSONALIZATION_MEDIUM by lazy { load("prompts/psy/personalization-medium.txt") }
         val PERSONALIZATION_DETAILED by lazy { load("prompts/psy/personalization-detailed.txt") }
+        val STATE_GREETING by lazy { load("prompts/psy/state-greeting.txt") }
+        val STATE_ACTIVE_LISTENING by lazy { load("prompts/psy/state-active-listening.txt") }
+        val STATE_INTERVENTION by lazy { load("prompts/psy/state-intervention.txt") }
+        val STATE_CRISIS by lazy { load("prompts/psy/state-crisis.txt") }
+        val STATE_CLOSING by lazy { load("prompts/psy/state-closing.txt") }
     }
 
     private fun load(path: String): String =

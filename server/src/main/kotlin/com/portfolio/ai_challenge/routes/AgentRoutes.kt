@@ -127,7 +127,7 @@ fun Route.agentV10Routes(
     }
 }
 
-fun Route.agentRoutes(agent: Day6Agent) {
+fun Route.day6AgentRoutes(agent: Day6Agent) {
     route("/api/agent") {
         post("/chat") {
             val request = call.receive<AgentChatRequest>()

@@ -16,7 +16,7 @@ import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsySessionSummary
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.ResponseLength
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
-import com.portfolio.ai_challenge.routes.psyAgentRoutes
+import com.portfolio.ai_challenge.routes.day12PsyAgentRoutes
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
@@ -304,7 +304,7 @@ class Day12PersonalizationTest {
         val store = InMemoryContextStore()
         store.createSession("s1", "user1")
         install(ServerContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
-        routing { psyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
+        routing { day12PsyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
         block()
     }
 
@@ -313,10 +313,10 @@ class Day12PersonalizationTest {
         val store = InMemoryContextStore()
         store.createSession("s1", "user1")
         install(ServerContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
-        routing { psyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
+        routing { day12PsyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
 
         val client = createClient { install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) } }
-        val response = client.get("/api/agent/psy/profile?userId=user1")
+        val response = client.get("/api/agent/psy12/profile?userId=user1")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -324,10 +324,10 @@ class Day12PersonalizationTest {
     fun testGetProfile_unknownUser_returnsEmptyProfile() = testApplication {
         val store = InMemoryContextStore()
         install(ServerContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
-        routing { psyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
+        routing { day12PsyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
 
         val client = createClient { install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) } }
-        val response = client.get("/api/agent/psy/profile?userId=unknown")
+        val response = client.get("/api/agent/psy12/profile?userId=unknown")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -335,10 +335,10 @@ class Day12PersonalizationTest {
     fun testUpdatePreferences_validRequest_returns200() = testApplication {
         val store = InMemoryContextStore()
         install(ServerContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
-        routing { psyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
+        routing { day12PsyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
 
         val client = createClient { install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) } }
-        val response = client.post("/api/agent/psy/profile/preferences") {
+        val response = client.post("/api/agent/psy12/profile/preferences") {
             contentType(ContentType.Application.Json)
             setBody(buildJsonObject { put("userId", "user1"); put("formality", "FORMAL"); put("responseLength", "SHORT") }.toString())
         }
@@ -349,14 +349,14 @@ class Day12PersonalizationTest {
     fun testUpdatePreferences_thenGetProfile_reflectsChanges() = testApplication {
         val store = InMemoryContextStore()
         install(ServerContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
-        routing { psyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
+        routing { day12PsyAgentRoutes(mockk<Day12PsyAgent>(relaxed = true), PsyResponseMapper(), UpdatePreferencesUseCase(store), store) }
 
         val client = createClient { install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) } }
-        client.post("/api/agent/psy/profile/preferences") {
+        client.post("/api/agent/psy12/profile/preferences") {
             contentType(ContentType.Application.Json)
             setBody(buildJsonObject { put("userId", "user2"); put("formality", "FORMAL") }.toString())
         }
-        val profileResponse = client.get("/api/agent/psy/profile?userId=user2")
+        val profileResponse = client.get("/api/agent/psy12/profile?userId=user2")
         assertEquals(HttpStatusCode.OK, profileResponse.status)
         assertNotNull(profileResponse.body<String>().also { assertTrue("FORMAL" in it) })
     }

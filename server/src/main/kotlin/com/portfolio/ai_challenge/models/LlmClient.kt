@@ -10,6 +10,17 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import kotlinx.serialization.json.Json
 
+/**
+ * Thin HTTP wrapper around the DeepSeek Chat Completions API.
+ *
+ * Shared by all agents (Day 6–13). Uses `bodyAsText()` + manual JSON
+ * because the Ktor HttpClient is not configured with ContentNegotiation.
+ *
+ * @param httpClient Ktor [HttpClient] with CIO engine.
+ * @param apiKey DeepSeek API key (read from `DEEPSEEK_API_KEY` env var).
+ * @param apiUrl Completions endpoint. Default: DeepSeek production.
+ * @param model Model identifier. Default: `deepseek-chat` (V3).
+ */
 class LlmClient(
     private val httpClient: HttpClient,
     private val apiKey: String,

@@ -40,6 +40,11 @@ class InMemoryContextStore : ContextStore {
         )
     }
 
+    override fun updateSessionState(sessionId: String, state: String) {
+        val current = sessions[sessionId] ?: return
+        sessions[sessionId] = current.copy(currentState = state)
+    }
+
     override fun assembleContext(sessionId: String, currentState: String): PsyAgentContext {
         val session = sessions[sessionId]
             ?: throw IllegalArgumentException("Session not found: $sessionId")

@@ -1,18 +1,16 @@
 package com.portfolio.ai_challenge
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day12PsyAgent
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.MemoryLayersDebug
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyChatResponse
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyResponseMapper
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdatePreferencesUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextWindowManager
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsyChatResult
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsySessionContext
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsyUserProfile
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.TurnContext
 import com.portfolio.ai_challenge.routes.PsyStartResponse
-import com.portfolio.ai_challenge.routes.psyAgentRoutes
+import com.portfolio.ai_challenge.routes.day11PsyAgentRoutes
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
@@ -46,8 +44,8 @@ class Day11IntegrationTest {
         turnContext = TurnContext(attemptCount = 1),
     )
 
-    private fun buildPsyAgent(response: String = "I hear you. That sounds difficult."): Day12PsyAgent {
-        val mockAgent = mockk<Day12PsyAgent>()
+    private fun buildPsyAgent(response: String = "I hear you. That sounds difficult."): PsyAgent {
+        val mockAgent = mockk<PsyAgent>()
         coEvery { mockAgent.startSession(any()) } answers {
             val store = InMemoryContextStore()
             val sessionId = java.util.UUID.randomUUID().toString()
@@ -66,13 +64,13 @@ class Day11IntegrationTest {
             json(Json { ignoreUnknownKeys = true })
         }
         val testStore = InMemoryContextStore()
-        routing { psyAgentRoutes(mockAgent, PsyResponseMapper(), UpdatePreferencesUseCase(testStore), testStore) }
+        routing { day11PsyAgentRoutes(mockAgent, PsyResponseMapper(), testStore) }
 
         val client = createClient {
             install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
         }
 
-        val response = client.post("/api/agent/psy/start") {
+        val response = client.post("/api/agent/psy11/start") {
             contentType(ContentType.Application.Json)
             setBody(buildJsonObject { put("userId", "test1") }.toString())
         }
@@ -91,13 +89,13 @@ class Day11IntegrationTest {
             json(Json { ignoreUnknownKeys = true })
         }
         val testStore = InMemoryContextStore()
-        routing { psyAgentRoutes(mockAgent, PsyResponseMapper(), UpdatePreferencesUseCase(testStore), testStore) }
+        routing { day11PsyAgentRoutes(mockAgent, PsyResponseMapper(), testStore) }
 
         val client = createClient {
             install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
         }
 
-        val response = client.post("/api/agent/psy/start") {
+        val response = client.post("/api/agent/psy11/start") {
             contentType(ContentType.Application.Json)
             setBody(buildJsonObject { put("userId", "") }.toString())
         }
@@ -108,7 +106,7 @@ class Day11IntegrationTest {
     @Test
     fun `POST psy chat returns response and memoryLayers`() = testApplication {
         val realStore = InMemoryContextStore()
-        val mockAgent = mockk<Day12PsyAgent>()
+        val mockAgent = mockk<PsyAgent>()
 
         coEvery { mockAgent.startSession("user1") } answers {
             val id = "test-session-id"
@@ -131,13 +129,13 @@ class Day11IntegrationTest {
             json(Json { ignoreUnknownKeys = true })
         }
         val testStore = InMemoryContextStore()
-        routing { psyAgentRoutes(mockAgent, PsyResponseMapper(), UpdatePreferencesUseCase(testStore), testStore) }
+        routing { day11PsyAgentRoutes(mockAgent, PsyResponseMapper(), testStore) }
 
         val client = createClient {
             install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
         }
 
-        val chatResponse = client.post("/api/agent/psy/chat") {
+        val chatResponse = client.post("/api/agent/psy11/chat") {
             contentType(ContentType.Application.Json)
             setBody(
                 buildJsonObject {
@@ -164,13 +162,13 @@ class Day11IntegrationTest {
             json(Json { ignoreUnknownKeys = true })
         }
         val testStore = InMemoryContextStore()
-        routing { psyAgentRoutes(mockAgent, PsyResponseMapper(), UpdatePreferencesUseCase(testStore), testStore) }
+        routing { day11PsyAgentRoutes(mockAgent, PsyResponseMapper(), testStore) }
 
         val client = createClient {
             install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
         }
 
-        val response = client.post("/api/agent/psy/chat") {
+        val response = client.post("/api/agent/psy11/chat") {
             contentType(ContentType.Application.Json)
             setBody(buildJsonObject {
                 put("sessionId", "")

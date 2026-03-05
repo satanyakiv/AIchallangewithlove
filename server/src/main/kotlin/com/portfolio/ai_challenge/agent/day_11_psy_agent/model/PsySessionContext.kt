@@ -8,4 +8,5 @@ data class PsySessionContext(
     val messages: List<ConversationEntry> = emptyList(),
     val detectedEmotions: List<String> = emptyList(),
     val suggestedTechniques: List<String> = emptyList(),
+    val currentState: String = "greeting", // state machine state string
 )
