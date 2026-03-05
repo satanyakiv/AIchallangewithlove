@@ -40,6 +40,8 @@ Read before writing code:
 - **DI**: Koin only, constructor injection, never create deps inside a class
 - **Types**: sealed interface over strings for states, events, results
 - **Size limits**: files < 150 lines, functions < 20 lines
+- **Use Cases**: extract logic from Agent into `{Verb}{Noun}UseCase.kt` when it grows beyond simple orchestration
+- **Test every mutation**: every code path that changes persisted data (profile, session) needs a test
 - **Models**: one class per file, `@Serializable`, prefix domain models (`PsyUserProfile`)
 - **Prompts**: all prompt text in `server/src/main/resources/prompts/`, never inline in .kt files
 - **Testing**: unit + integration per feature. Naming: `testWhat_condition_expected()`

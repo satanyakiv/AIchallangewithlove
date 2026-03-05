@@ -41,23 +41,23 @@ fun testProfileBuilder_messageWithAnxiety_extractsConcern() { ... }
 
 ```kotlin
 class InvariantCheckerTest {
-    // Setup once
-    private val checker = InvariantChecker(listOf(
-        NoDiagnosisInvariant(),
-        NoMedicationInvariant(),
-    ))
+  // Setup once
+  private val checker = InvariantChecker(listOf(
+    NoDiagnosisInvariant(),
+    NoMedicationInvariant(),
+  ))
 
-    @Test
-    fun testCheckAll_cleanResponse_noViolations() {
-        val result = checker.checkAll("I understand how difficult this must be")
-        assertEquals(0, result.size)
-    }
+  @Test
+  fun testCheckAll_cleanResponse_noViolations() {
+    val result = checker.checkAll("I understand how difficult this must be")
+    assertEquals(0, result.size)
+  }
 
-    @Test
-    fun testCheckAll_diagnosisInResponse_returnsHardBlock() {
-        val result = checker.checkAll("You clearly have depression")
-        assertTrue(result.any { it.severity == Severity.HARD_BLOCK })
-    }
+  @Test
+  fun testCheckAll_diagnosisInResponse_returnsHardBlock() {
+    val result = checker.checkAll("You clearly have depression")
+    assertTrue(result.any { it.severity == Severity.HARD_BLOCK })
+  }
 }
 ```
 
@@ -67,29 +67,29 @@ Follow existing `Day10IntegrationTest.kt` pattern:
 
 ```kotlin
 class Day11IntegrationTest {
-    @Test
-    fun testPsyChat_validSession_returnsResponseWithMemoryLayers() = testApplication {
-        // 1. Setup
-        application { module() }
+  @Test
+  fun testPsyChat_validSession_returnsResponseWithMemoryLayers() = testApplication {
+    // 1. Setup
+    application { module() }
 
-        // 2. Act
-        val startResp = client.post("/api/agent/psy/start") {
-            contentType(ContentType.Application.Json)
-            setBody("""{"userId": "test-user"}""")
-        }
-        val sessionId = /* extract from startResp */
-
-        val chatResp = client.post("/api/agent/psy/chat") {
-            contentType(ContentType.Application.Json)
-            setBody("""{"sessionId": "$sessionId", "message": "Hello"}""")
-        }
-
-        // 3. Assert
-        assertEquals(HttpStatusCode.OK, chatResp.status)
-        val body = chatResp.bodyAsText()
-        assertTrue(body.contains("response"))
-        assertTrue(body.contains("memoryLayers"))
+    // 2. Act
+    val startResp = client.post("/api/agent/psy/start") {
+      contentType(ContentType.Application.Json)
+      setBody("""{"userId": "test-user"}""")
     }
+    val sessionId = /* extract from startResp */
+
+    val chatResp = client.post("/api/agent/psy/chat") {
+      contentType(ContentType.Application.Json)
+      setBody("""{"sessionId": "$sessionId", "message": "Hello"}""")
+    }
+
+    // 3. Assert
+    assertEquals(HttpStatusCode.OK, chatResp.status)
+    val body = chatResp.bodyAsText()
+    assertTrue(body.contains("response"))
+    assertTrue(body.contains("memoryLayers"))
+  }
 }
 ```
 
@@ -103,6 +103,29 @@ class Day11IntegrationTest {
 | ContextStore | Session CRUD, profile persistence, isolation, assembleContext |
 | Pipeline | Happy path, retry on violation, fallback after max retries |
 | Routes | Valid request → 200, invalid session → error, response shape |
+| **UseCase** | **Every code path that mutates data** |
+
+## RULE: Every Data Mutation Gets a Test
+
+If code changes persisted state (profile, session, database), write a test that:
+1. Sets up initial state
+2. Runs the mutation
+3. Loads the state back
+4. Asserts the change happened
+
+```kotlin
+// Data mutation: profile name update
+// Required tests:
+fun testUpdateProfile_nameExtracted_profileHasNewName()
+fun testUpdateProfile_nameAlreadySet_nameOverwritten()
+fun testUpdateProfile_noNameInMessage_nameUnchanged()
+fun testUpdateProfile_persistsAcrossSessions()
+```
+
+**Pattern**: for each field that can change, write 3 tests minimum:
+- **Happy path**: field updates correctly
+- **No-op**: field unchanged when input has no relevant data
+- **Persistence**: field survives session restart / new session creation
 
 ## Test Dependencies
 

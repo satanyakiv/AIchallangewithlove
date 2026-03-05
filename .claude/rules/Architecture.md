@@ -57,8 +57,8 @@ val state: String = "active_listening"
 
 // GOOD
 sealed interface SessionState {
-  data object Greeting : SessionState
-  data class ActiveListening(val turnCount: Int) : SessionState
+    data object Greeting : SessionState
+    data class ActiveListening(val turnCount: Int) : SessionState
 }
 ```
 
@@ -67,6 +67,50 @@ sealed interface SessionState {
 - Files: < 150 lines. If more — split.
 - Functions: < 20 lines. If more — extract helpers.
 - Agent class: < 80 lines. If more — extract to components.
+
+## Use Cases
+
+When an Agent method grows beyond simple orchestration — extract a UseCase class.
+
+**Signal to extract**: agent does logic beyond "call A, pass result to B" — conditions, loops, data transformation, extraction.
+
+```kotlin
+// BAD — agent has extraction logic inside chat()
+class PsyAgent(...) {
+    suspend fun chat(sessionId: String, msg: String): PsyChatResult {
+        // ... 10 lines of orchestration ...
+        val nameRegex = Regex("(?i)(?:my name is|call me|i am)\\s+(\\w+)")
+        val match = nameRegex.find(msg)
+        if (match != null) {
+            contextStore.updateUserProfile(userId) { it.copy(preferredName = match.groupValues[1]) }
+        }
+        // ... more logic ...
+    }
+}
+
+// GOOD — extracted to UseCase
+class UpdateProfileUseCase(private val contextStore: ContextStore) {
+    fun execute(userId: String, message: String): ProfileUpdate { ... }
+}
+
+class PsyAgent(
+    private val updateProfile: UpdateProfileUseCase, // injected
+    ...
+) {
+    suspend fun chat(sessionId: String, msg: String): PsyChatResult {
+        // ... orchestration ...
+        val profileUpdate = updateProfile.execute(session.userId, msg)
+        // ... orchestration ...
+    }
+}
+```
+
+**Naming**: `{Verb}{Noun}UseCase.kt` — e.g. `UpdateProfileUseCase`, `ExtractEmotionsUseCase`, `DetectCrisisUseCase`.
+
+Each UseCase:
+- One public method: `execute(...)`
+- Own file in the feature package
+- Independently testable
 
 ## File Organization
 
