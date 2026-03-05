@@ -2,6 +2,7 @@ package com.portfolio.ai_challenge.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -112,6 +115,7 @@ private fun Day11View(
                     if (memoryDebug != null) {
                         MemoryDebugCard(memoryDebug = memoryDebug)
                     }
+                    QuickReplyChips(isLoading = isLoading, onSend = onSendMessage)
                     PsyChatInput(
                         inputText = inputText,
                         isLoading = isLoading,
@@ -275,6 +279,30 @@ private fun MemoryDebugCard(memoryDebug: MemoryLayersDebug) {
 }
 
 @Composable
+private fun QuickReplyChips(isLoading: Boolean, onSend: (String) -> Unit) {
+    val phrases = listOf(
+        "My name is Katya", "Call me Kolian",
+        "I feel really anxious lately", "I cant sleep at night", "I feel sad and hopeless",
+        "Work deadlines stress me out", "Having issues with my partner", "I feel so lonely and isolated",
+        "Tell me more about that technique", "Yes, lets try it", "I feel better now, thank you",
+        "I want to end the session",
+        "hi", "Do I have depression?", "What medication should I take?",
+    )
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        items(phrases) { phrase ->
+            SuggestionChip(
+                onClick = { onSend(phrase) },
+                label = { Text(phrase, style = MaterialTheme.typography.labelSmall) },
+                enabled = !isLoading,
+            )
+        }
+    }
+}
+
+@Composable
 private fun PsyChatInput(
     inputText: String,
     isLoading: Boolean,
@@ -393,17 +421,19 @@ private fun PsyChatBubble(message: ChatMessage) {
             ),
             colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
         ) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                Text(
-                    text = if (isUser) "You" else "\uD83E\uDDE0 MindGuard",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = textColor.copy(alpha = 0.7f),
-                )
-                Text(
-                    text = if (isUser) message.text else formatAiResponse(message.text),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = textColor,
-                )
+            SelectionContainer {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text(
+                        text = if (isUser) "You" else "\uD83E\uDDE0 MindGuard",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = textColor.copy(alpha = 0.7f),
+                    )
+                    Text(
+                        text = if (isUser) message.text else formatAiResponse(message.text),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = textColor,
+                    )
+                }
             }
         }
     }

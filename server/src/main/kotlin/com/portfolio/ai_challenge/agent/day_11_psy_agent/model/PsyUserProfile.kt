@@ -5,6 +5,7 @@ data class PsyUserProfile(
     val userId: String,
     val preferredName: String? = null,
     val primaryConcerns: List<String> = emptyList(),
+    val knownTriggers: List<String> = emptyList(),
     val preferredTechniques: List<String> = emptyList(),
     val sessionHistory: List<PsySessionSummary> = emptyList(),
 )

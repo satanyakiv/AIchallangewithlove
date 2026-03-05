@@ -43,6 +43,7 @@ Read before writing code:
 - **Models**: one class per file, `@Serializable`, prefix domain models (`PsyUserProfile`)
 - **Prompts**: all prompt text in `server/src/main/resources/prompts/`, never inline in .kt files
 - **Testing**: unit + integration per feature. Naming: `testWhat_condition_expected()`
+- **NEVER run all tests blindly**. Integration tests call real APIs. Always use `--tests` flag with specific class name.
 - **UI**: English text, follow Day7-Day10 patterns, register in AppScreen/ChallengeDay/MainScreen/App.kt
 
 ## API

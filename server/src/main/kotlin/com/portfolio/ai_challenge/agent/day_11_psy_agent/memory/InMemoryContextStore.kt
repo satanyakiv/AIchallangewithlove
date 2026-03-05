@@ -33,6 +33,13 @@ class InMemoryContextStore : ContextStore {
         profiles[profile.userId] = profile
     }
 
+    override fun updateSessionEmotions(sessionId: String, newEmotions: List<String>) {
+        val current = sessions[sessionId] ?: return
+        sessions[sessionId] = current.copy(
+            detectedEmotions = (current.detectedEmotions + newEmotions).distinct(),
+        )
+    }
+
     override fun assembleContext(sessionId: String, currentState: String): PsyAgentContext {
         val session = sessions[sessionId]
             ?: throw IllegalArgumentException("Session not found: $sessionId")

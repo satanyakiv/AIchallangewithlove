@@ -2,10 +2,20 @@
 
 > Read before writing any tests.
 
+## CRITICAL: Never Run Integration Tests
+
+Integration tests call real external APIs (DeepSeek, etc.) and cost money.
+
+- **ONLY run unit tests**: `./gradlew :server:test --tests "*.Unit*"` or specific test class
+- **NEVER run**: `./gradlew test` or `./gradlew :server:test` without a filter
+- **Naming convention**: unit test files end with `Test.kt`, integration test files end with `IntegrationTest.kt`
+- When running tests, ALWAYS use `--tests` flag to target specific test classes
+- If unsure whether a test calls external APIs — do NOT run it
+
 ## Every Feature Needs Both
 
-- **Unit tests**: individual components in isolation (PromptBuilder, InvariantChecker, StateMachine)
-- **Integration tests**: full HTTP flow (Ktor test server → endpoint → verify response)
+- **Unit tests**: individual components in isolation (PromptBuilder, InvariantChecker, StateMachine). Mock all external dependencies (LlmClient, HTTP).
+- **Integration tests**: full HTTP flow (Ktor test server → endpoint → verify response). Written by developer, run manually.
 
 ## File Locations
 
@@ -100,3 +110,20 @@ class Day11IntegrationTest {
 - `ktor-server-test-host` for integration tests
 - `kotlinx-coroutines-test` for suspend functions
 - `ktor-client-mock` for mocking HTTP calls in unit tests
+
+## How to Run Tests Safely
+
+```bash
+# GOOD — run specific test class
+./gradlew :server:test --tests "com.portfolio.ai_challenge.Day11PersistenceTest"
+
+# GOOD — run all tests matching pattern
+./gradlew :server:test --tests "*PersistenceTest"
+
+# GOOD — run single test method
+./gradlew :server:test --tests "*.Day11PersistenceTest.testPreferredName*"
+
+# BAD — runs everything including integration tests that call real APIs
+./gradlew test
+./gradlew :server:test
+```

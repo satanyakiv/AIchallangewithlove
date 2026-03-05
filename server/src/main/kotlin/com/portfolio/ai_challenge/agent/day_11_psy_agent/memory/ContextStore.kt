@@ -11,5 +11,6 @@ interface ContextStore {
     fun appendMessage(sessionId: String, entry: ConversationEntry)
     fun loadProfile(userId: String): PsyUserProfile
     fun saveProfile(profile: PsyUserProfile)
+    fun updateSessionEmotions(sessionId: String, newEmotions: List<String>)
     fun assembleContext(sessionId: String, currentState: String): PsyAgentContext
 }

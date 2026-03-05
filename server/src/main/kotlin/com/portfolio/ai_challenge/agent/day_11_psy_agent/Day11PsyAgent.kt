@@ -11,6 +11,7 @@ class PsyAgent(
     private val contextStore: ContextStore,
     private val promptBuilder: PsyPromptBuilder,
     private val llmClient: LlmClient,
+    private val updateProfile: UpdateProfileUseCase,
 ) {
 
     fun startSession(userId: String): String {
@@ -22,10 +23,21 @@ class PsyAgent(
     suspend fun chat(sessionId: String, userMessage: String): PsyChatResult {
         val session = contextStore.loadSession(sessionId)
             ?: throw IllegalArgumentException("Session not found: $sessionId")
-        val turnContext = TurnContext(
-            attemptCount = session.messages.count { it.role == MessageRole.USER } + 1,
-        )
+        val attemptCount = session.messages.count { it.role == MessageRole.USER } + 1
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.USER, content = userMessage))
+
+        val profileUpdate = updateProfile.execute(session.userId, userMessage)
+        val detectedEmotion = profileUpdate.newConcerns.firstOrNull()
+        val plan = if (detectedEmotion != null) "validate_and_explore" else "active_listening"
+        val turnContext = TurnContext(
+            attemptCount = attemptCount,
+            detectedEmotion = detectedEmotion,
+            plan = plan,
+        )
+        if (profileUpdate.newConcerns.isNotEmpty()) {
+            contextStore.updateSessionEmotions(sessionId, profileUpdate.newConcerns)
+        }
+
         val context = contextStore.assembleContext(sessionId, "active")
         val messages = promptBuilder.buildMessages(context)
         val response = llmClient.complete(messages, maxTokens = 300)
