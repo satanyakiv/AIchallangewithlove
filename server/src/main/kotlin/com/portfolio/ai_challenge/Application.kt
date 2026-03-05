@@ -6,11 +6,15 @@ import com.portfolio.ai_challenge.agent.Day10SlidingAgent
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextWindowManager
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
 import com.portfolio.ai_challenge.routes.agentRoutes
 import com.portfolio.ai_challenge.routes.agentV10Routes
 import com.portfolio.ai_challenge.routes.agentV7Routes
 import com.portfolio.ai_challenge.routes.agentV9Routes
 import com.portfolio.ai_challenge.routes.modelRoutes
+import com.portfolio.ai_challenge.routes.psyAgentRoutes
 import com.portfolio.ai_challenge.routes.temperatureRoutes
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -47,6 +51,10 @@ fun Application.module() {
     val day10FactsAgent = Day10FactsAgent(httpClient, apiKey)
     val day10BranchingAgent = Day10BranchingAgent(httpClient, apiKey)
 
+    val contextStore = InMemoryContextStore()
+    val contextWindowManager = ContextWindowManager()
+    val psyAgent = PsyAgent(httpClient, apiKey, contextStore, contextWindowManager)
+
     install(ServerContentNegotiation) {
         json(Json { ignoreUnknownKeys = true })
     }
@@ -66,5 +74,6 @@ fun Application.module() {
         agentV7Routes(day7Agent)
         agentV9Routes(day9Agent)
         agentV10Routes(day10SlidingAgent, day10FactsAgent, day10BranchingAgent)
+        psyAgentRoutes(psyAgent)
     }
 }

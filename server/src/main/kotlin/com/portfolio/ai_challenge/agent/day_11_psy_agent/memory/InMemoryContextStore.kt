@@ -1,0 +1,51 @@
+package com.portfolio.ai_challenge.agent.day_11_psy_agent.memory
+
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.ConversationEntry
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.DEFAULT_DOMAIN
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsyAgentContext
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsySessionContext
+import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsyUserProfile
+import java.util.concurrent.ConcurrentHashMap
+
+class InMemoryContextStore : ContextStore {
+
+    private val sessions = ConcurrentHashMap<String, PsySessionContext>()
+    private val profiles = ConcurrentHashMap<String, PsyUserProfile>()
+
+    override fun createSession(sessionId: String, userId: String): PsySessionContext {
+        val session = PsySessionContext(sessionId = sessionId, userId = userId)
+        sessions[sessionId] = session
+        profiles.getOrPut(userId) { PsyUserProfile(userId = userId) }
+        return session
+    }
+
+    override fun loadSession(sessionId: String): PsySessionContext? = sessions[sessionId]
+
+    override fun appendMessage(sessionId: String, entry: ConversationEntry) {
+        val current = sessions[sessionId] ?: return
+        sessions[sessionId] = current.copy(messages = current.messages + entry)
+    }
+
+    override fun loadProfile(userId: String): PsyUserProfile =
+        profiles.getOrPut(userId) { PsyUserProfile(userId = userId) }
+
+    override fun saveProfile(profile: PsyUserProfile) {
+        profiles[profile.userId] = profile
+    }
+
+    override fun assembleContext(sessionId: String, currentState: String): PsyAgentContext {
+        val session = sessions[sessionId]
+            ?: throw IllegalArgumentException("Session not found: $sessionId")
+        val profile = loadProfile(session.userId)
+        val recentSessions = profile.sessionHistory.takeLast(3)
+        return PsyAgentContext(
+            sessionId = sessionId,
+            userId = session.userId,
+            currentState = currentState,
+            currentMessages = session.messages,
+            userProfile = profile,
+            recentSessions = recentSessions,
+            domain = DEFAULT_DOMAIN,
+        )
+    }
+}

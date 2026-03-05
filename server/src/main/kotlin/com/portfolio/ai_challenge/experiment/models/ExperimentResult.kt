@@ -1,11 +1,12 @@
 package com.portfolio.ai_challenge.experiment.models
 
+import com.portfolio.ai_challenge.models.MessageRole
 import com.portfolio.ai_challenge.models.TokenUsage
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConversationEntry(
-    val role: String,       // "user" or "assistant"
+    val role: MessageRole,
     val content: String,
     val stepId: String,
     val stepType: String,

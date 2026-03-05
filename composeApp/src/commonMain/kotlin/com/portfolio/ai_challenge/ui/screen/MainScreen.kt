@@ -67,6 +67,13 @@ private val challengeDays = listOf(
         description = "3 context management approaches: Sliding Window, Sticky Facts (KV memory), and Branching (fork conversations). Compare metrics on a real scenario.",
         emoji = "\uD83D\uDD00",
     ),
+    ChallengeDay(
+        id = 11,
+        dayNumber = 11,
+        title = "Psy-Agent",
+        description = "3-layer memory for mental health AI: Turn (ephemeral), Session (in-memory), Profile (persistent). MindGuard — compassionate AI assistant.",
+        emoji = "\uD83E\uDDE0",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

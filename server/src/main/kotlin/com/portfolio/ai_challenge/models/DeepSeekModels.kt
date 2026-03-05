@@ -55,7 +55,7 @@ data class DeepSeekRequest(
 
 @Serializable
 data class DeepSeekMessage(
-    val role: String,
+    val role: MessageRole,
     val content: String,
 )
 

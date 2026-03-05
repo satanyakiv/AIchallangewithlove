@@ -3,6 +3,7 @@ package com.portfolio.ai_challenge.experiment
 import com.portfolio.ai_challenge.agent.AgentResponse
 import com.portfolio.ai_challenge.agent.ApiMessageDto
 import com.portfolio.ai_challenge.agent.Day8Agent
+import com.portfolio.ai_challenge.models.MessageRole
 import com.portfolio.ai_challenge.experiment.models.ConversationEntry
 import com.portfolio.ai_challenge.experiment.models.ExperimentResult
 import com.portfolio.ai_challenge.experiment.models.FullExperimentResult
@@ -37,10 +38,10 @@ class Day8ExperimentRunner(
         var peakTokens = 0
 
         suspend fun sendStep(userMessage: String, stepId: String, stepType: String, failureMode: String?): AgentResponse {
-            conversationHistory.add(ApiMessageDto(role = "user", content = userMessage))
+            conversationHistory.add(ApiMessageDto(role = MessageRole.USER, content = userMessage))
             conversationLog.add(
                 ConversationEntry(
-                    role = "user",
+                    role = MessageRole.USER,
                     content = userMessage,
                     stepId = stepId,
                     stepType = stepType,
@@ -52,10 +53,10 @@ class Day8ExperimentRunner(
             val response = agent.chat(conversationHistory.toList())
 
             if (response.errorMessage == null) {
-                conversationHistory.add(ApiMessageDto(role = "assistant", content = response.content))
+                conversationHistory.add(ApiMessageDto(role = MessageRole.ASSISTANT, content = response.content))
                 conversationLog.add(
                     ConversationEntry(
-                        role = "assistant",
+                        role = MessageRole.ASSISTANT,
                         content = response.content,
                         stepId = stepId,
                         stepType = stepType,
@@ -176,10 +177,10 @@ class Day8ExperimentRunner(
         var lastTotalTokens = 0
 
         suspend fun sendStep(userMessage: String, stepId: String, stepType: String, failureMode: String?): AgentResponse {
-            conversationHistory.add(ApiMessageDto(role = "user", content = userMessage))
+            conversationHistory.add(ApiMessageDto(role = MessageRole.USER, content = userMessage))
             conversationLog.add(
                 ConversationEntry(
-                    role = "user",
+                    role = MessageRole.USER,
                     content = userMessage,
                     stepId = stepId,
                     stepType = stepType,
@@ -191,10 +192,10 @@ class Day8ExperimentRunner(
             val response = agent.chat(conversationHistory.toList())
 
             if (response.errorMessage == null) {
-                conversationHistory.add(ApiMessageDto(role = "assistant", content = response.content))
+                conversationHistory.add(ApiMessageDto(role = MessageRole.ASSISTANT, content = response.content))
                 conversationLog.add(
                     ConversationEntry(
-                        role = "assistant",
+                        role = MessageRole.ASSISTANT,
                         content = response.content,
                         stepId = stepId,
                         stepType = stepType,

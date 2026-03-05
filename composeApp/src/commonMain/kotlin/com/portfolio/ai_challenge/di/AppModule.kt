@@ -1,11 +1,13 @@
 package com.portfolio.ai_challenge.di
 
 import com.portfolio.ai_challenge.data.AgentApi
+import com.portfolio.ai_challenge.data.PsyAgentApi
 import com.portfolio.ai_challenge.database.ChatRepository
 import com.portfolio.ai_challenge.database.Day10Repository
 import com.portfolio.ai_challenge.ui.screen.Day10BranchingViewModel
 import com.portfolio.ai_challenge.ui.screen.Day10FactsViewModel
 import com.portfolio.ai_challenge.ui.screen.Day10SlidingViewModel
+import com.portfolio.ai_challenge.ui.screen.Day11ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day4ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day5ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day6ViewModel
@@ -28,6 +30,10 @@ val day10Module = module {
     viewModel { Day10BranchingViewModel(get<AgentApi>(), get<Day10Repository>()) }
 }
 
+val day11Module = module {
+    viewModel { Day11ViewModel(get<PsyAgentApi>()) }
+}
+
 val appModule = module {
-    includes(networkModule, day4to9Module, day10Module)
+    includes(networkModule, day4to9Module, day10Module, day11Module)
 }

@@ -2,6 +2,7 @@ package com.portfolio.ai_challenge
 
 import com.portfolio.ai_challenge.agent.ApiMessageDto
 import com.portfolio.ai_challenge.agent.Day7Agent
+import com.portfolio.ai_challenge.models.MessageRole
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -58,7 +59,7 @@ class Day7AgentTest {
         })
         val agent = Day7Agent(client, apiKey = "fake-key")
 
-        agent.chat(listOf(ApiMessageDto("user", "hello")))
+        agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hello")))
 
         assertContains(capturedBody, "\"model\"", message = "Request body must include 'model' field")
         assertContains(capturedBody, "deepseek-chat", message = "Model value must be 'deepseek-chat'")
@@ -72,7 +73,7 @@ class Day7AgentTest {
         })
         val agent = Day7Agent(client, apiKey = "fake-key")
 
-        agent.chat(listOf(ApiMessageDto("user", "hello world")))
+        agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hello world")))
 
         assertContains(capturedBody, "\"messages\"")
         assertContains(capturedBody, "hello world")
@@ -86,7 +87,7 @@ class Day7AgentTest {
         })
         val agent = Day7Agent(client, apiKey = "fake-key")
 
-        agent.chat(listOf(ApiMessageDto("user", "hello")))
+        agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hello")))
 
         assertContains(capturedBody, "\"system\"", message = "Request must include system message")
     }
@@ -96,7 +97,7 @@ class Day7AgentTest {
         val client = buildMockClient()
         val agent = Day7Agent(client, apiKey = "fake-key")
 
-        val result = agent.chat(listOf(ApiMessageDto("user", "hello")))
+        val result = agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hello")))
 
         assertEquals("Mr. Anderson.", result)
     }
@@ -110,7 +111,7 @@ class Day7AgentTest {
         val agent = Day7Agent(client, apiKey = "bad-key")
 
         val ex = assertFailsWith<Exception> {
-            agent.chat(listOf(ApiMessageDto("user", "hello")))
+            agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hello")))
         }
         assertContains(ex.message ?: "", "401")
     }

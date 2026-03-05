@@ -1,6 +1,7 @@
 package com.portfolio.ai_challenge
 
 import com.portfolio.ai_challenge.experiment.PrintlnExperimentLogger
+import com.portfolio.ai_challenge.models.MessageRole
 import com.portfolio.ai_challenge.experiment.models.TestStep
 import com.portfolio.ai_challenge.experiment.models.type
 import com.portfolio.ai_challenge.experiment.parseTestData
@@ -59,8 +60,8 @@ class Day8SmokeTest {
         assertTrue(result.peakTokens > 0, "Peak tokens must be > 0")
         assertTrue(result.conversationLog.isNotEmpty(), "Conversation log must not be empty")
 
-        val userEntries = result.conversationLog.filter { it.role == "user" }
-        val assistantEntries = result.conversationLog.filter { it.role == "assistant" }
+        val userEntries = result.conversationLog.filter { it.role == MessageRole.USER }
+        val assistantEntries = result.conversationLog.filter { it.role == MessageRole.ASSISTANT }
         assertTrue(userEntries.isNotEmpty(), "Must have user entries in log")
         assertTrue(assistantEntries.isNotEmpty(), "Must have assistant entries in log")
 

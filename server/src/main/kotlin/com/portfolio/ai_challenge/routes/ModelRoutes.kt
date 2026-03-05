@@ -79,7 +79,7 @@ fun Route.modelRoutes(httpClient: HttpClient, apiKey: String) {
                                     setBody(json.encodeToString(DeepSeekRequest.serializer(),
                                         DeepSeekRequest(
                                             model = config.id,
-                                            messages = listOf(DeepSeekMessage(role = "user", content = request.prompt)),
+                                            messages = listOf(DeepSeekMessage(role = MessageRole.USER, content = request.prompt)),
                                             temperature = 0.7,
                                             maxTokens = config.maxTokens,
                                         )
@@ -170,7 +170,7 @@ fun Route.modelRoutes(httpClient: HttpClient, apiKey: String) {
                 bearerAuth(apiKey)
                 setBody(json.encodeToString(DeepSeekRequest.serializer(),
                     DeepSeekRequest(
-                        messages = listOf(DeepSeekMessage(role = "user", content = analyzePrompt)),
+                        messages = listOf(DeepSeekMessage(role = MessageRole.USER, content = analyzePrompt)),
                         temperature = 0.0,
                     )
                 ))

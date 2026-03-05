@@ -3,6 +3,7 @@ package com.portfolio.ai_challenge.agent
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.DeepSeekRequest
 import com.portfolio.ai_challenge.models.DeepSeekResponse
+import com.portfolio.ai_challenge.models.MessageRole
 import com.portfolio.ai_challenge.models.TokenUsage
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -37,7 +38,7 @@ class Day8Agent(
 ) {
     suspend fun chat(messages: List<ApiMessageDto>): AgentResponse {
         val allMessages = buildList {
-            add(DeepSeekMessage(role = "system", content = systemPrompt))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = systemPrompt))
             addAll(messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
         val request = DeepSeekRequest(

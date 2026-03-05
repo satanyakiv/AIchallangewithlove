@@ -11,6 +11,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import com.portfolio.ai_challenge.models.MessageRole
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -63,7 +64,7 @@ class Day9Agent(private val httpClient: HttpClient, private val apiKey: String) 
     // Normal path: send ALL messages to DeepSeek unchanged
     private suspend fun chatNormal(allMessages: List<ApiMessageDto>): Day9ChatResponse {
         val messages = buildList {
-            add(DeepSeekMessage(role = "system", content = SYSTEM_PROMPT))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = SYSTEM_PROMPT))
             addAll(allMessages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
         val deepSeekResponse = callDeepSeek(messages, temperature = 0.7)
@@ -96,25 +97,25 @@ class Day9Agent(private val httpClient: HttpClient, private val apiKey: String) 
                 appendLine("Conversation to summarize:")
             }
             oldMessages.forEach { msg ->
-                appendLine("${msg.role.uppercase()}: ${msg.content}")
+                appendLine("${msg.role.name}: ${msg.content}")
             }
         }
 
         // Call 1: get summary of old messages
         val summaryMessages = listOf(
-            DeepSeekMessage(role = "system", content = SUMMARY_SYSTEM_PROMPT),
-            DeepSeekMessage(role = "user", content = summaryUserContent),
+            DeepSeekMessage(role = MessageRole.SYSTEM, content = SUMMARY_SYSTEM_PROMPT),
+            DeepSeekMessage(role = MessageRole.USER, content = summaryUserContent),
         )
         val summaryResponse = callDeepSeek(summaryMessages, temperature = 0.3)
         val newSummary = summaryResponse.choices.first().message.content
 
         // Call 2: answer with compressed context
         val compressedMessages = buildList {
-            add(DeepSeekMessage(role = "system", content = SYSTEM_PROMPT))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = SYSTEM_PROMPT))
             // Inject summary as a system-level context note
             add(
                 DeepSeekMessage(
-                    role = "system",
+                    role = MessageRole.SYSTEM,
                     content = "Previous conversation summary (for context): $newSummary",
                 )
             )

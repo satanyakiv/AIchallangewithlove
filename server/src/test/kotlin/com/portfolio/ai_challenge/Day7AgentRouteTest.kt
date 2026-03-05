@@ -2,6 +2,7 @@ package com.portfolio.ai_challenge
 
 import com.portfolio.ai_challenge.agent.ApiMessageDto
 import com.portfolio.ai_challenge.agent.Day7Agent
+import com.portfolio.ai_challenge.models.MessageRole
 import com.portfolio.ai_challenge.routes.AgentChatResponse
 import com.portfolio.ai_challenge.routes.AgentChatV7Request
 import com.portfolio.ai_challenge.routes.agentV7Routes
@@ -49,7 +50,7 @@ class Day7AgentRouteTest {
 
         val response = client.post("/api/agent/chat-v7") {
             contentType(ContentType.Application.Json)
-            setBody(AgentChatV7Request(messages = listOf(ApiMessageDto("user", "Hello"))))
+            setBody(AgentChatV7Request(messages = listOf(ApiMessageDto(MessageRole.USER, "Hello"))))
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
@@ -102,9 +103,9 @@ class Day7AgentRouteTest {
         }
 
         val history = listOf(
-            ApiMessageDto("user", "Hello"),
-            ApiMessageDto("assistant", "Mr. Anderson."),
-            ApiMessageDto("user", "Are you real?"),
+            ApiMessageDto(MessageRole.USER, "Hello"),
+            ApiMessageDto(MessageRole.ASSISTANT, "Mr. Anderson."),
+            ApiMessageDto(MessageRole.USER, "Are you real?"),
         )
 
         client.post("/api/agent/chat-v7") {
@@ -114,7 +115,7 @@ class Day7AgentRouteTest {
 
         assertEquals(1, capturedMessages.size)
         assertEquals(3, capturedMessages.first().size)
-        assertEquals("user", capturedMessages.first().last().role)
+        assertEquals(MessageRole.USER, capturedMessages.first().last().role)
         assertEquals("Are you real?", capturedMessages.first().last().content)
     }
 
@@ -138,7 +139,7 @@ class Day7AgentRouteTest {
 
         val response = client.post("/api/agent/chat-v7") {
             contentType(ContentType.Application.Json)
-            setBody(AgentChatV7Request(messages = listOf(ApiMessageDto("user", "Hello"))))
+            setBody(AgentChatV7Request(messages = listOf(ApiMessageDto(MessageRole.USER, "Hello"))))
         }
 
         assertEquals(HttpStatusCode.InternalServerError, response.status)
@@ -149,8 +150,8 @@ class Day7AgentRouteTest {
         val json = Json { ignoreUnknownKeys = true }
         val request = AgentChatV7Request(
             messages = listOf(
-                ApiMessageDto(role = "user", content = "Are you real?"),
-                ApiMessageDto(role = "assistant", content = "Inevitably."),
+                ApiMessageDto(role = MessageRole.USER, content = "Are you real?"),
+                ApiMessageDto(role = MessageRole.ASSISTANT, content = "Inevitably."),
             )
         )
         val serialized = json.encodeToString(AgentChatV7Request.serializer(), request)
@@ -160,6 +161,6 @@ class Day7AgentRouteTest {
 
         val deserialized = json.decodeFromString<AgentChatV7Request>(serialized)
         assertEquals(2, deserialized.messages.size)
-        assertEquals("user", deserialized.messages[0].role)
+        assertEquals(MessageRole.USER, deserialized.messages[0].role)
     }
 }

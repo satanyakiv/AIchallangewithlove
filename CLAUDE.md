@@ -1,82 +1,64 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
-Kotlin Multiplatform (KMP) project with Compose Multiplatform UI and Ktor backend. Targets Android and Desktop (JVM) — no iOS. The project explores AI model parameters and integration (see `Challange-tasks/`).
+KMP project: Compose Multiplatform UI + Ktor backend. Android + Desktop (JVM), no iOS.
+Package: `com.portfolio.ai_challenge`
 
-## Build & Run Commands
+## Build & Run
 
 ```bash
-# Desktop app
-./gradlew :composeApp:run
-
-# Android (debug APK)
-./gradlew :composeApp:assembleDebug
-
-# Ktor server (port 8080)
-./gradlew :server:run
-
-# Run all tests
-./gradlew test
-
-# Run tests for a specific module
-./gradlew :server:test
-./gradlew :shared:testDebugUnitTest   # Android tests
-./gradlew :shared:jvmTest             # JVM tests
-./gradlew :composeApp:testDebugUnitTest
+./gradlew :composeApp:run          # Desktop app
+./gradlew :composeApp:assembleDebug # Android APK
+./gradlew :server:run              # Ktor server (port 8080)
+./gradlew test                     # All tests
+./gradlew :server:test             # Server tests only
 ```
 
-## Architecture
+## Modules
 
-Three Gradle modules defined in `settings.gradle.kts`:
-
-- **`shared/`** — Multiplatform library (Android + JVM). Contains `Platform` (expect/actual pattern), `Greeting`, `Constants` (SERVER_PORT). Package: `com.portfolio.ai_challange_with_love`
-- **`composeApp/`** — Compose Multiplatform UI (Android + Desktop). Entry points: `MainActivity` (Android), `main.kt` (Desktop). Main composable: `App()`
-- **`server/`** — Ktor 3.3.3 server with Netty. Entry point: `Application.kt`. Uses shared module for constants and greeting logic.
-
-### Key Patterns
-
-- **expect/actual**: Platform-specific implementations in `shared/` (`Platform.kt` → `Platform.android.kt`, `Platform.jvm.kt`)
-- **Compose Resources**: Multiplatform resources in `commonMain/composeResources/`
-- **Version catalog**: All dependency versions centralized in `gradle/libs.versions.toml`
+| Module | Purpose |
+|--------|---------|
+| `shared/` | KMP library: Platform expect/actual, Constants |
+| `composeApp/` | Compose UI: screens, ViewModels, navigation, DI |
+| `database/` | Room + SQLite KMP library |
+| `server/` | Ktor 3.4.1 + Netty: routes, agents, API |
 
 ## Tech Stack
 
-- Kotlin 2.3.0, Compose Multiplatform 1.10.0, Ktor 3.3.3
-- Android: compileSdk 36, minSdk 31, AGP 8.11.2
-- Gradle 8.14.3 with configuration cache enabled
-- Material3 for UI components
+Kotlin 2.3.10, Compose 1.10.2, Ktor 3.4.1, AGP 9.1.0, Room 2.8.4, Koin 4.1.1, kotlinx-serialization 1.10.0, Navigation3 1.0.0-alpha06, Koog 0.6.4, MockK 1.14.9. Full versions: `gradle/libs.versions.toml`.
 
-## API Keys
+## Key Rules
 
-- Use `DEEPSEEK_API_KEY` (from `~/.zshrc`) for **all** AI API calls in this project
-- Available models: `deepseek-chat` (V3.2), `deepseek-reasoner` (V3.2 thinking mode)
-- API base URL: `https://api.deepseek.com` (OpenAI-compatible)
+Before writing code, read `.claude/rules/architecture.md` — mandatory for ALL server features.
 
-## DI Framework
+- **Layered arch**: Routes (HTTP) → Agent (orchestration) → Components (logic) → Store (data)
+- **SRP**: every class/function does ONE thing
+- **DI**: Koin only, constructor injection, never create deps inside a class
+- **Types**: sealed interface over strings for states, events, results
+- **Size limits**: files < 150 lines, functions < 20 lines
+- **Models**: one class per file, `@Serializable`, prefix domain models (`PsyUserProfile`)
+- **Testing**: unit + integration per feature. Naming: `testWhat_condition_expected()`
+- **UI**: English text, follow Day7-Day10 patterns, register in AppScreen/ChallengeDay/MainScreen/App.kt
 
-- Use **Koin** for dependency injection, NOT Kodein
-- All Compose feature generation must use Koin modules and `koinInject()` / `koinViewModel()`
+## API
 
-## Koog (AI Agents Framework)
+`DEEPSEEK_API_KEY` from `~/.zshrc`. Models: `deepseek-chat`, `deepseek-reasoner`. URL: `https://api.deepseek.com`
 
-- When designing or implementing AI agent features, invoke `/koog` skill first (`~/.claude/skills/koog.md`)
-  - Covers: architecture decisions, anti-patterns, testing, MCP/A2A
-- For quick API syntax/imports lookup, use `~/.claude/koog-reference.md`
-- Use `ksrc` skill to inspect Koog source code for API details not covered in either reference
+## DI
+
+Koin only. `koinInject()` / `koinViewModel()` in Compose.
+
+## Koog
+
+Invoke `/koog` skill first for AI agent features. Reference: `~/.claude/koog-reference.md`
+
+## Psy-Agent (Days 11-15)
+
+Read `documentation/day-11-to-15/` diagrams before any psy-agent work.
 
 ## Workflow
 
-- After completing a task, always run `./gradlew :server:run` (background) and `./gradlew :composeApp:run` (background) so the user can test immediately
-- Kill existing processes on port 8080 before restarting the server
-
-## UI Language
-
-- All UI text (labels, titles, descriptions) must be in **English**
-- Challenge task content (from `Challange-tasks/`) stays in its original language (Ukrainian)
-- Code comments and documentation in English
-
-## Plans
-After creating a plan, always copy it to .claude/plans/ in the project root with date prefix (e.g. 2026-02-27-day8-experiment.md). Never delete old plans.
+- Kill port 8080 before server restart
+- After task: run server + desktop app for user testing
+- Save plans to `.claude/plans/` with date prefix

@@ -2,6 +2,7 @@ package com.portfolio.ai_challenge.di
 
 import com.portfolio.ai_challenge.data.AgentApi
 import com.portfolio.ai_challenge.data.ModelApi
+import com.portfolio.ai_challenge.data.PsyAgentApi
 import com.portfolio.ai_challenge.data.TemperatureApi
 import com.portfolio.ai_challenge.data.createHttpClient
 import org.koin.dsl.module
@@ -11,4 +12,5 @@ val networkModule = module {
     single { TemperatureApi(get()) }
     single { ModelApi(get()) }
     single { AgentApi(get()) }
+    single { PsyAgentApi(get()) }
 }

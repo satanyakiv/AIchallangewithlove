@@ -11,6 +11,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import com.portfolio.ai_challenge.models.MessageRole
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -45,7 +46,7 @@ class Day10SlidingAgent(private val httpClient: HttpClient, private val apiKey: 
         val droppedCount = (allMessages.size - windowed.size).coerceAtLeast(0)
 
         val messages = buildList {
-            add(DeepSeekMessage(role = "system", content = SYSTEM_PROMPT))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = SYSTEM_PROMPT))
             addAll(windowed.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
 

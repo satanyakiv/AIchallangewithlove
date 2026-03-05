@@ -11,6 +11,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import com.portfolio.ai_challenge.models.MessageRole
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -64,9 +65,9 @@ class Day10FactsAgent(private val httpClient: HttpClient, private val apiKey: St
         }
 
         val chatMessages = buildList {
-            add(DeepSeekMessage(role = "system", content = SYSTEM_PROMPT))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = SYSTEM_PROMPT))
             if (factsContext != null) {
-                add(DeepSeekMessage(role = "system", content = factsContext))
+                add(DeepSeekMessage(role = MessageRole.SYSTEM, content = factsContext))
             }
             addAll(request.messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
@@ -108,12 +109,12 @@ class Day10FactsAgent(private val httpClient: HttpClient, private val apiKey: St
             "No existing facts yet."
         }
 
-        val recentExchange = messages.takeLast(2).joinToString("\n") { "${it.role.uppercase()}: ${it.content}" }
+        val recentExchange = messages.takeLast(2).joinToString("\n") { "${it.role.name}: ${it.content}" }
 
         val extractionMessages = listOf(
-            DeepSeekMessage(role = "system", content = FACTS_EXTRACTION_PROMPT),
+            DeepSeekMessage(role = MessageRole.SYSTEM, content = FACTS_EXTRACTION_PROMPT),
             DeepSeekMessage(
-                role = "user",
+                role = MessageRole.USER,
                 content = "$existingJson\n\nLatest exchange:\n$recentExchange",
             ),
         )

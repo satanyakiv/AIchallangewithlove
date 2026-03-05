@@ -11,11 +11,12 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import com.portfolio.ai_challenge.models.MessageRole
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Serializable
-data class ApiMessageDto(val role: String, val content: String)
+data class ApiMessageDto(val role: MessageRole, val content: String)
 
 private const val DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions"
 
@@ -33,7 +34,7 @@ class Day7Agent(private val httpClient: HttpClient, private val apiKey: String) 
 
     suspend fun chat(messages: List<ApiMessageDto>): String {
         val allMessages = buildList {
-            add(DeepSeekMessage(role = "system", content = SYSTEM_PROMPT))
+            add(DeepSeekMessage(role = MessageRole.SYSTEM, content = SYSTEM_PROMPT))
             addAll(messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
         val request = DeepSeekRequest(

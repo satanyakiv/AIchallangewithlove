@@ -1,6 +1,7 @@
 package com.portfolio.ai_challenge
 
 import com.portfolio.ai_challenge.agent.ApiMessageDto
+import com.portfolio.ai_challenge.models.MessageRole
 import com.portfolio.ai_challenge.agent.Day10BranchingAgent
 import com.portfolio.ai_challenge.agent.Day10BranchingRequest
 import com.portfolio.ai_challenge.agent.Day10FactsAgent
@@ -30,11 +31,11 @@ class Day10IntegrationTest {
         private lateinit var apiKey: String
 
         private val SCENARIO_MESSAGES = listOf(
-            ApiMessageDto("user", "I want to build a task management app for small teams"),
-            ApiMessageDto("user", "Target platform: iOS and Android. Budget: \$80k"),
-            ApiMessageDto("user", "Deadline is end of Q2 2026. Team: 2 devs, 1 designer"),
-            ApiMessageDto("user", "Key features: task assignment, deadlines, push notifications"),
-            ApiMessageDto("user", "What tech stack would you recommend?"),
+            ApiMessageDto(MessageRole.USER, "I want to build a task management app for small teams"),
+            ApiMessageDto(MessageRole.USER, "Target platform: iOS and Android. Budget: \$80k"),
+            ApiMessageDto(MessageRole.USER, "Deadline is end of Q2 2026. Team: 2 devs, 1 designer"),
+            ApiMessageDto(MessageRole.USER, "Key features: task assignment, deadlines, push notifications"),
+            ApiMessageDto(MessageRole.USER, "What tech stack would you recommend?"),
         )
 
         @BeforeClass
@@ -61,7 +62,7 @@ class Day10IntegrationTest {
         SCENARIO_MESSAGES.forEachIndexed { index, msg ->
             history.add(msg)
             val response = agent.chat(Day10SlidingRequest(messages = history, windowSize = 5))
-            history.add(ApiMessageDto("assistant", response.response))
+            history.add(ApiMessageDto(MessageRole.ASSISTANT, response.response))
             totalPromptTokens += response.promptTokens
             println("Round ${index + 1}: prompt=${response.promptTokens} tokens, kept=${response.windowedCount}, dropped=${response.droppedCount}")
         }
@@ -87,7 +88,7 @@ class Day10IntegrationTest {
         SCENARIO_MESSAGES.forEachIndexed { index, msg ->
             history.add(msg)
             val response = agent.chat(Day10FactsRequest(messages = history, existingFacts = currentFacts))
-            history.add(ApiMessageDto("assistant", response.response))
+            history.add(ApiMessageDto(MessageRole.ASSISTANT, response.response))
             currentFacts = response.updatedFacts
             totalPromptTokens += response.promptTokens
             println("Round ${index + 1}: prompt=${response.promptTokens} tokens, facts=${currentFacts.keys}")
@@ -112,7 +113,7 @@ class Day10IntegrationTest {
         SCENARIO_MESSAGES.forEachIndexed { index, msg ->
             history.add(msg)
             val response = agent.chat(Day10BranchingRequest(messages = history))
-            history.add(ApiMessageDto("assistant", response.response))
+            history.add(ApiMessageDto(MessageRole.ASSISTANT, response.response))
             totalPromptTokens += response.promptTokens
             println("Round ${index + 1}: prompt=${response.promptTokens} tokens (full history)")
         }
