@@ -7,11 +7,8 @@ import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyPromptBuilder
 import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyResponseMapper
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextWindowManager
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
-import com.portfolio.ai_challenge.models.LlmClient
+import com.portfolio.ai_challenge.di.serverModule
 import com.portfolio.ai_challenge.routes.agentRoutes
 import com.portfolio.ai_challenge.routes.agentV10Routes
 import com.portfolio.ai_challenge.routes.agentV7Routes
@@ -19,8 +16,7 @@ import com.portfolio.ai_challenge.routes.agentV9Routes
 import com.portfolio.ai_challenge.routes.modelRoutes
 import com.portfolio.ai_challenge.routes.psyAgentRoutes
 import com.portfolio.ai_challenge.routes.temperatureRoutes
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
+import io.ktor.client.HttpClient
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -31,6 +27,7 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
+import org.koin.core.context.startKoin
 
 fun main() {
     embeddedServer(Netty, port = SERVER_PORT, host = "0.0.0.0", module = Application::module)
@@ -38,47 +35,24 @@ fun main() {
 }
 
 fun Application.module() {
-    val apiKey = System.getenv("DEEPSEEK_API_KEY")
-        ?: error("DEEPSEEK_API_KEY environment variable is not set")
-
-    val httpClient = HttpClient(CIO) {
-        engine {
-            requestTimeout = 120_000
-        }
-    }
-
-    val day6Agent = Day6Agent(apiKey)
-    val day7Agent = Day7Agent(httpClient, apiKey)
-    val day9Agent = Day9Agent(httpClient, apiKey)
-    val day10SlidingAgent = Day10SlidingAgent(httpClient, apiKey)
-    val day10FactsAgent = Day10FactsAgent(httpClient, apiKey)
-    val day10BranchingAgent = Day10BranchingAgent(httpClient, apiKey)
-
-    val llmClient = LlmClient(httpClient, apiKey)
-    val contextStore = InMemoryContextStore()
-    val promptBuilder = PsyPromptBuilder(ContextWindowManager())
-    val responseMapper = PsyResponseMapper()
-    val psyAgent = PsyAgent(contextStore, promptBuilder, llmClient)
+    val koin = startKoin { modules(serverModule) }.koin
 
     install(ServerContentNegotiation) {
         json(Json { ignoreUnknownKeys = true })
     }
-
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
     }
 
     routing {
-        get("/") {
-            call.respondText("Ktor: ${Greeting().greet()}")
-        }
-        temperatureRoutes(httpClient, apiKey)
-        modelRoutes(httpClient, apiKey)
-        agentRoutes(day6Agent)
-        agentV7Routes(day7Agent)
-        agentV9Routes(day9Agent)
-        agentV10Routes(day10SlidingAgent, day10FactsAgent, day10BranchingAgent)
-        psyAgentRoutes(psyAgent, responseMapper)
+        get("/") { call.respondText("Ktor: ${Greeting().greet()}") }
+        temperatureRoutes(koin.get<HttpClient>(), koin.get<String>())
+        modelRoutes(koin.get<HttpClient>(), koin.get<String>())
+        agentRoutes(koin.get<Day6Agent>())
+        agentV7Routes(koin.get<Day7Agent>())
+        agentV9Routes(koin.get<Day9Agent>())
+        agentV10Routes(koin.get<Day10SlidingAgent>(), koin.get<Day10FactsAgent>(), koin.get<Day10BranchingAgent>())
+        psyAgentRoutes(koin.get<PsyAgent>(), koin.get<PsyResponseMapper>())
     }
 }
