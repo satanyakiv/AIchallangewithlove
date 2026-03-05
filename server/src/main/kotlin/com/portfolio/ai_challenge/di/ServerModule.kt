@@ -33,11 +33,11 @@ val serverModule = module {
 
     // Legacy agents (Day 6–10)
     single { Day6Agent(get()) }
-    single { Day7Agent(get(), get()) }
-    single { Day9Agent(get(), get()) }
-    single { Day10SlidingAgent(get(), get()) }
-    single { Day10FactsAgent(get(), get()) }
-    single { Day10BranchingAgent(get(), get()) }
+    single { Day7Agent(get()) }
+    single { Day9Agent(get()) }
+    single { Day10SlidingAgent(get()) }
+    single { Day10FactsAgent(get()) }
+    single { Day10BranchingAgent(get()) }
 
     // Psy-Agent (Day 11+)
     single<ContextStore> { InMemoryContextStore() } bind ContextStore::class

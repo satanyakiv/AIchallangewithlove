@@ -14,6 +14,7 @@ Prompts are configuration, not code. All prompt text lives in resource files, ne
 4. `Prompts` object loads raw text. `PromptBuilder` composes final prompt from pieces + runtime data.
 5. Variables use `{{placeholder}}` syntax. PromptBuilder replaces them.
 6. Never hardcode prompt text in Agent, PromptBuilder, Routes, Invariants, or any .kt file.
+7. All prompt loaders MUST live in a single `Prompts` object (agent/Prompts.kt) with nested objects per feature. Never create separate prompt loader files per agent.
 
 ## Loader Pattern
 
@@ -64,3 +65,4 @@ fun build() = "You are MindGuard, a supportive..."
 // GOOD — PsyPrompts.SYSTEM loads from resources/prompts/psy/system.txt
 // GOOD — PsyPromptBuilder uses PsyPrompts.SYSTEM + runtime data
 ```
+

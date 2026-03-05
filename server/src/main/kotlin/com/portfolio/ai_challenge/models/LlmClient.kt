@@ -21,8 +21,14 @@ class LlmClient(
     suspend fun complete(
         messages: List<DeepSeekMessage>,
         temperature: Double = 0.7,
-        maxTokens: Int = 300,
-    ): String {
+        maxTokens: Int? = null,
+    ): String = completeWithResponse(messages, temperature, maxTokens).choices.first().message.content
+
+    suspend fun completeWithResponse(
+        messages: List<DeepSeekMessage>,
+        temperature: Double = 0.7,
+        maxTokens: Int? = null,
+    ): DeepSeekResponse {
         val request = DeepSeekRequest(
             model = model,
             messages = messages,
@@ -38,7 +44,6 @@ class LlmClient(
         if (!httpResponse.status.isSuccess()) {
             throw Exception("DeepSeek error (${httpResponse.status.value}): $rawBody")
         }
-        val deepSeekResp = json.decodeFromString<DeepSeekResponse>(rawBody)
-        return deepSeekResp.choices.first().message.content
+        return json.decodeFromString<DeepSeekResponse>(rawBody)
     }
 }

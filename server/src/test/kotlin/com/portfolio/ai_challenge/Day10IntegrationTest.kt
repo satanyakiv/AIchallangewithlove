@@ -8,6 +8,7 @@ import com.portfolio.ai_challenge.agent.Day10FactsAgent
 import com.portfolio.ai_challenge.agent.Day10FactsRequest
 import com.portfolio.ai_challenge.agent.Day10SlidingAgent
 import com.portfolio.ai_challenge.agent.Day10SlidingRequest
+import com.portfolio.ai_challenge.models.LlmClient
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.runBlocking
@@ -27,8 +28,7 @@ import org.junit.Test
 class Day10IntegrationTest {
 
     companion object {
-        private lateinit var httpClient: HttpClient
-        private lateinit var apiKey: String
+        private lateinit var llmClient: LlmClient
 
         private val SCENARIO_MESSAGES = listOf(
             ApiMessageDto(MessageRole.USER, "I want to build a task management app for small teams"),
@@ -44,17 +44,18 @@ class Day10IntegrationTest {
             val integrationEnabled = System.getProperty("day10.integration") == "true"
             Assume.assumeTrue("Day10 integration tests disabled. Run with -Pday10.integration=true", integrationEnabled)
 
-            apiKey = System.getenv("DEEPSEEK_API_KEY")
+            val apiKey = System.getenv("DEEPSEEK_API_KEY")
                 ?: error("DEEPSEEK_API_KEY not set")
-            httpClient = HttpClient(CIO) {
+            val httpClient = HttpClient(CIO) {
                 engine { requestTimeout = 120_000 }
             }
+            llmClient = LlmClient(httpClient, apiKey)
         }
     }
 
     @Test
     fun `test sliding window strategy metrics`() = runBlocking {
-        val agent = Day10SlidingAgent(httpClient, apiKey)
+        val agent = Day10SlidingAgent(llmClient)
         val history = mutableListOf<ApiMessageDto>()
         var totalPromptTokens = 0
 
@@ -79,7 +80,7 @@ class Day10IntegrationTest {
 
     @Test
     fun `test sticky facts strategy metrics`() = runBlocking {
-        val agent = Day10FactsAgent(httpClient, apiKey)
+        val agent = Day10FactsAgent(llmClient)
         val history = mutableListOf<ApiMessageDto>()
         var currentFacts = emptyMap<String, String>()
         var totalPromptTokens = 0
@@ -105,7 +106,7 @@ class Day10IntegrationTest {
 
     @Test
     fun `test branching strategy metrics`() = runBlocking {
-        val agent = Day10BranchingAgent(httpClient, apiKey)
+        val agent = Day10BranchingAgent(llmClient)
         val history = mutableListOf<ApiMessageDto>()
         var totalPromptTokens = 0
 

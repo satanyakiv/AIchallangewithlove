@@ -28,7 +28,7 @@ class PsyAgent(
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.USER, content = userMessage))
         val context = contextStore.assembleContext(sessionId, "active")
         val messages = promptBuilder.buildMessages(context)
-        val response = llmClient.complete(messages)
+        val response = llmClient.complete(messages, maxTokens = 300)
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.ASSISTANT, content = response))
         val updatedSession = contextStore.loadSession(sessionId)!!
         val profile = contextStore.loadProfile(context.userId)
