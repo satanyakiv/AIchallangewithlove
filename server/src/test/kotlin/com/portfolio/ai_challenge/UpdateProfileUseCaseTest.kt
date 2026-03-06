@@ -1,8 +1,8 @@
 package com.portfolio.ai_challenge
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.ProfileExtractor
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdateProfileUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.ProfileExtractor
+import com.portfolio.ai_challenge.agent.psy_agent.UpdateProfileUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.memory.InMemoryContextStore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

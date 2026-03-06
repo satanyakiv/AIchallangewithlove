@@ -1,10 +1,10 @@
 package com.portfolio.ai_challenge
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextWindowManager
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.ConversationEntry
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsySessionSummary
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.TurnContext
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextWindowManager
+import com.portfolio.ai_challenge.agent.psy_agent.memory.InMemoryContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.model.ConversationEntry
+import com.portfolio.ai_challenge.agent.psy_agent.model.PsySessionSummary
+import com.portfolio.ai_challenge.agent.psy_agent.model.TurnContext
 import com.portfolio.ai_challenge.models.MessageRole
 import kotlin.test.Test
 import kotlin.test.assertEquals
