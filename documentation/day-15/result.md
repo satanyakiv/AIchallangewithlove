@@ -43,10 +43,10 @@ Dual-layer FSM design:
 
 | SessionEvent        | Assessment | PlanProposed | Executing | Validating | Completed |
 |---------------------|------------|--------------|-----------|------------|-----------|
-| UserMessage         | Allowed    | Allowed      | Allowed   | Allowed    | Allowed   |
-| TechniqueProposed   | Blocked    | Allowed      | Allowed   | Allowed    | Allowed   |
-| TechniqueAccepted   | Blocked    | Blocked      | Allowed   | Allowed    | Allowed   |
-| SessionEndRequested | Blocked    | Blocked      | Blocked   | Allowed    | Allowed   |
+| UserMessage         | ✅          | ✅            | ✅         | ✅          | ✅         |
+| TechniqueProposed   | ❌          | ✅            | ✅         | ✅          | ✅         |
+| TechniqueAccepted   | ❌          | ❌            | ✅         | ✅          | ✅         |
+| SessionEndRequested | ❌          | ❌            | ❌         | ✅          | ✅         |
 
 When blocked, returns `PhaseCheck.Blocked(reason, requiredPhase)` — the agent uses this to explain why the action isn't available yet.
 

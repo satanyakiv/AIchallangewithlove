@@ -62,6 +62,46 @@ sealed interface SessionState {
 }
 ```
 
+### Zero Hardcoded Strings for Types
+
+If an enum, sealed class, or sealed interface exists for a concept — NEVER pass its values as strings. Use the type directly. If the type doesn't exist yet — create it first.
+
+```kotlin
+// BAD — string comparison against enum values
+private fun phaseOrder(name: String): Int = when (name) {
+    "assessment" -> 0
+    "plan_proposed" -> 1
+    "executing" -> 2
+    else -> -1
+}
+fun execute(phase: TaskPhase, event: SessionEvent): PhaseCheck {
+    return requireAtLeast(phase, "plan_proposed")  // string!
+}
+
+// GOOD — use the type, add ordinal/comparison to the enum itself
+enum class TaskPhase(val order: Int) {
+    ASSESSMENT(0),
+    PLAN_PROPOSED(1),
+    EXECUTING(2),
+    VALIDATING(3),
+    COMPLETED(4);
+}
+fun execute(phase: TaskPhase, event: SessionEvent): PhaseCheck {
+    return requireAtLeast(phase, TaskPhase.PLAN_PROPOSED)  // type-safe
+}
+private fun requireAtLeast(current: TaskPhase, required: TaskPhase): PhaseCheck {
+    return if (current.order >= required.order) PhaseCheck.Allowed
+    else PhaseCheck.Blocked("Need ${required.name}", required)
+}
+```
+
+**Rules:**
+- Never pass `enum.name` or `sealed.displayName` as String parameter. Pass the type.
+- Never `when` on strings that match enum/sealed values. `when` on the type.
+- If you need ordering — add `order: Int` property to the enum.
+- If you need display text — add `displayName: String` property to the enum.
+- If a matching enum/sealed type doesn't exist — create it before using strings.
+
 ## Size Limits
 
 - Files: < 150 lines. If more — split.
@@ -85,31 +125,26 @@ When an Agent method grows beyond simple orchestration — extract a UseCase cla
 ```kotlin
 // BAD — agent has extraction logic inside chat()
 class PsyAgent(...) {
-    suspend fun chat(sessionId: String, msg: String): PsyChatResult {
-        // ... 10 lines of orchestration ...
-        val nameRegex = Regex("(?i)(?:my name is|call me|i am)\\s+(\\w+)")
-        val match = nameRegex.find(msg)
-        if (match != null) {
-            contextStore.updateUserProfile(userId) { it.copy(preferredName = match.groupValues[1]) }
-        }
-        // ... more logic ...
+  suspend fun chat(sessionId: String, msg: String): PsyChatResult {
+    val nameRegex = Regex("(?i)(?:my name is|call me|i am)\\s+(\\w+)")
+    val match = nameRegex.find(msg)
+    if (match != null) {
+      contextStore.updateUserProfile(userId) { it.copy(preferredName = match.groupValues[1]) }
     }
+  }
 }
 
 // GOOD — extracted to UseCase
 class UpdateProfileUseCase(private val contextStore: ContextStore) {
-    fun execute(userId: String, message: String): ProfileUpdate { ... }
+  fun execute(userId: String, message: String): ProfileUpdate { ... }
 }
 
 class PsyAgent(
-    private val updateProfile: UpdateProfileUseCase, // injected
-    ...
+  private val updateProfile: UpdateProfileUseCase,
 ) {
-    suspend fun chat(sessionId: String, msg: String): PsyChatResult {
-        // ... orchestration ...
-        val profileUpdate = updateProfile.execute(session.userId, msg)
-        // ... orchestration ...
-    }
+  suspend fun chat(sessionId: String, msg: String): PsyChatResult {
+    val profileUpdate = updateProfile.execute(session.userId, msg)
+  }
 }
 ```
 

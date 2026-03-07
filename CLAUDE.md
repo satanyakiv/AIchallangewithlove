@@ -31,21 +31,23 @@ Kotlin 2.3.10, Compose 1.10.2, Ktor 3.4.1, AGP 9.1.0, Room 2.8.4, Koin 4.1.1, ko
 ## Key Rules (details in `.claude/rules/`)
 
 Read before writing code:
-- `.claude/rules/architecture.md` — layered arch, DI, file organization
+- `.claude/rules/architecture.md` — layered arch, DI, types, file organization
+- `.claude/rules/mapping.md` — AtoBMapper pattern for type conversions
 - `.claude/rules/prompts.md` — prompt text in resources, loader/template patterns
 - `.claude/rules/testing.md` — unit + integration, naming, what to test per component
 
 - **Layered arch**: Routes (HTTP) → Agent (orchestration) → Components (logic) → Store (data)
 - **SRP**: every class/function does ONE thing
 - **DI**: Koin only, constructor injection, never create deps inside a class
-- **Types**: sealed interface over strings for states, events, results
+- **Types**: sealed interface over strings. Zero hardcoded strings — pass the type, not `.name`. If enum/sealed doesn't exist, create it first.
+- **Mappers**: dedicated `{A}To{B}Mapper` for type conversions, never inline in Agent/UseCase/Route
 - **Size limits**: files < 150 lines, functions < 20 lines
-- **Use Cases**: extract logic from Agent into `{Verb}{Noun}UseCase.kt` when it grows beyond simple orchestration
-- **Test every mutation**: every code path that changes persisted data (profile, session) needs a test
+- **Use Cases**: extract logic from Agent into `{Verb}{Noun}UseCase.kt` beyond simple orchestration
+- **Test every mutation**: every data change (profile, session) needs 3 tests: happy, no-op, persistence
 - **Models**: one class per file, `@Serializable`, prefix domain models (`PsyUserProfile`)
 - **Prompts**: all prompt text in `server/src/main/resources/prompts/`, never inline in .kt files
 - **Testing**: unit + integration per feature. Naming: `testWhat_condition_expected()`
-- **NEVER run all tests blindly**. Integration tests call real APIs. Always use `--tests` flag with specific class name.
+- **NEVER run all tests blindly**. Integration tests call real APIs. Always use `--tests` flag.
 - **UI**: English text, follow Day7-Day10 patterns, register in AppScreen/ChallengeDay/MainScreen/App.kt
 
 ## API
