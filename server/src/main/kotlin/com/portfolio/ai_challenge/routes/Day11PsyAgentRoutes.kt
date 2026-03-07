@@ -1,8 +1,8 @@
 package com.portfolio.ai_challenge.routes
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyResponseMapper
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond

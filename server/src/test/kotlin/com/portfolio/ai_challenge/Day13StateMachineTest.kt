@@ -1,13 +1,14 @@
 package com.portfolio.ai_challenge
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.DetectCrisisUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.DetermineIntentUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.TurnContext
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.statemachine.SessionEvent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.statemachine.SessionState
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.statemachine.SessionStateMachine
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.statemachine.mindGuardTransitions
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.statemachine.toStorageString
+import com.portfolio.ai_challenge.agent.psy_agent.DetectCrisisUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.SessionStateToIntentMapper
+import com.portfolio.ai_challenge.agent.psy_agent.model.SessionIntent
+import com.portfolio.ai_challenge.agent.psy_agent.model.TurnContext
+import com.portfolio.ai_challenge.agent.psy_agent.statemachine.SessionEvent
+import com.portfolio.ai_challenge.agent.psy_agent.statemachine.SessionState
+import com.portfolio.ai_challenge.agent.psy_agent.statemachine.SessionStateMachine
+import com.portfolio.ai_challenge.agent.psy_agent.statemachine.mindGuardTransitions
+import com.portfolio.ai_challenge.agent.psy_agent.statemachine.toStorageString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -211,42 +212,42 @@ class Day13StateMachineTest {
         assertTrue(result.indicators.size >= 2)
     }
 
-    // ── DetermineIntentUseCase Tests ──────────────────────────────────────────
+    // ── SessionStateToIntentMapper Tests ─────────────────────────────────────
 
     @Test
     fun testDetermineIntent_greeting_returnsWelcome() {
-        val intent = DetermineIntentUseCase().execute(SessionState.Greeting, TurnContext())
-        assertEquals("welcome", intent)
+        val intent = SessionStateToIntentMapper().map(SessionState.Greeting)
+        assertEquals(SessionIntent.Welcome, intent)
     }
 
     @Test
     fun testDetermineIntent_activeListening_returnsActiveListening() {
-        val intent = DetermineIntentUseCase().execute(SessionState.ActiveListening(), TurnContext())
-        assertEquals("active_listening", intent)
+        val intent = SessionStateToIntentMapper().map(SessionState.ActiveListening())
+        assertEquals(SessionIntent.ActiveListening, intent)
     }
 
     @Test
     fun testDetermineIntent_intervention_includesStep() {
-        val intent = DetermineIntentUseCase().execute(SessionState.Intervention("breathing", step = 2), TurnContext())
-        assertEquals("intervention_step_2", intent)
+        val intent = SessionStateToIntentMapper().map(SessionState.Intervention("breathing", step = 2))
+        assertEquals(SessionIntent.InterventionStep(2), intent)
     }
 
     @Test
     fun testDetermineIntent_crisis_returnsCrisisSupport() {
-        val intent = DetermineIntentUseCase().execute(SessionState.CrisisMode("high", System.currentTimeMillis()), TurnContext())
-        assertEquals("crisis_support", intent)
+        val intent = SessionStateToIntentMapper().map(SessionState.CrisisMode("high", System.currentTimeMillis()))
+        assertEquals(SessionIntent.CrisisSupport, intent)
     }
 
     @Test
     fun testDetermineIntent_closing_returnsSessionClosing() {
-        val intent = DetermineIntentUseCase().execute(SessionState.Closing(), TurnContext())
-        assertEquals("session_closing", intent)
+        val intent = SessionStateToIntentMapper().map(SessionState.Closing())
+        assertEquals(SessionIntent.SessionClosing, intent)
     }
 
     @Test
     fun testDetermineIntent_finished_returnsSessionFinished() {
-        val intent = DetermineIntentUseCase().execute(SessionState.Finished, TurnContext())
-        assertEquals("session_finished", intent)
+        val intent = SessionStateToIntentMapper().map(SessionState.Finished)
+        assertEquals(SessionIntent.SessionFinished, intent)
     }
 
     // ── State Serialization Tests ─────────────────────────────────────────────

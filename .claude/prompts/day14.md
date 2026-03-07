@@ -1,7 +1,3 @@
-Read the architecture diagrams in documentation/day-11-to-15/:
-- psy-agent-class-diagram.md (Invariant section)
-- psy-agent-sequence-diagram.md (VALIDATE phase)
-
 Read documentation/project-structure.md.
 Read ALL existing psy-agent code:
 - server/.../agent/psy/model/

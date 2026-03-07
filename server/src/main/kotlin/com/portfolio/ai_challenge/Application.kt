@@ -6,12 +6,13 @@ import com.portfolio.ai_challenge.agent.Day10SlidingAgent
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day12PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day13PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyResponseMapper
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdatePreferencesUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.Day13PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.Day14PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
+import com.portfolio.ai_challenge.agent.psy_agent.UpdatePreferencesUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
 import com.portfolio.ai_challenge.di.serverModule
 import com.portfolio.ai_challenge.routes.day6AgentRoutes
 import com.portfolio.ai_challenge.routes.agentV10Routes
@@ -20,6 +21,7 @@ import com.portfolio.ai_challenge.routes.agentV9Routes
 import com.portfolio.ai_challenge.routes.day11PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day12PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day13PsyAgentRoutes
+import com.portfolio.ai_challenge.routes.day14PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.modelRoutes
 import com.portfolio.ai_challenge.routes.temperatureRoutes
 import io.ktor.client.HttpClient
@@ -62,5 +64,6 @@ fun Application.module() {
         day11PsyAgentRoutes(koin.get<PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<ContextStore>())
         day12PsyAgentRoutes(koin.get<Day12PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
         day13PsyAgentRoutes(koin.get<Day13PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
+        day14PsyAgentRoutes(koin.get<Day14PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
     }
 }

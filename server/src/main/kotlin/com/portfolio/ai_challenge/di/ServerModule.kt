@@ -6,20 +6,29 @@ import com.portfolio.ai_challenge.agent.Day10SlidingAgent
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day12PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day13PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.DetectCrisisUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.DetermineIntentUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PersonalizeResponseUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.ProfileExtractor
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdatePreferencesUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdateProfileUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyPromptBuilder
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyResponseMapper
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextStore
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextWindowManager
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.Day13PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.Day14PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.DetectCrisisUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.ValidateAndRetryUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantChecker
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantPromptInjector
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.impl.NoDiagnosisInvariant
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.impl.NoMedicationInvariant
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.impl.NoPromptLeakInvariant
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.impl.NoProfanityInvariant
+import com.portfolio.ai_challenge.agent.psy_agent.invariants.impl.ResponseLengthInvariant
+import com.portfolio.ai_challenge.agent.psy_agent.SessionStateToIntentMapper
+import com.portfolio.ai_challenge.agent.psy_agent.PersonalizeResponseUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.ProfileExtractor
+import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.UpdatePreferencesUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.UpdateProfileUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.PsyPromptBuilder
+import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextWindowManager
+import com.portfolio.ai_challenge.agent.psy_agent.memory.InMemoryContextStore
 import com.portfolio.ai_challenge.models.LlmClient
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -57,8 +66,20 @@ val serverModule = module {
     single { UpdateProfileUseCase(get(), get()) }
     single { UpdatePreferencesUseCase(get()) }
     single { DetectCrisisUseCase() }
-    single { DetermineIntentUseCase() }
+    single { SessionStateToIntentMapper() }
+    single {
+        InvariantChecker(
+            listOf(NoDiagnosisInvariant(), NoMedicationInvariant(), NoProfanityInvariant(), ResponseLengthInvariant(), NoPromptLeakInvariant())
+        )
+    }
+    single {
+        InvariantPromptInjector(
+            listOf(NoDiagnosisInvariant(), NoMedicationInvariant(), NoProfanityInvariant(), ResponseLengthInvariant(), NoPromptLeakInvariant())
+        )
+    }
+    single { ValidateAndRetryUseCase(get(), get(), get()) }
     single { PsyAgent(get(), get(), get(), get()) }
     single { Day12PsyAgent(get(), get(), get(), get()) }
     single { Day13PsyAgent(get(), get(), get(), get(), get(), get()) }
+    single { Day14PsyAgent(get(), get(), get(), get(), get(), get(), get()) }
 }

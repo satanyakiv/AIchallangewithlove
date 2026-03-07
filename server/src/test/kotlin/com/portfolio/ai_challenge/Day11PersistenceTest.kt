@@ -1,14 +1,14 @@
 package com.portfolio.ai_challenge
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PersonalizeResponseUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.ProfileExtractor
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdateProfileUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyPromptBuilder
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextWindowManager
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.InMemoryContextStore
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.ConversationEntry
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.PsySessionSummary
+import com.portfolio.ai_challenge.agent.psy_agent.PersonalizeResponseUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.ProfileExtractor
+import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.UpdateProfileUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.PsyPromptBuilder
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextWindowManager
+import com.portfolio.ai_challenge.agent.psy_agent.memory.InMemoryContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.model.ConversationEntry
+import com.portfolio.ai_challenge.agent.psy_agent.model.PsySessionSummary
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
 import io.mockk.coEvery

@@ -172,22 +172,22 @@ AIchallangewithlove/
 
 ## Module Summary
 
-| Module | Type | Description |
-|--------|------|-------------|
-| `:androidApp` | Android Application | Entry point, `MainActivity`, `Application` class, resources |
-| `:composeApp` | KMP Library (Android + JVM) | All UI screens, ViewModels, navigation, DI |
-| `:shared` | KMP Library (Android + JVM) | Platform detection, shared constants |
-| `:database` | KMP Library (Android + JVM) | Room database, DAOs, repositories |
-| `:server` | JVM (Ktor) | REST API, AI agents, experiment runner |
+| Module        | Type                        | Description                                                 |
+|---------------|-----------------------------|-------------------------------------------------------------|
+| `:androidApp` | Android Application         | Entry point, `MainActivity`, `Application` class, resources |
+| `:composeApp` | KMP Library (Android + JVM) | All UI screens, ViewModels, navigation, DI                  |
+| `:shared`     | KMP Library (Android + JVM) | Platform detection, shared constants                        |
+| `:database`   | KMP Library (Android + JVM) | Room database, DAOs, repositories                           |
+| `:server`     | JVM (Ktor)                  | REST API, AI agents, experiment runner                      |
 
 ## API Routes (server, port 8080)
 
-| Route | Agent | Day |
-|-------|-------|-----|
-| `POST /api/agent/chat` | Day6Agent | 6 |
-| `POST /api/agent/chat-v7` | Day7Agent | 7 |
-| `POST /api/agent/chat-v8` | Day8Agent | 8 |
-| `POST /api/agent/chat-v9` | Day9Agent | 9 |
-| `POST /api/agent/chat-v10/sliding` | Day10SlidingAgent | 10 |
-| `POST /api/agent/chat-v10/facts` | Day10FactsAgent | 10 |
-| `POST /api/agent/chat-v10/branching` | Day10BranchingAgent | 10 |
+| Route                                | Agent               | Day |
+|--------------------------------------|---------------------|-----|
+| `POST /api/agent/chat`               | Day6Agent           | 6   |
+| `POST /api/agent/chat-v7`            | Day7Agent           | 7   |
+| `POST /api/agent/chat-v8`            | Day8Agent           | 8   |
+| `POST /api/agent/chat-v9`            | Day9Agent           | 9   |
+| `POST /api/agent/chat-v10/sliding`   | Day10SlidingAgent   | 10  |
+| `POST /api/agent/chat-v10/facts`     | Day10FactsAgent     | 10  |
+| `POST /api/agent/chat-v10/branching` | Day10BranchingAgent | 10  |

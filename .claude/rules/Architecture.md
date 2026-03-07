@@ -68,6 +68,14 @@ sealed interface SessionState {
 - Functions: < 20 lines. If more — extract helpers.
 - Agent class: < 80 lines. If more — extract to components.
 
+## Mapper Pattern (AtoBMapper)
+
+> See full rules: `.claude/rules/mapping.md`
+
+Use a dedicated `{A}To{B}Mapper` class with a `map(source: A): B` method for any type conversion.
+Never inline conversions in Agent, UseCase, or Route.
+Return typed enums/sealed interfaces — never raw `String`.
+
 ## Use Cases
 
 When an Agent method grows beyond simple orchestration — extract a UseCase class.

@@ -88,6 +88,13 @@ private val challengeDays = listOf(
         description = "Session lifecycle: Greeting → Active Listening → Intervention → Closing → Finished. Crisis detection and de-escalation.",
         emoji = "\uD83D\uDD04",
     ),
+    ChallengeDay(
+        id = 14,
+        dayNumber = 14,
+        title = "MindGuard: Invariants",
+        description = "Invariant validation pipeline with retry: NoDiagnosis, NoMedication, NoProfanity, ResponseLength, NoPromptLeak.",
+        emoji = "\uD83D\uDEE1\uFE0F",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

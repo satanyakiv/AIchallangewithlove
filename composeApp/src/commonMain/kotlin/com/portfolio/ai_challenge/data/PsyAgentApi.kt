@@ -40,6 +40,7 @@ data class PsyChatResponse(
     val profileUpdates: List<String> = emptyList(),
     val intent: String = "",
     val transitions: List<TransitionDebugDto> = emptyList(),
+    val violations: List<String> = emptyList(),
 )
 
 @Serializable

@@ -1,12 +1,12 @@
 package com.portfolio.ai_challenge.routes
 
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.Day12PsyAgent
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.PsyResponseMapper
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.UpdatePreferencesUseCase
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.memory.ContextStore
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.CommunicationPreferences
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.Formality
-import com.portfolio.ai_challenge.agent.day_11_psy_agent.model.ResponseLength
+import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
+import com.portfolio.ai_challenge.agent.psy_agent.UpdatePreferencesUseCase
+import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
+import com.portfolio.ai_challenge.agent.psy_agent.model.CommunicationPreferences
+import com.portfolio.ai_challenge.agent.psy_agent.model.Formality
+import com.portfolio.ai_challenge.agent.psy_agent.model.ResponseLength
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond

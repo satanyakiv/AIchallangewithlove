@@ -68,5 +68,5 @@ Read `documentation/day-11-to-15/` diagrams before any psy-agent work.
 
 - Kill port 8080 before server restart
 - After task: run server + desktop app for user testing
-- Save plans to `.claude/plans/` with date prefix
+- **MANDATORY: When exiting Plan Mode**, IMMEDIATELY save the plan to `.claude/plans/YYYY-MM-DD-<topic>.md` BEFORE writing any code. This is the FIRST action after plan mode exit — no exceptions.
 - After adding/changing public server API (agents, routes, use cases, interfaces): run `./gradlew :server:dokkaGeneratePublicationHtml`
