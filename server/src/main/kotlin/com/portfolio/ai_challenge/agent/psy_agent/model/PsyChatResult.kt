@@ -12,4 +12,6 @@ data class PsyChatResult(
     val intent: SessionIntent = SessionIntent.Welcome,
     val transitions: List<StateTransition> = emptyList(),
     val violations: List<String> = emptyList(),
+    val taskPhase: String = "",
+    val allowedTransitions: List<String> = emptyList(),
 )

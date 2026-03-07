@@ -60,6 +60,21 @@ Run tests. All pass. Show summary:
 - Tests: X passed / Y total
 - Architecture review: all checks passed ✓
 
+### Step 7 — MANUAL TEST PLAN
+After implementation, create a manual testing plan:
+1. Save to `documentation/day{N}testingPlan.md`
+2. Include concrete scenarios from the task's "Проверьте" section
+3. Each scenario: step-by-step table (Action → Expected phase/state)
+4. Include skip attempts, rejection flows, edge cases
+5. Add a checklist summary at the end
+
+### Step 8 — TEST DATA AS CHIPS
+Add Material3 SuggestionChip groups to the Day screen for manual testing:
+- Group chips by test scenario (e.g., "Happy Path", "Skip Attempts", "Rejection", "Crisis")
+- Each chip sends a predefined message that triggers a specific behavior
+- Chips should cover ALL scenarios from the test plan
+- Pattern: see Day14Screen.kt `Day14QuickReplies` composable
+
 ## Rules
 - Mock LlmClient in tests. Never call real API.
 - Never run ./gradlew test without --tests filter.

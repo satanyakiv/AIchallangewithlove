@@ -9,6 +9,8 @@ import com.portfolio.ai_challenge.agent.Day9Agent
 import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day13PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day14PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.Day15PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.EnforceTaskPhaseUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.DetectCrisisUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.ValidateAndRetryUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantChecker
@@ -82,4 +84,6 @@ val serverModule = module {
     single { Day12PsyAgent(get(), get(), get(), get()) }
     single { Day13PsyAgent(get(), get(), get(), get(), get(), get()) }
     single { Day14PsyAgent(get(), get(), get(), get(), get(), get(), get()) }
+    single { EnforceTaskPhaseUseCase() }
+    single { Day15PsyAgent(get(), get(), get(), get(), get(), get(), get(), get()) }
 }

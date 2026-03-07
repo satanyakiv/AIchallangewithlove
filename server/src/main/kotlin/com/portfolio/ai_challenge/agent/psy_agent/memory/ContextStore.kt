@@ -40,6 +40,12 @@ interface ContextStore {
      */
     fun updateSessionState(sessionId: String, state: String)
 
+    /** Persists the task phase string for the session. */
+    fun updateTaskPhase(sessionId: String, phase: String)
+
+    /** Loads the stored task phase string, or null if not set. */
+    fun loadTaskPhase(sessionId: String): String?
+
     /**
      * Assembles a [PsyAgentContext] ready for prompt building.
      * Combines profile, recent session messages and [currentState].

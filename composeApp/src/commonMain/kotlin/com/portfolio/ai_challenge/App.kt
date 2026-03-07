@@ -19,6 +19,7 @@ import com.portfolio.ai_challenge.navigation.RouteDay11
 import com.portfolio.ai_challenge.navigation.RouteDay12
 import com.portfolio.ai_challenge.navigation.RouteDay13
 import com.portfolio.ai_challenge.navigation.RouteDay14
+import com.portfolio.ai_challenge.navigation.RouteDay15
 import com.portfolio.ai_challenge.navigation.RouteDay4
 import com.portfolio.ai_challenge.navigation.RouteDay5
 import com.portfolio.ai_challenge.navigation.RouteDay6
@@ -35,6 +36,7 @@ import com.portfolio.ai_challenge.ui.screen.Day11Screen
 import com.portfolio.ai_challenge.ui.screen.Day12Screen
 import com.portfolio.ai_challenge.ui.screen.Day13Screen
 import com.portfolio.ai_challenge.ui.screen.Day14Screen
+import com.portfolio.ai_challenge.ui.screen.Day15Screen
 import com.portfolio.ai_challenge.ui.screen.Day4Screen
 import com.portfolio.ai_challenge.ui.screen.Day5Screen
 import com.portfolio.ai_challenge.ui.screen.Day6Screen
@@ -72,6 +74,7 @@ fun App() {
                                 12 -> RouteDay12
                                 13 -> RouteDay13
                                 14 -> RouteDay14
+                                15 -> RouteDay15
                                 else -> return@MainScreen
                             }
                             backStack.add(route)
@@ -100,6 +103,7 @@ fun App() {
                     entry<RouteDay12>           { Day12Screen(onBack = { backStack.removeLastOrNull() }) }
                     entry<RouteDay13>           { Day13Screen(onBack = { backStack.removeLastOrNull() }) }
                     entry<RouteDay14>           { Day14Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay15>           { Day15Screen(onBack = { backStack.removeLastOrNull() }) }
                 },
             )
         }

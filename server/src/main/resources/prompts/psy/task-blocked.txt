@@ -1,0 +1,1 @@
+I understand you'd like to move forward, but we need to complete the current phase first. We're currently in the {{phase}} phase. {{reason}} Let's focus on what we can do right now before moving to the next step.

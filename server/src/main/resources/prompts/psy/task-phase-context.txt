@@ -1,0 +1,3 @@
+Current task phase: {{phase}}.
+Allowed next steps: {{allowedTransitions}}.
+Stay within the boundaries of this phase. Do not skip ahead.

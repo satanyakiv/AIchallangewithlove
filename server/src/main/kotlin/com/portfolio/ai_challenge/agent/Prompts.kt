@@ -30,6 +30,8 @@ object Prompts {
         val STATE_INTERVENTION by lazy { load("prompts/psy/state-intervention.txt") }
         val STATE_CRISIS by lazy { load("prompts/psy/state-crisis.txt") }
         val STATE_CLOSING by lazy { load("prompts/psy/state-closing.txt") }
+        val TASK_PHASE_CONTEXT by lazy { load("prompts/psy/task-phase-context.txt") }
+        val TASK_BLOCKED by lazy { load("prompts/psy/task-blocked.txt") }
     }
 
     private fun load(path: String): String =

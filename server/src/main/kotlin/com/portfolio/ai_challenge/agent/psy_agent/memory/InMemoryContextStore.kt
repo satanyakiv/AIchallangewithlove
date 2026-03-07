@@ -11,6 +11,7 @@ class InMemoryContextStore : ContextStore {
 
     private val sessions = ConcurrentHashMap<String, PsySessionContext>()
     private val profiles = ConcurrentHashMap<String, PsyUserProfile>()
+    private val taskPhases = ConcurrentHashMap<String, String>()
 
     override fun createSession(sessionId: String, userId: String): PsySessionContext {
         val session = PsySessionContext(sessionId = sessionId, userId = userId)
@@ -39,6 +40,12 @@ class InMemoryContextStore : ContextStore {
             detectedEmotions = (current.detectedEmotions + newEmotions).distinct(),
         )
     }
+
+    override fun updateTaskPhase(sessionId: String, phase: String) {
+        taskPhases[sessionId] = phase
+    }
+
+    override fun loadTaskPhase(sessionId: String): String? = taskPhases[sessionId]
 
     override fun updateSessionState(sessionId: String, state: String) {
         val current = sessions[sessionId] ?: return

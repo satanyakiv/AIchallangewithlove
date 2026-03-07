@@ -9,6 +9,7 @@ import com.portfolio.ai_challenge.agent.Day9Agent
 import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day13PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day14PsyAgent
+import com.portfolio.ai_challenge.agent.psy_agent.Day15PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
 import com.portfolio.ai_challenge.agent.psy_agent.UpdatePreferencesUseCase
@@ -22,6 +23,7 @@ import com.portfolio.ai_challenge.routes.day11PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day12PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day13PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day14PsyAgentRoutes
+import com.portfolio.ai_challenge.routes.day15PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.modelRoutes
 import com.portfolio.ai_challenge.routes.temperatureRoutes
 import io.ktor.client.HttpClient
@@ -65,5 +67,6 @@ fun Application.module() {
         day12PsyAgentRoutes(koin.get<Day12PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
         day13PsyAgentRoutes(koin.get<Day13PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
         day14PsyAgentRoutes(koin.get<Day14PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
+        day15PsyAgentRoutes(koin.get<Day15PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
     }
 }

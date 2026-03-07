@@ -41,6 +41,8 @@ data class PsyChatResponse(
     val intent: String = "",
     val transitions: List<TransitionDebugDto> = emptyList(),
     val violations: List<String> = emptyList(),
+    val taskPhase: String = "",
+    val allowedTransitions: List<String> = emptyList(),
 )
 
 @Serializable

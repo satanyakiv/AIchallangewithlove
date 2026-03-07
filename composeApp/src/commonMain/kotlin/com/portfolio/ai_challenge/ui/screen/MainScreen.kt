@@ -95,6 +95,13 @@ private val challengeDays = listOf(
         description = "Invariant validation pipeline with retry: NoDiagnosis, NoMedication, NoProfanity, ResponseLength, NoPromptLeak.",
         emoji = "\uD83D\uDEE1\uFE0F",
     ),
+    ChallengeDay(
+        id = 15,
+        dayNumber = 15,
+        title = "Task Lifecycle",
+        description = "Controlled task state transitions: Assessment \u2192 Plan \u2192 Execute \u2192 Validate \u2192 Complete. No skipping phases.",
+        emoji = "\uD83D\uDEA6",
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

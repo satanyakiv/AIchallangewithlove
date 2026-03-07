@@ -11,6 +11,7 @@ import com.portfolio.ai_challenge.ui.screen.Day11ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day12ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day13ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day14ViewModel
+import com.portfolio.ai_challenge.ui.screen.Day15ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day4ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day5ViewModel
 import com.portfolio.ai_challenge.ui.screen.Day6ViewModel
@@ -50,6 +51,10 @@ val day14Module = module {
     viewModel { Day14ViewModel(get<PsyAgentApi>(named("psy14"))) }
 }
 
+val day15Module = module {
+    viewModel { Day15ViewModel(get<PsyAgentApi>(named("psy15"))) }
+}
+
 val appModule = module {
-    includes(networkModule, day4to9Module, day10Module, day11Module, day12Module, day13Module, day14Module)
+    includes(networkModule, day4to9Module, day10Module, day11Module, day12Module, day13Module, day14Module, day15Module)
 }
