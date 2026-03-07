@@ -17,12 +17,12 @@ Package: `com.portfolio.ai_challenge`
 
 ## Modules
 
-| Module | Purpose |
-|--------|---------|
-| `shared/` | KMP library: Platform expect/actual, Constants |
+| Module        | Purpose                                         |
+|---------------|-------------------------------------------------|
+| `shared/`     | KMP library: Platform expect/actual, Constants  |
 | `composeApp/` | Compose UI: screens, ViewModels, navigation, DI |
-| `database/` | Room + SQLite KMP library |
-| `server/` | Ktor 3.4.1 + Netty: routes, agents, API |
+| `database/`   | Room + SQLite KMP library                       |
+| `server/`     | Ktor 3.4.1 + Netty: routes, agents, API         |
 
 ## Tech Stack
 
