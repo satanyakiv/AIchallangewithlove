@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,23 +9,18 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(21)
+
     androidLibrary {
         namespace = "com.portfolio.ai_challenge.compose"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
         androidResources {
             enable = true
         }
     }
 
-    jvm {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
+    jvm()
 
     sourceSets {
         androidMain.dependencies {
