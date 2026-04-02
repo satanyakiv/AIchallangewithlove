@@ -20,6 +20,9 @@ application {
 }
 
 tasks.test {
+    if (System.getenv("CI") != null) {
+        exclude("**/*IntegrationTest*")
+    }
     if (project.hasProperty("day10.integration")) {
         systemProperty("day10.integration", project.property("day10.integration").toString())
     }

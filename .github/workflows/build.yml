@@ -36,7 +36,6 @@ jobs:
       - name: Compile composeApp (JVM)
         run: ./gradlew :composeApp:compileKotlinJvm
 
-      # Unit tests only — NEVER integration tests (they call real DeepSeek API)
-      # Integration tests (*IntegrationTest.kt) are excluded by Gradle filter
+      # Integration tests (*IntegrationTest) auto-excluded on CI via build.gradle.kts
       - name: Run server unit tests
-        run: ./gradlew :server:test --tests "*Test" -x "*IntegrationTest"
+        run: ./gradlew :server:test
