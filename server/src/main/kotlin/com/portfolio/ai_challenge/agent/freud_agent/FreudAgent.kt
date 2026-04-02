@@ -1,5 +1,6 @@
 package com.portfolio.ai_challenge.agent.freud_agent
 
+import com.portfolio.ai_challenge.models.getOrThrow
 import com.portfolio.ai_challenge.agent.freud_agent.memory.FreudContextStore
 import com.portfolio.ai_challenge.agent.freud_agent.model.FreudChatResult
 import com.portfolio.ai_challenge.agent.freud_agent.model.FreudProfileUpdate
@@ -61,7 +62,7 @@ class FreudAgent(
     private suspend fun generateReply(sessionId: String, machine: FreudStateMachine): String {
         val context = contextStore.assembleContext(sessionId, machine.state.displayName)
         val messages = promptBuilder.buildMessages(context, machine.state)
-        val response = llmClient.complete(messages, maxTokens = 300)
+        val response = llmClient.complete(messages, maxTokens = 300).getOrThrow()
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.ASSISTANT, content = response))
         return response
     }
