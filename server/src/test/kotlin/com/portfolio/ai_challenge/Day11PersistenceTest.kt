@@ -1,5 +1,6 @@
 package com.portfolio.ai_challenge
 
+import com.github.michaelbull.result.Ok
 import com.portfolio.ai_challenge.agent.psy_agent.PersonalizeResponseUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.ProfileExtractor
 import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
@@ -11,6 +12,7 @@ import com.portfolio.ai_challenge.agent.psy_agent.model.ConversationEntry
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsySessionSummary
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -32,7 +34,7 @@ class Day11PersistenceTest {
     )
 
     init {
-        coEvery { llmClient.complete(any(), any(), any()) } returns "I hear you."
+        coEvery { llmClient.complete(any(), any(), any()) } returns Ok("I hear you.")
     }
 
     // ─── Session lifecycle ────────────────────────────────────────────────────

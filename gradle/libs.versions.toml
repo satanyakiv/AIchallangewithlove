@@ -19,6 +19,13 @@ sqlite-bundled = "2.6.2"
 ksp = "2.3.6"
 dokka = "2.1.0"
 logback = "1.5.32"
+detekt = "1.23.8"
+assertk = "0.28.1"
+kotest = "5.9.1"
+kotlin-logging = "7.0.7"
+kotlinx-datetime = "0.6.2"
+hoplite = "2.9.0"
+kotlin-result = "2.3.1"
 material3 = "1.10.0-alpha05"
 nav3-kmp = "1.0.0-alpha06"
 nav3-runtime = "1.1.0-alpha05"
@@ -70,6 +77,14 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 nav3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3-runtime" }
 nav3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "nav3-kmp" }
 lifecycle-viewmodel-nav3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle-kmp" }
+# Infrastructure upgrade
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+hoplite-core = { module = "com.sksamuel.hoplite:hoplite-core", version.ref = "hoplite" }
+hoplite-yaml = { module = "com.sksamuel.hoplite:hoplite-yaml", version.ref = "hoplite" }
+kotlin-result = { module = "com.michael-bull.kotlin-result:kotlin-result", version.ref = "kotlin-result" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -85,3 +100,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

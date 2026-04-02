@@ -3,6 +3,7 @@ package com.portfolio.ai_challenge.agent
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.portfolio.ai_challenge.models.getOrThrow
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,6 +16,6 @@ class Day7Agent(private val llmClient: LlmClient) {
             add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day7.SYSTEM))
             addAll(messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
-        return llmClient.complete(allMessages)
+        return llmClient.complete(allMessages).getOrThrow()
     }
 }

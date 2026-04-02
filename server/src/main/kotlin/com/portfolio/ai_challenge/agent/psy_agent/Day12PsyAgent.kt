@@ -6,6 +6,7 @@ import com.portfolio.ai_challenge.agent.psy_agent.model.PsyChatResult
 import com.portfolio.ai_challenge.agent.psy_agent.model.TurnContext
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.portfolio.ai_challenge.models.getOrThrow
 
 /**
  * Day 12 — Psy-Agent with communication-style personalisation.
@@ -49,7 +50,7 @@ class Day12PsyAgent(
 
         val context = contextStore.assembleContext(sessionId, "active")
         val messages = promptBuilder.buildMessages(context)
-        val response = llmClient.complete(messages, maxTokens = 300)
+        val response = llmClient.complete(messages, maxTokens = 300).getOrThrow()
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.ASSISTANT, content = response))
         val updatedSession = contextStore.loadSession(sessionId)!!
         val profile = contextStore.loadProfile(context.userId)

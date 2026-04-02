@@ -1,5 +1,7 @@
 package com.portfolio.ai_challenge.agent.psy_agent
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+import com.portfolio.ai_challenge.models.getOrThrow
 import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
 import com.portfolio.ai_challenge.agent.psy_agent.model.ConversationEntry
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsyChatResult
@@ -13,6 +15,8 @@ import com.portfolio.ai_challenge.agent.psy_agent.statemachine.mindGuardTransiti
 import com.portfolio.ai_challenge.agent.psy_agent.statemachine.toStorageString
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+
+private val logger = KotlinLogging.logger {}
 
 class Day15PsyAgent(
     private val contextStore: ContextStore,
@@ -36,6 +40,7 @@ class Day15PsyAgent(
     suspend fun chat(sessionId: String, userMessage: String): PsyChatResult {
         val session = contextStore.loadSession(sessionId)
             ?: throw IllegalArgumentException("Session not found: $sessionId")
+        logger.debug { "Chat: session=$sessionId, state=${session.currentState}" }
         val machine = restoreMachine(session.currentState)
         val taskMachine = restoreTaskMachine(sessionId)
 
@@ -87,7 +92,7 @@ class Day15PsyAgent(
     ): ValidateAndRetryUseCase.ValidationResult {
         val context = contextStore.assembleContext(sessionId, machine.state.displayName)
         val messages = promptBuilder.buildMessages(context, machine.state)
-        val initialResponse = llmClient.complete(messages, maxTokens = 300)
+        val initialResponse = llmClient.complete(messages, maxTokens = 300).getOrThrow()
         val result = validateAndRetry.execute(initialResponse, messages)
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.ASSISTANT, content = result.response))
         return result

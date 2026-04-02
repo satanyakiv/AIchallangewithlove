@@ -1,5 +1,6 @@
 package com.portfolio.ai_challenge
 
+import com.github.michaelbull.result.Ok
 import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.PersonalizeResponseUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.ProfileExtractor
@@ -27,6 +28,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
 import io.ktor.server.testing.testApplication
+import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.slot
@@ -236,7 +238,7 @@ class Day12PersonalizationTest {
         val store = storeWithProfile(preferences = CommunicationPreferences(formality = Formality.FORMAL))
         val mockLlm = mockk<LlmClient>()
         val capturedMessages = slot<List<DeepSeekMessage>>()
-        coEvery { mockLlm.complete(capture(capturedMessages), any(), any()) } returns "I understand."
+        coEvery { mockLlm.complete(capture(capturedMessages), any(), any()) } returns Ok("I understand.")
         val agent = buildAgent(store, mockLlm)
         runBlocking { agent.chat("s1", "Hello") }
         val systemContent = capturedMessages.captured.filter { it.role.name == "SYSTEM" }.joinToString(" ") { it.content }
@@ -248,7 +250,7 @@ class Day12PersonalizationTest {
         val store = storeWithProfile(preferences = CommunicationPreferences(formality = Formality.INFORMAL))
         val mockLlm = mockk<LlmClient>()
         val capturedMessages = slot<List<DeepSeekMessage>>()
-        coEvery { mockLlm.complete(capture(capturedMessages), any(), any()) } returns "Hey there!"
+        coEvery { mockLlm.complete(capture(capturedMessages), any(), any()) } returns Ok("Hey there!")
         val agent = buildAgent(store, mockLlm)
         runBlocking { agent.chat("s1", "Hello") }
         val systemContent = capturedMessages.captured.filter { it.role.name == "SYSTEM" }.joinToString(" ") { it.content }
@@ -260,7 +262,7 @@ class Day12PersonalizationTest {
         val store = storeWithProfile(preferences = CommunicationPreferences(avoidTopics = listOf("medication")))
         val mockLlm = mockk<LlmClient>()
         val capturedMessages = slot<List<DeepSeekMessage>>()
-        coEvery { mockLlm.complete(capture(capturedMessages), any(), any()) } returns "I hear you."
+        coEvery { mockLlm.complete(capture(capturedMessages), any(), any()) } returns Ok("I hear you.")
         val agent = buildAgent(store, mockLlm)
         runBlocking { agent.chat("s1", "Hello") }
         val systemContent = capturedMessages.captured.filter { it.role.name == "SYSTEM" }.joinToString(" ") { it.content }
@@ -271,7 +273,7 @@ class Day12PersonalizationTest {
     fun testAgent_profileUpdatesReturned_inChatResult() {
         val store = storeWithProfile()
         val mockLlm = mockk<LlmClient>()
-        coEvery { mockLlm.complete(any(), any(), any()) } returns "Nice to meet you!"
+        coEvery { mockLlm.complete(any(), any(), any()) } returns Ok("Nice to meet you!")
         val agent = buildAgent(store, mockLlm)
         val result = runBlocking { agent.chat("s1", "My name is Alice and I feel anxious") }
         assertTrue(result.profileUpdates.isNotEmpty())
@@ -284,13 +286,13 @@ class Day12PersonalizationTest {
         val mockLlm = mockk<LlmClient>()
         val messages1 = slot<List<DeepSeekMessage>>()
         val messages2 = slot<List<DeepSeekMessage>>()
-        coEvery { mockLlm.complete(capture(messages1), any(), any()) } returns "Hey there!"
+        coEvery { mockLlm.complete(capture(messages1), any(), any()) } returns Ok("Hey there!")
         val agent = buildAgent(store, mockLlm)
         runBlocking { agent.chat("s1", "Hello") }
         val informalContent = messages1.captured.filter { it.role.name == "SYSTEM" }.joinToString(" ") { it.content }
 
         store.saveProfile(store.loadProfile("u1").copy(preferences = CommunicationPreferences(formality = Formality.FORMAL)))
-        coEvery { mockLlm.complete(capture(messages2), any(), any()) } returns "Good day."
+        coEvery { mockLlm.complete(capture(messages2), any(), any()) } returns Ok("Good day.")
         runBlocking { agent.chat("s1", "Hello again") }
         val formalContent = messages2.captured.filter { it.role.name == "SYSTEM" }.joinToString(" ") { it.content }
 

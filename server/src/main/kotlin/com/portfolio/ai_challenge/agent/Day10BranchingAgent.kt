@@ -3,6 +3,7 @@ package com.portfolio.ai_challenge.agent
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.portfolio.ai_challenge.models.getOrThrow
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -26,7 +27,7 @@ class Day10BranchingAgent(private val llmClient: LlmClient) {
             addAll(request.messages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
 
-        val deepSeekResp = llmClient.completeWithResponse(messages, temperature = 0.7)
+        val deepSeekResp = llmClient.completeWithResponse(messages, temperature = 0.7).getOrThrow()
         val usage = deepSeekResp.usage
         return Day10BranchingResponse(
             response = deepSeekResp.choices.first().message.content,

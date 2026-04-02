@@ -1,11 +1,14 @@
 package com.portfolio.ai_challenge.agent.psy_agent.memory
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import com.portfolio.ai_challenge.agent.psy_agent.model.ConversationEntry
 import com.portfolio.ai_challenge.agent.psy_agent.model.DEFAULT_DOMAIN
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsyAgentContext
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsySessionContext
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsyUserProfile
 import java.util.concurrent.ConcurrentHashMap
+
+private val logger = KotlinLogging.logger {}
 
 class InMemoryContextStore : ContextStore {
 
@@ -17,6 +20,7 @@ class InMemoryContextStore : ContextStore {
         val session = PsySessionContext(sessionId = sessionId, userId = userId)
         sessions[sessionId] = session
         profiles.getOrPut(userId) { PsyUserProfile(userId = userId) }
+        logger.debug { "Session created: $sessionId for user $userId" }
         return session
     }
 

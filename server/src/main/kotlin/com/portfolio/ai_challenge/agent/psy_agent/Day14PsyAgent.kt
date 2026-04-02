@@ -1,5 +1,6 @@
 package com.portfolio.ai_challenge.agent.psy_agent
 
+import com.portfolio.ai_challenge.models.getOrThrow
 import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
 import com.portfolio.ai_challenge.agent.psy_agent.model.ConversationEntry
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsyChatResult
@@ -96,7 +97,7 @@ class Day14PsyAgent(
     ): ValidateAndRetryUseCase.ValidationResult {
         val context = contextStore.assembleContext(sessionId, machine.state.displayName)
         val messages = promptBuilder.buildMessages(context, machine.state)
-        val initialResponse = llmClient.complete(messages, maxTokens = 300)
+        val initialResponse = llmClient.complete(messages, maxTokens = 300).getOrThrow()
         val result = validateAndRetry.execute(initialResponse, messages)
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.ASSISTANT, content = result.response))
         return result

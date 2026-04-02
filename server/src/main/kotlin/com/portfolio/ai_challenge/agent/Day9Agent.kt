@@ -3,6 +3,7 @@ package com.portfolio.ai_challenge.agent
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.portfolio.ai_challenge.models.getOrThrow
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -37,7 +38,7 @@ class Day9Agent(private val llmClient: LlmClient) {
             add(DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day9.SYSTEM))
             addAll(allMessages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
-        val deepSeekResponse = llmClient.completeWithResponse(messages, temperature = 0.7)
+        val deepSeekResponse = llmClient.completeWithResponse(messages, temperature = 0.7).getOrThrow()
         val usage = deepSeekResponse.usage
         return Day9ChatResponse(
             response = deepSeekResponse.choices.first().message.content,
@@ -69,7 +70,7 @@ class Day9Agent(private val llmClient: LlmClient) {
             DeepSeekMessage(role = MessageRole.SYSTEM, content = Prompts.Day9.SUMMARY_SYSTEM),
             DeepSeekMessage(role = MessageRole.USER, content = summaryUserContent),
         )
-        val summaryResponse = llmClient.completeWithResponse(summaryMessages, temperature = 0.3)
+        val summaryResponse = llmClient.completeWithResponse(summaryMessages, temperature = 0.3).getOrThrow()
         val newSummary = summaryResponse.choices.first().message.content
 
         val compressedMessages = buildList {
@@ -80,7 +81,7 @@ class Day9Agent(private val llmClient: LlmClient) {
             ))
             addAll(recentMessages.map { DeepSeekMessage(role = it.role, content = it.content) })
         }
-        val answerResponse = llmClient.completeWithResponse(compressedMessages, temperature = 0.7)
+        val answerResponse = llmClient.completeWithResponse(compressedMessages, temperature = 0.7).getOrThrow()
         val usage = answerResponse.usage
 
         return Day9ChatResponse(

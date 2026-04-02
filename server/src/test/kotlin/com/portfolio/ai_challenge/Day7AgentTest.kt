@@ -5,6 +5,7 @@ import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.slot
@@ -22,7 +23,7 @@ class Day7AgentTest {
     @Test
     fun testChat_withUserMessage_passesSystemAndUserMessages() = runBlocking {
         val slot = slot<List<DeepSeekMessage>>()
-        coEvery { llmClient.complete(capture(slot), any(), any()) } returns "Mr. Anderson."
+        coEvery { llmClient.complete(capture(slot), any(), any()) } returns Ok("Mr. Anderson.")
 
         agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hello")))
 
@@ -32,7 +33,7 @@ class Day7AgentTest {
 
     @Test
     fun testChat_returnsLlmClientResponse() = runBlocking {
-        coEvery { llmClient.complete(any(), any(), any()) } returns "Mr. Anderson."
+        coEvery { llmClient.complete(any(), any(), any()) } returns Ok("Mr. Anderson.")
 
         val result = agent.chat(listOf(ApiMessageDto(MessageRole.USER, "hi")))
 
@@ -53,7 +54,7 @@ class Day7AgentTest {
     @Test
     fun testChat_multipleMessages_allPassedToLlm() = runBlocking {
         val slot = slot<List<DeepSeekMessage>>()
-        coEvery { llmClient.complete(capture(slot), any(), any()) } returns "Inevitable."
+        coEvery { llmClient.complete(capture(slot), any(), any()) } returns Ok("Inevitable.")
 
         agent.chat(listOf(
             ApiMessageDto(MessageRole.USER, "first"),

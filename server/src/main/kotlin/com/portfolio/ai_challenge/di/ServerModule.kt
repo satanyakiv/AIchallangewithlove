@@ -44,6 +44,8 @@ import com.portfolio.ai_challenge.agent.freud_agent.memory.FreudInMemoryContextS
 import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
 import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextWindowManager
 import com.portfolio.ai_challenge.agent.psy_agent.memory.InMemoryContextStore
+import com.portfolio.ai_challenge.config.ServerConfig
+import com.portfolio.ai_challenge.config.loadServerConfig
 import com.portfolio.ai_challenge.models.LlmClient
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -52,16 +54,20 @@ import org.koin.dsl.module
 
 val serverModule = module {
     // Infrastructure
+    single { loadServerConfig() }
     single {
-        HttpClient(CIO) { engine { requestTimeout = 120_000 } }
+        val config = get<ServerConfig>()
+        HttpClient(CIO) { engine { requestTimeout = config.deepseek.requestTimeoutMs } }
     }
     single {
-        System.getenv("DEEPSEEK_API_KEY")
-            ?: error("DEEPSEEK_API_KEY environment variable is not set")
+        get<ServerConfig>().deepseek.apiKey
     }
 
     // Shared
-    single { LlmClient(get(), get()) }
+    single {
+        val config = get<ServerConfig>()
+        LlmClient(get(), config.deepseek.apiKey, config.deepseek.apiUrl, config.deepseek.model)
+    }
 
     // Legacy agents (Day 6–10)
     single {

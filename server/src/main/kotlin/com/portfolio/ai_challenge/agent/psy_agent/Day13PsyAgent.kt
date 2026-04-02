@@ -13,6 +13,7 @@ import com.portfolio.ai_challenge.agent.psy_agent.statemachine.mindGuardTransiti
 import com.portfolio.ai_challenge.agent.psy_agent.statemachine.toStorageString
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.portfolio.ai_challenge.models.getOrThrow
 
 /**
  * Day 13 — Psy-Agent with a formal typed [SessionStateMachine].
@@ -97,7 +98,7 @@ class Day13PsyAgent(
     private suspend fun generateReply(sessionId: String, machine: SessionStateMachine): String {
         val context = contextStore.assembleContext(sessionId, machine.state.displayName)
         val messages = promptBuilder.buildMessages(context, machine.state)
-        val response = llmClient.complete(messages, maxTokens = 300)
+        val response = llmClient.complete(messages, maxTokens = 300).getOrThrow()
         contextStore.appendMessage(sessionId, ConversationEntry(role = MessageRole.ASSISTANT, content = response))
         return response
     }

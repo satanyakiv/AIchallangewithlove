@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.detekt)
     application
 }
 
@@ -41,9 +42,16 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.koog.agents)
     implementation(libs.koin.core)
+    implementation(libs.kotlin.logging)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.hoplite.core)
+    implementation(libs.hoplite.yaml)
+    implementation(libs.kotlin.result)
     testImplementation(libs.ktor.serverTestHost)
     testImplementation(libs.kotlin.testJunit)
     testImplementation(libs.ktor.client.contentNegotiation.jvm)
     testImplementation(libs.mockk)
     testImplementation(libs.ktor.client.mock.jvm)
+    testImplementation(libs.assertk)
+    testImplementation(libs.kotest.property)
 }

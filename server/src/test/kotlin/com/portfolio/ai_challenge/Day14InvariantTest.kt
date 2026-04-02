@@ -1,5 +1,6 @@
 package com.portfolio.ai_challenge
 
+import com.github.michaelbull.result.Ok
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantChecker
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantPromptInjector
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantResult
@@ -13,6 +14,7 @@ import com.portfolio.ai_challenge.agent.psy_agent.ValidateAndRetryUseCase
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
+import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -186,7 +188,7 @@ class Day14InvariantTest {
     fun testValidate_hardBlock_retriesAndReturnsCleaned() = runTest {
         val llm = mockk<LlmClient>()
         val cleanResponse = "What you're experiencing sounds very challenging."
-        coEvery { llm.complete(any(), any(), any()) } returns cleanResponse
+        coEvery { llm.complete(any(), any(), any()) } returns Ok(cleanResponse)
 
         val useCase = ValidateAndRetryUseCase(checker, InvariantPromptInjector(listOf(NoDiagnosisInvariant())), llm)
 
@@ -200,7 +202,7 @@ class Day14InvariantTest {
     @Test
     fun testValidate_hardBlockAllAttempts_returnsFallback() = runTest {
         val llm = mockk<LlmClient>()
-        coEvery { llm.complete(any(), any(), any()) } returns "You have depression."
+        coEvery { llm.complete(any(), any(), any()) } returns Ok("You have depression.")
 
         val useCase = ValidateAndRetryUseCase(checker, InvariantPromptInjector(listOf(NoDiagnosisInvariant())), llm)
 

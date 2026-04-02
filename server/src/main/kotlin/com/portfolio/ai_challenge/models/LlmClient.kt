@@ -1,5 +1,10 @@
 package com.portfolio.ai_challenge.models
 
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.map
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.post
@@ -10,16 +15,13 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import kotlinx.serialization.json.Json
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Thin HTTP wrapper around the DeepSeek Chat Completions API.
  *
- * Shared by all agents (Day 6–13). Uses `bodyAsText()` + manual JSON
- * because the Ktor HttpClient is not configured with ContentNegotiation.
- *
- * @param httpClient Ktor [HttpClient] with CIO engine.
- * @param apiKey DeepSeek API key (read from `DEEPSEEK_API_KEY` env var).
- * @param apiUrl Completions endpoint. Default: DeepSeek production.
- * @param model Model identifier. Default: `deepseek-chat` (V3).
+ * Returns [Result] instead of throwing — callers decide how to handle errors.
+ * Legacy agents can use [getOrThrow] for backward compatibility.
  */
 class LlmClient(
     private val httpClient: HttpClient,
@@ -33,13 +35,15 @@ class LlmClient(
         messages: List<DeepSeekMessage>,
         temperature: Double = 0.7,
         maxTokens: Int? = null,
-    ): String = completeWithResponse(messages, temperature, maxTokens).choices.first().message.content
+    ): Result<String, LlmError> =
+        completeWithResponse(messages, temperature, maxTokens)
+            .map { it.choices.first().message.content }
 
     suspend fun completeWithResponse(
         messages: List<DeepSeekMessage>,
         temperature: Double = 0.7,
         maxTokens: Int? = null,
-    ): DeepSeekResponse {
+    ): Result<DeepSeekResponse, LlmError> {
         val request = DeepSeekRequest(
             model = model,
             messages = messages,
@@ -53,8 +57,13 @@ class LlmClient(
         }
         val rawBody = httpResponse.bodyAsText()
         if (!httpResponse.status.isSuccess()) {
-            throw Exception("DeepSeek error (${httpResponse.status.value}): $rawBody")
+            logger.warn { "DeepSeek error (${httpResponse.status.value}): $rawBody" }
+            return Err(LlmError.HttpError(httpResponse.status.value, rawBody))
         }
-        return json.decodeFromString<DeepSeekResponse>(rawBody)
+        return try {
+            Ok(json.decodeFromString<DeepSeekResponse>(rawBody))
+        } catch (e: Exception) {
+            Err(LlmError.ParseError(e))
+        }
     }
 }

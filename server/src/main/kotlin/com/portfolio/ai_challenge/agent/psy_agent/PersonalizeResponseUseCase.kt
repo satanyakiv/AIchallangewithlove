@@ -6,6 +6,9 @@ import com.portfolio.ai_challenge.agent.psy_agent.model.PsyAgentContext
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsySessionSummary
 import com.portfolio.ai_challenge.agent.psy_agent.model.PsyUserProfile
 import com.portfolio.ai_challenge.agent.psy_agent.model.ResponseLength
+import kotlin.time.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class PersonalizeResponseUseCase {
 
@@ -50,8 +53,8 @@ class PersonalizeResponseUseCase {
     fun buildSessionBridge(recentSessions: List<PsySessionSummary>): String {
         if (recentSessions.isEmpty()) return ""
         return recentSessions.takeLast(3).joinToString("\n") { s ->
-            val date = java.time.Instant.ofEpochMilli(s.timestampMs)
-                .atZone(java.time.ZoneOffset.UTC).toLocalDate()
+            val date = Instant.fromEpochMilliseconds(s.timestampMs)
+                .toLocalDateTime(TimeZone.UTC).date
             "Previous session ($date): discussed ${s.topicsDiscussed.joinToString()}, " +
                 "used ${s.techniquesUsed.joinToString()}. Homework: ${s.homework}."
         }

@@ -1,9 +1,11 @@
 package com.portfolio.ai_challenge.agent.psy_agent
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import com.portfolio.ai_challenge.agent.Prompts
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantChecker
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.InvariantPromptInjector
 import com.portfolio.ai_challenge.agent.psy_agent.invariants.Severity
+import com.github.michaelbull.result.getOrElse
 import com.portfolio.ai_challenge.models.DeepSeekMessage
 import com.portfolio.ai_challenge.models.LlmClient
 import com.portfolio.ai_challenge.models.MessageRole
@@ -15,6 +17,8 @@ import com.portfolio.ai_challenge.models.MessageRole
  * retries with [InvariantPromptInjector]-enriched prompt up to [MAX_RETRIES] times.
  * If all retries fail, returns [FALLBACK_RESPONSE].
  */
+private val logger = KotlinLogging.logger {}
+
 class ValidateAndRetryUseCase(
     private val checker: InvariantChecker,
     private val injector: InvariantPromptInjector,
@@ -41,8 +45,13 @@ class ValidateAndRetryUseCase(
                 return ValidationResult(response, attemptCount, violations + softViolations)
             }
             violations.add(hardBlock.invariantName)
+            logger.info { "Retry $attemptCount/$MAX_RETRIES: hard block on ${hardBlock.invariantName}" }
             if (attemptCount >= MAX_RETRIES) break
             response = llmClient.complete(withInjectedConstraints(messages), maxTokens = 300)
+                .getOrElse {
+                    logger.warn { "LLM error during retry $attemptCount: $it" }
+                    return ValidationResult(FALLBACK_RESPONSE, attemptCount, violations + "llm_error")
+                }
             attemptCount++
         }
         return ValidationResult(FALLBACK_RESPONSE, attemptCount, violations)
