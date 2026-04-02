@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import com.portfolio.ai_challenge.navigation.AppNavigator
 import com.portfolio.ai_challenge.navigation.RouteDay10Branching
 import com.portfolio.ai_challenge.navigation.RouteDay10Comparison
 import com.portfolio.ai_challenge.navigation.RouteDay10Facts
@@ -51,59 +52,43 @@ fun App() {
     AiChallengeTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             val backStack = remember { mutableStateListOf<Any>(RouteMain) }
+            val navigator = remember { AppNavigator(backStack) }
 
             NavDisplay(
                 backStack = backStack,
-                onBack = { if (backStack.size > 1) backStack.removeLastOrNull() },
+                onBack = { navigator.goBack() },
                 entryDecorators = listOf(
                     rememberSaveableStateHolderNavEntryDecorator(),
                     rememberViewModelStoreNavEntryDecorator(),
                 ),
                 entryProvider = entryProvider {
                     entry<RouteMain> {
-                        MainScreen(onDayClick = { id ->
-                            val route = when (id) {
-                                4 -> RouteDay4
-                                5 -> RouteDay5
-                                6 -> RouteDay6
-                                7 -> RouteDay7
-                                8 -> RouteDay8
-                                9 -> RouteDay9
-                                10 -> RouteDay10Hub
-                                11 -> RouteDay11
-                                12 -> RouteDay12
-                                13 -> RouteDay13
-                                14 -> RouteDay14
-                                15 -> RouteDay15
-                                else -> return@MainScreen
-                            }
-                            backStack.add(route)
-                        })
+                        MainScreen(onDayClick = { id -> navigator.navigateToDay(id) })
                     }
-                    entry<RouteDay4>  { Day4Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay5>  { Day5Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay6>  { Day6Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay7>  { Day7Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay8>  { Day8Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay9>  { Day9Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay4>  { Day4Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay5>  { Day5Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay6>  { Day6Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay7>  { Day7Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay8>  { Day8Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay9>  { Day9Screen(onBack = { navigator.goBack() }) }
                     entry<RouteDay10Hub> {
                         Day10HubScreen(
-                            onBack = { backStack.removeLastOrNull() },
-                            onSlidingClick = { backStack.add(RouteDay10Sliding) },
-                            onFactsClick = { backStack.add(RouteDay10Facts) },
-                            onBranchingClick = { backStack.add(RouteDay10Branching) },
-                            onComparisonClick = { backStack.add(RouteDay10Comparison) },
+                            onBack = { navigator.goBack() },
+                            onSlidingClick = { navigator.navigateTo(RouteDay10Sliding) },
+                            onFactsClick = { navigator.navigateTo(RouteDay10Facts) },
+                            onBranchingClick = { navigator.navigateTo(RouteDay10Branching) },
+                            onComparisonClick = { navigator.navigateTo(RouteDay10Comparison) },
                         )
                     }
-                    entry<RouteDay10Sliding>    { Day10SlidingScreen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay10Facts>      { Day10FactsScreen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay10Branching>  { Day10BranchingScreen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay10Comparison> { Day10ComparisonScreen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay11>           { Day11Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay12>           { Day12Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay13>           { Day13Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay14>           { Day14Screen(onBack = { backStack.removeLastOrNull() }) }
-                    entry<RouteDay15>           { Day15Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteDay10Sliding>    { Day10SlidingScreen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay10Facts>      { Day10FactsScreen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay10Branching>  { Day10BranchingScreen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay10Comparison> { Day10ComparisonScreen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay11>           { Day11Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay12>           { Day12Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay13>           { Day13Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay14>           { Day14Screen(onBack = { navigator.goBack() }) }
+                    entry<RouteDay15>           { Day15Screen(onBack = { navigator.goBack() }) }
                 },
             )
         }
