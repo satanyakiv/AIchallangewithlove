@@ -10,6 +10,9 @@ import com.portfolio.ai_challenge.agent.psy_agent.Day12PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day13PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day14PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.Day15PsyAgent
+import com.portfolio.ai_challenge.agent.freud_agent.FreudAgent
+import com.portfolio.ai_challenge.agent.freud_agent.FreudResponseMapper
+import com.portfolio.ai_challenge.agent.freud_agent.memory.FreudContextStore
 import com.portfolio.ai_challenge.agent.psy_agent.PsyAgent
 import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
 import com.portfolio.ai_challenge.agent.psy_agent.UpdatePreferencesUseCase
@@ -24,6 +27,7 @@ import com.portfolio.ai_challenge.routes.day12PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day13PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day14PsyAgentRoutes
 import com.portfolio.ai_challenge.routes.day15PsyAgentRoutes
+import com.portfolio.ai_challenge.routes.freudAgentRoutes
 import com.portfolio.ai_challenge.routes.modelAnalyzeRoutes
 import com.portfolio.ai_challenge.routes.modelRoutes
 import com.portfolio.ai_challenge.routes.temperatureAnalyzeRoutes
@@ -72,5 +76,6 @@ fun Application.module() {
         day13PsyAgentRoutes(koin.get<Day13PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
         day14PsyAgentRoutes(koin.get<Day14PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
         day15PsyAgentRoutes(koin.get<Day15PsyAgent>(), koin.get<PsyResponseMapper>(), koin.get<UpdatePreferencesUseCase>(), koin.get<ContextStore>())
+        freudAgentRoutes(koin.get<FreudAgent>(), koin.get<FreudResponseMapper>(), koin.get<FreudContextStore>())
     }
 }

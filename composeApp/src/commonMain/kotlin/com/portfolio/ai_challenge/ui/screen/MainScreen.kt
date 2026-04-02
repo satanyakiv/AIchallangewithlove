@@ -3,6 +3,7 @@ package com.portfolio.ai_challenge.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -106,7 +107,7 @@ private val challengeDays = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(onDayClick: (Int) -> Unit = {}) {
+fun MainScreen(onDayClick: (Int) -> Unit = {}, onFreudClick: () -> Unit = {}) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -128,6 +129,18 @@ fun MainScreen(onDayClick: (Int) -> Unit = {}) {
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            item {
+                ChallengeCard(
+                    day = ChallengeDay(
+                        id = -1,
+                        dayNumber = 0,
+                        title = "Dr. Freud",
+                        description = "Classical psychoanalysis: unconscious, defense mechanisms, dream interpretation, Oedipus complex. Victorian-era AI therapist.",
+                        emoji = "\uD83E\uDDD4",
+                    ),
+                    onClick = { onFreudClick() },
+                )
+            }
             items(challengeDays, key = { it.id }) { day ->
                 ChallengeCard(day = day, onClick = { onDayClick(day.id) })
             }

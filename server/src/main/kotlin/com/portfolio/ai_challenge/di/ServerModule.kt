@@ -32,6 +32,15 @@ import com.portfolio.ai_challenge.agent.psy_agent.UpdatePreferencesUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.UpdateProfileUseCase
 import com.portfolio.ai_challenge.agent.psy_agent.PsyPromptBuilder
 import com.portfolio.ai_challenge.agent.psy_agent.PsyResponseMapper
+import com.portfolio.ai_challenge.agent.freud_agent.DetectFreudEventUseCase
+import com.portfolio.ai_challenge.agent.freud_agent.FreudAgent
+import com.portfolio.ai_challenge.agent.freud_agent.FreudProfileExtractor
+import com.portfolio.ai_challenge.agent.freud_agent.FreudPromptBuilder
+import com.portfolio.ai_challenge.agent.freud_agent.FreudResponseMapper
+import com.portfolio.ai_challenge.agent.freud_agent.FreudStateToIntentMapper
+import com.portfolio.ai_challenge.agent.freud_agent.UpdateFreudProfileUseCase
+import com.portfolio.ai_challenge.agent.freud_agent.memory.FreudContextStore
+import com.portfolio.ai_challenge.agent.freud_agent.memory.FreudInMemoryContextStore
 import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextStore
 import com.portfolio.ai_challenge.agent.psy_agent.memory.ContextWindowManager
 import com.portfolio.ai_challenge.agent.psy_agent.memory.InMemoryContextStore
@@ -95,4 +104,14 @@ val serverModule = module {
     single { SyncTaskPhaseUseCase() }
     single { Day15ResultAssembler(get(), get()) }
     single { Day15PsyAgent(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+
+    // Freud Agent
+    single<FreudContextStore> { FreudInMemoryContextStore() }
+    single { FreudProfileExtractor() }
+    single { UpdateFreudProfileUseCase(get(), get()) }
+    single { FreudStateToIntentMapper() }
+    single { FreudPromptBuilder() }
+    single { FreudResponseMapper() }
+    single { DetectFreudEventUseCase() }
+    single { FreudAgent(get(), get(), get(), get(), get(), get()) }
 }

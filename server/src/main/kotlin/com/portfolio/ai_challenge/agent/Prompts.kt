@@ -55,6 +55,16 @@ object Prompts {
         }
     }
 
+    object Freud {
+        val SYSTEM by lazy { load("prompts/freud/system.txt") }
+        val STATE_BEGRUESSUNG by lazy { load("prompts/freud/state-begruessung.txt") }
+        val STATE_FREE_ASSOCIATION by lazy { load("prompts/freud/state-free-association.txt") }
+        val STATE_INTERPRETATION by lazy { load("prompts/freud/state-interpretation.txt") }
+        val STATE_DREAM_ANALYSIS by lazy { load("prompts/freud/state-dream-analysis.txt") }
+        val STATE_TRANSFERENCE by lazy { load("prompts/freud/state-transference.txt") }
+        val STATE_ABSCHLUSS by lazy { load("prompts/freud/state-abschluss.txt") }
+    }
+
     private fun load(path: String): String =
         Prompts::class.java.classLoader.getResource(path)!!.readText().trim()
 }

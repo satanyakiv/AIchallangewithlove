@@ -18,4 +18,5 @@ val networkModule = module {
     single(named("psy13")) { PsyAgentApi(get(), "psy13") }
     single(named("psy14")) { PsyAgentApi(get(), "psy14") }
     single(named("psy15")) { PsyAgentApi(get(), "psy15") }
+    single(named("freud")) { PsyAgentApi(get(), "freud") }
 }

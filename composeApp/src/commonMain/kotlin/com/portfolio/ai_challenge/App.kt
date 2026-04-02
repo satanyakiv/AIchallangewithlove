@@ -20,6 +20,7 @@ import com.portfolio.ai_challenge.navigation.RouteDay12
 import com.portfolio.ai_challenge.navigation.RouteDay13
 import com.portfolio.ai_challenge.navigation.RouteDay14
 import com.portfolio.ai_challenge.navigation.RouteDay15
+import com.portfolio.ai_challenge.navigation.RouteFreud
 import com.portfolio.ai_challenge.navigation.RouteDay4
 import com.portfolio.ai_challenge.navigation.RouteDay5
 import com.portfolio.ai_challenge.navigation.RouteDay6
@@ -37,6 +38,7 @@ import com.portfolio.ai_challenge.ui.screen.Day12Screen
 import com.portfolio.ai_challenge.ui.screen.Day13Screen
 import com.portfolio.ai_challenge.ui.screen.Day14Screen
 import com.portfolio.ai_challenge.ui.screen.Day15Screen
+import com.portfolio.ai_challenge.ui.screen.FreudScreen
 import com.portfolio.ai_challenge.ui.screen.Day4Screen
 import com.portfolio.ai_challenge.ui.screen.Day5Screen
 import com.portfolio.ai_challenge.ui.screen.Day6Screen
@@ -61,24 +63,27 @@ fun App() {
                 ),
                 entryProvider = entryProvider {
                     entry<RouteMain> {
-                        MainScreen(onDayClick = { id ->
-                            val route = when (id) {
-                                4 -> RouteDay4
-                                5 -> RouteDay5
-                                6 -> RouteDay6
-                                7 -> RouteDay7
-                                8 -> RouteDay8
-                                9 -> RouteDay9
-                                10 -> RouteDay10Hub
-                                11 -> RouteDay11
-                                12 -> RouteDay12
-                                13 -> RouteDay13
-                                14 -> RouteDay14
-                                15 -> RouteDay15
-                                else -> return@MainScreen
-                            }
-                            backStack.add(route)
-                        })
+                        MainScreen(
+                            onDayClick = { id ->
+                                val route = when (id) {
+                                    4 -> RouteDay4
+                                    5 -> RouteDay5
+                                    6 -> RouteDay6
+                                    7 -> RouteDay7
+                                    8 -> RouteDay8
+                                    9 -> RouteDay9
+                                    10 -> RouteDay10Hub
+                                    11 -> RouteDay11
+                                    12 -> RouteDay12
+                                    13 -> RouteDay13
+                                    14 -> RouteDay14
+                                    15 -> RouteDay15
+                                    else -> return@MainScreen
+                                }
+                                backStack.add(route)
+                            },
+                            onFreudClick = { backStack.add(RouteFreud) },
+                        )
                     }
                     entry<RouteDay4>  { Day4Screen(onBack = { backStack.removeLastOrNull() }) }
                     entry<RouteDay5>  { Day5Screen(onBack = { backStack.removeLastOrNull() }) }
@@ -104,6 +109,7 @@ fun App() {
                     entry<RouteDay13>           { Day13Screen(onBack = { backStack.removeLastOrNull() }) }
                     entry<RouteDay14>           { Day14Screen(onBack = { backStack.removeLastOrNull() }) }
                     entry<RouteDay15>           { Day15Screen(onBack = { backStack.removeLastOrNull() }) }
+                    entry<RouteFreud>           { FreudScreen(onBack = { backStack.removeLastOrNull() }) }
                 },
             )
         }

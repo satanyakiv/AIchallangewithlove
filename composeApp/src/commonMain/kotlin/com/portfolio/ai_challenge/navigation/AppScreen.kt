@@ -17,3 +17,4 @@ data object RouteDay12
 data object RouteDay13
 data object RouteDay14
 data object RouteDay15
+data object RouteFreud
