@@ -23,3 +23,9 @@ node_modules/
 *.db-shm
 *.db-wal
 *.db.lck
+
+# Codex local state (config.toml is committed)
+.codex/cache/
+.codex/sessions/
+.codex/*.sqlite
+.codex/.tmp/
