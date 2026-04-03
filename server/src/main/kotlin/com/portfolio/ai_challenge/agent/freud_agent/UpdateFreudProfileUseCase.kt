@@ -10,8 +10,9 @@ class UpdateFreudProfileUseCase(
 
     fun execute(userId: String, message: String): FreudProfileUpdate {
         val update = profileExtractor.extract(message)
-        if (hasUpdates(update)) {
-            val profile = contextStore.loadProfile(userId)
+        val profile = contextStore.loadProfile(userId)
+        val languageChanged = update.detectedLanguage != profile.language
+        if (hasUpdates(update) || languageChanged) {
             contextStore.saveProfile(
                 profile.copy(
                     patientName = update.patientName ?: profile.patientName,
@@ -20,6 +21,7 @@ class UpdateFreudProfileUseCase(
                     dreamSymbols = (profile.dreamSymbols + update.newDreamSymbols).distinct(),
                     fixationStage = update.detectedFixation ?: profile.fixationStage,
                     relationshipPatterns = (profile.relationshipPatterns + update.newRelationshipPatterns).distinct(),
+                    language = update.detectedLanguage,
                 ),
             )
         }

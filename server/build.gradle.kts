@@ -22,6 +22,8 @@ application {
 
 tasks.test {
     exclude("**/*IntegrationTest*")
+    exclude("**/*ExperimentTest*")
+    exclude("**/*SmokeTest*")
     if (project.hasProperty("day10.integration")) {
         systemProperty("day10.integration", project.property("day10.integration").toString())
     }

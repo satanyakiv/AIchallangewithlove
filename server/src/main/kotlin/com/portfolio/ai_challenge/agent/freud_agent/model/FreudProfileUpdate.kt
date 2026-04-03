@@ -7,4 +7,5 @@ data class FreudProfileUpdate(
     val newChildhoodThemes: List<String>,
     val detectedFixation: String?,
     val newRelationshipPatterns: List<String>,
+    val detectedLanguage: String = "en",
 )

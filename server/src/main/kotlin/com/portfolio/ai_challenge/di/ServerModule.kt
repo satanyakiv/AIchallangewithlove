@@ -4,7 +4,7 @@ import com.portfolio.ai_challenge.agent.Day10BranchingAgent
 import com.portfolio.ai_challenge.agent.Day10FactsAgent
 import com.portfolio.ai_challenge.agent.Day10SlidingAgent
 import ai.koog.prompt.executor.clients.deepseek.DeepSeekLLMClient
-import ai.koog.prompt.executor.llms.SingleLLMPromptExecutor
+import ai.koog.prompt.executor.llms.MultiLLMPromptExecutor
 import com.portfolio.ai_challenge.agent.Day6Agent
 import com.portfolio.ai_challenge.agent.Day7Agent
 import com.portfolio.ai_challenge.agent.Day9Agent
@@ -72,7 +72,7 @@ val serverModule = module {
     // Legacy agents (Day 6–10)
     single {
         val client = DeepSeekLLMClient(get<String>())
-        Day6Agent(client, SingleLLMPromptExecutor(client))
+        Day6Agent(client, MultiLLMPromptExecutor(client))
     }
     single { Day7Agent(get()) }
     single { Day9Agent(get()) }

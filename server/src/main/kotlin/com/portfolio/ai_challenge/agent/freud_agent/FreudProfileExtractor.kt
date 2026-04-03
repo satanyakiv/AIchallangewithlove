@@ -13,6 +13,7 @@ class FreudProfileExtractor {
             newChildhoodThemes = extractChildhoodThemes(lower),
             detectedFixation = detectFixation(lower),
             newRelationshipPatterns = extractRelationshipPatterns(lower),
+            detectedLanguage = detectLanguage(message),
         )
     }
 
@@ -58,5 +59,31 @@ class FreudProfileExtractor {
     private fun extractRelationshipPatterns(lower: String): List<String> = buildList {
         if ("boss" in lower || "authority" in lower || "supervisor" in lower) add("authority_figure")
         if ("partner" in lower || "spouse" in lower || "dating" in lower) add("romantic_attachment")
+    }
+
+    internal fun detectLanguage(message: String): String {
+        val letters = message.filter { it.isLetter() }
+        if (letters.isEmpty()) return "en"
+        val cyrillicCount = letters.count { it in '\u0400'..'\u04FF' }
+        val cyrillicRatio = cyrillicCount.toDouble() / letters.length
+        if (cyrillicRatio > 0.3) return classifyCyrillic(message)
+        val latinCount = letters.count { it in 'A'..'Z' || it in 'a'..'z' }
+        val latinRatio = latinCount.toDouble() / letters.length
+        if (latinRatio > 0.5) return classifyLatin(message)
+        return "en"
+    }
+
+    private fun classifyCyrillic(message: String): String {
+        val lower = message.lowercase()
+        val ukMarkers = listOf("і", "ї", "є", "ґ")
+        val ukScore = ukMarkers.count { it in lower }
+        return if (ukScore >= 1) "uk" else "ru"
+    }
+
+    private fun classifyLatin(message: String): String {
+        val lower = message.lowercase()
+        val deMarkers = listOf("ich", "und", "ein", "der", "die", "das", "ist", "nicht", "den", "dem")
+        val deScore = deMarkers.count { Regex("\\b$it\\b").containsMatchIn(lower) }
+        return if (deScore >= 2) "de" else "en"
     }
 }

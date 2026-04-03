@@ -100,4 +100,36 @@ class FreudProfileExtractorTest {
         assertTrue(result.newChildhoodThemes.contains("mother"))
         assertTrue(result.newDefenseMechanisms.contains("denial"))
     }
+
+    // --- Language detection tests ---
+
+    @Test
+    fun testExtract_ukrainianMessage_detectsUkrainian() {
+        val result = extractor.extract("Мені сниться один і той самий сон")
+        assertEquals("uk", result.detectedLanguage)
+    }
+
+    @Test
+    fun testExtract_russianMessage_detectsRussian() {
+        val result = extractor.extract("Мне снится один и тот же сон")
+        assertEquals("ru", result.detectedLanguage)
+    }
+
+    @Test
+    fun testExtract_englishMessage_detectsEnglish() {
+        val result = extractor.extract("I keep having the same dream over and over")
+        assertEquals("en", result.detectedLanguage)
+    }
+
+    @Test
+    fun testExtract_germanMessage_detectsGerman() {
+        val result = extractor.extract("Ich habe immer den gleichen Traum")
+        assertEquals("de", result.detectedLanguage)
+    }
+
+    @Test
+    fun testExtract_mixedCyrillicEnglish_detectsCyrillic() {
+        val result = extractor.extract("Мій boss мене дратує")
+        assertEquals("uk", result.detectedLanguage)
+    }
 }

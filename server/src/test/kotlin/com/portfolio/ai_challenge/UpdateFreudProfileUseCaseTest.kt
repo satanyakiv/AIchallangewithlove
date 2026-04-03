@@ -80,4 +80,31 @@ class UpdateFreudProfileUseCaseTest {
         assertNull(profile.fixationStage)
         assertTrue(profile.relationshipPatterns.isEmpty())
     }
+
+    // --- Language persistence tests ---
+
+    @Test
+    fun testExecute_ukrainianMessage_languagePersisted() {
+        setupUser()
+        useCase.execute("test-user", "Мені сниться один і той самий сон")
+        val profile = store.loadProfile("test-user")
+        assertEquals("uk", profile.language)
+    }
+
+    @Test
+    fun testExecute_englishMessage_languageStaysDefault() {
+        setupUser()
+        useCase.execute("test-user", "I feel anxious today")
+        val profile = store.loadProfile("test-user")
+        assertEquals("en", profile.language)
+    }
+
+    @Test
+    fun testExecute_languageSwitchMidConversation_updatesToNewLanguage() {
+        setupUser()
+        useCase.execute("test-user", "Hello, my name is Anna")
+        assertEquals("en", store.loadProfile("test-user").language)
+        useCase.execute("test-user", "Можемо говорити українською?")
+        assertEquals("uk", store.loadProfile("test-user").language)
+    }
 }

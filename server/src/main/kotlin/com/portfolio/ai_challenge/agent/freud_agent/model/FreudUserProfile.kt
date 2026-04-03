@@ -11,4 +11,5 @@ data class FreudUserProfile(
     val dreamSymbols: List<String> = emptyList(),
     val fixationStage: String? = null,
     val relationshipPatterns: List<String> = emptyList(),
+    val language: String = "en",
 )

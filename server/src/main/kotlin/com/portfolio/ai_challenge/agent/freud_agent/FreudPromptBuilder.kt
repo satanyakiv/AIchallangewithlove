@@ -47,6 +47,7 @@ class FreudPromptBuilder {
             if (profile.childhoodThemes.isNotEmpty()) {
                 append("\nChildhood themes mentioned: ${profile.childhoodThemes.joinToString()}.")
             }
+            append("\nRespond in ${profile.language}.")
         }
     }
 

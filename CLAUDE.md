@@ -22,11 +22,11 @@ Package: `com.portfolio.ai_challenge`
 | `shared/`     | KMP library: Platform expect/actual, Constants  |
 | `composeApp/` | Compose UI: screens, ViewModels, navigation, DI |
 | `database/`   | Room + SQLite KMP library                       |
-| `server/`     | Ktor 3.4.1 + Netty: routes, agents, API         |
+| `server/`     | Ktor 3.4.2 + Netty: routes, agents, API         |
 
 ## Tech Stack
 
-Kotlin 2.3.10, Compose 1.10.2, Ktor 3.4.1, AGP 9.1.0, Room 2.8.4, Koin 4.1.1, kotlinx-serialization 1.10.0, Navigation3 1.0.0-alpha06, Koog 0.6.4, MockK 1.14.9. Full versions: `gradle/libs.versions.toml`.
+Kotlin 2.3.20, Compose 1.10.3, Ktor 3.4.2, AGP 9.1.0, Room 2.8.4, Koin 4.2.0, kotlinx-serialization 1.10.0, Navigation3 1.1.0-beta01, Koog 0.7.3, MockK 1.14.9. Full versions: `gradle/libs.versions.toml`.
 
 ## Key Rules (details in `.claude/rules/`)
 

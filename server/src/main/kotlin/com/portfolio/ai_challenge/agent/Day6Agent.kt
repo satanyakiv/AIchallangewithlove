@@ -3,11 +3,11 @@ package com.portfolio.ai_challenge.agent
 import ai.koog.agents.core.agent.AIAgent
 import ai.koog.prompt.executor.clients.deepseek.DeepSeekLLMClient
 import ai.koog.prompt.executor.clients.deepseek.DeepSeekModels
-import ai.koog.prompt.executor.llms.SingleLLMPromptExecutor
+import ai.koog.prompt.executor.llms.MultiLLMPromptExecutor
 
 class Day6Agent(
     private val client: DeepSeekLLMClient,
-    private val executor: SingleLLMPromptExecutor,
+    private val executor: MultiLLMPromptExecutor,
 ) {
 
     suspend fun chat(message: String): String {
